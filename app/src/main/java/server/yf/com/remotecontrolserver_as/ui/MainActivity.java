@@ -62,7 +62,6 @@ public class MainActivity extends Activity {
 		Intent intent = new Intent(MainActivity.this, MouseService.class);
 		startService(intent);
 //		this.downloadBusinessService=new DownloadBusinessServiceImpl(this,mHandler);
-		
 	    finish();
 	}
 	
