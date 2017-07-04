@@ -15,6 +15,6 @@ public class MusicReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		String data=intent.getStringExtra(MUSIC_KEY);
-		businessServiceImpl.sendMusic(data+"#");
+		businessServiceImpl.sendMusic(data);
 	}
 }

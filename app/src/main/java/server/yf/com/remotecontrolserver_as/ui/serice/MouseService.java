@@ -8,12 +8,15 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
 
+import server.yf.com.remotecontrolserver_as.App;
+import server.yf.com.remotecontrolserver_as.LanMina.TCPServer;
 import server.yf.com.remotecontrolserver_as.dao.SocketManager;
 import server.yf.com.remotecontrolserver_as.domain.Action;
 import server.yf.com.remotecontrolserver_as.domain.Boot;
 import server.yf.com.remotecontrolserver_as.domain.Equipment;
 import server.yf.com.remotecontrolserver_as.domain.Gateway;
 import server.yf.com.remotecontrolserver_as.domain.Writer;
+import server.yf.com.remotecontrolserver_as.minamachines.MinaServer;
 import server.yf.com.remotecontrolserver_as.service.MouseBusinessService;
 import server.yf.com.remotecontrolserver_as.service.impl.MouseBusinessServiceImpl;
 import server.yf.com.remotecontrolserver_as.util.EquipmentFactory;
@@ -32,7 +35,7 @@ public class MouseService extends Service {
 	public static long palpitationTime;
 	public static Gateway gateway = GatewayFactory.getGateway();
 	public static Equipment equipment = EquipmentFactory.getEquipment();
-	
+	private Intent tcpServiceIntent;
 	// 广播接收者 （接收信息）
 	private BroadcastReceiver mybroadcastReceiver = new BroadcastReceiver() {
 		@Override
@@ -115,24 +118,30 @@ public class MouseService extends Service {
 		// 3.注册广播接收者
 		registerReceiver(mybroadcastReceiver, filter);
 		//开启
-		SocketManager.getSocketManager().startUdp();
-		SocketManager.getSocketManager().startConnection();
 		//初始化
 		mouseBusinessService = new MouseBusinessServiceImpl();
 		// 发起连接
-		mouseBusinessService.echoGateway(MouseService.equipment);
+//		mouseBusinessService.echoGateway(MouseService.equipment);
+		minaloginServiceintent=new Intent(App.getAppContext(), MinaServer.class);
+		tcpServiceIntent=new Intent(getApplicationContext(),TCPServer.class);
 		super.onCreate();
 	}
 	
 	
-
+	private Intent minaloginServiceintent;
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
+		SocketManager.getSocketManager().startUdp();
+		SocketManager.getSocketManager().startConnection();
+		startService(minaloginServiceintent);
+		startService(tcpServiceIntent);
 		return super.onStartCommand(intent, flags, startId);
 	}
 
 	@Override
 	public void onDestroy() {
+		stopService(tcpServiceIntent);
+		stopService(minaloginServiceintent);
 		super.onDestroy();
 	}
 	@Override

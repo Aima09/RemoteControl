@@ -18,6 +18,6 @@ public class FileReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		String data=intent.getStringExtra(FILE_KEY);
 		Log.i(TAG, data);
-		fileBusinessService.sendFile(data+"#");
+		fileBusinessService.sendFile(data);
 	}
 }

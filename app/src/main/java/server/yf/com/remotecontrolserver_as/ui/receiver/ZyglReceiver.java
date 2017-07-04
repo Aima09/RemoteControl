@@ -18,6 +18,6 @@ public class ZyglReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		String data=intent.getStringExtra(ZYGLQ_KEY);
 		Log.i(TAG, "data="+data);
-		businessService.sendZyglq(data+"#");
+		businessService.sendZyglq(data);
 	}
 }

@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.text.TextUtils;
 
 import server.yf.com.remotecontrolserver_as.App;
+import server.yf.com.remotecontrolserver_as.CommonConstant;
+import server.yf.com.remotecontrolserver_as.LanMina.LanMinaCmdManager;
 import server.yf.com.remotecontrolserver_as.dao.SocketManager;
 import server.yf.com.remotecontrolserver_as.dao.TcpAnalyzerImpl;
 import server.yf.com.remotecontrolserver_as.dao.UdpAnalyzerImpl;
@@ -13,6 +15,7 @@ import server.yf.com.remotecontrolserver_as.dao.udp.UDPServer;
 import server.yf.com.remotecontrolserver_as.domain.Boot;
 import server.yf.com.remotecontrolserver_as.domain.Equipment;
 import server.yf.com.remotecontrolserver_as.domain.Palpitation;
+import server.yf.com.remotecontrolserver_as.minamachines.MinaCmdManager;
 import server.yf.com.remotecontrolserver_as.service.MouseBusinessService;
 import server.yf.com.remotecontrolserver_as.ui.serice.MouseService;
 import server.yf.com.remotecontrolserver_as.util.JsonAssistant;
@@ -32,7 +35,13 @@ public class MouseBusinessServiceImpl implements MouseBusinessService {
 //			Log.i(TAG, "发信息去找客户端1");
 			String data="wlinkwulian"+equipment.getDevid();
 //			Log.i(TAG, "data="+data);
-			UDPServer.getInstans(MouseService.gateway, MouseService.equipment, UdpAnalyzerImpl.getInstans()).send(("wlinkwulian"+equipment.getDevid()).getBytes());
+			if(CommonConstant.LINE_TYPE==1){//局域网
+				LanMinaCmdManager.getInstance().sendControlCmd("wlinkwulian"+equipment.getDevid());
+			}else{//互联网
+				MinaCmdManager.getInstance()
+						.sendControlCmd("wlinkwulian"+equipment.getDevid());
+			}
+//			UDPServer.getInstans(MouseService.gateway, MouseService.equipment, UdpAnalyzerImpl.getInstans()).send(("wlinkwulian"+equipment.getDevid()).getBytes());
 //			Log.i(TAG, "发信息去找客户端2");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -43,7 +52,13 @@ public class MouseBusinessServiceImpl implements MouseBusinessService {
 	public void linkGateway(Boot boot){
 		String bootjsonString=jsonAssistant.paseBoot(boot);
 		if(!TextUtils.isEmpty(bootjsonString)){
-			TCPIPServer.getInstans(MouseService.gateway, MouseService.equipment, TcpAnalyzerImpl.getInstans()).send((bootjsonString+"#").getBytes());
+			if(CommonConstant.LINE_TYPE==1){//局域网
+				LanMinaCmdManager.getInstance().sendControlCmd(bootjsonString);
+			}else{//互联网
+				MinaCmdManager.getInstance()
+						.sendControlCmd(bootjsonString);
+			}
+//			TCPIPServer.getInstans(MouseService.gateway, MouseService.equipment, TcpAnalyzerImpl.getInstans()).send((bootjsonString+"#").getBytes());
 		}
 	}
 
@@ -106,6 +121,12 @@ public class MouseBusinessServiceImpl implements MouseBusinessService {
 	
 	@Override
 	public void sendPalpitation(Palpitation palpitation) {
-		UDPServer.getInstans(MouseService.gateway, MouseService.equipment, TcpAnalyzerImpl.getInstans()).send((jsonAssistant.createPalpitation(palpitation)+"#").getBytes());
+		if(CommonConstant.LINE_TYPE==1){//局域网
+			LanMinaCmdManager.getInstance().sendControlCmd(jsonAssistant.createPalpitation(palpitation));
+		}else{//互联网
+			MinaCmdManager.getInstance()
+					.sendControlCmd(jsonAssistant.createPalpitation(palpitation));
+		}
+//		UDPServer.getInstans(MouseService.gateway, MouseService.equipment, TcpAnalyzerImpl.getInstans()).send((jsonAssistant.createPalpitation(palpitation)+"#").getBytes());
 	}
 }

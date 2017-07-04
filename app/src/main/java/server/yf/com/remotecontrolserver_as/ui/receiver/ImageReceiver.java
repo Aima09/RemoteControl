@@ -17,6 +17,6 @@ public class ImageReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		String data=intent.getStringExtra(IMAGE_KEY);
-		imageBusinessService.sendImage(data+"#");
+		imageBusinessService.sendImage(data);
 	}
 }

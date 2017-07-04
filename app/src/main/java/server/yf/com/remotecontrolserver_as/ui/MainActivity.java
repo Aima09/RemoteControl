@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
+import server.yf.com.remotecontrolserver_as.minamachines.MinaServer;
 import server.yf.com.remotecontrolserver_as.service.DownloadBusinessService;
 import server.yf.com.remotecontrolserver_as.ui.serice.MouseService;
 import server.yf.com.remotecontrolserver_as.util.ToastUtil;

@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="server.yf.com.remotecontrolserver_as.LanMina.MainActivity"
+            android:name="server.yf.com.remotecontrolserver_as.ui.MainActivity"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent" >
             <intent-filter>
@@ -71,6 +71,8 @@
         </receiver>
         <service android:name=".LanMina.TCPServer"
             ></service>
+        <service android:name="server.yf.com.remotecontrolserver_as.minamachines.MinaServer"
+        ></service>
     </application>
 
 </manifest>

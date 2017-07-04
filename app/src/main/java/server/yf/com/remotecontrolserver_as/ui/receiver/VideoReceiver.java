@@ -16,6 +16,6 @@ public class VideoReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		String data=intent.getStringExtra(VEDIO_KEY);
-		businessService.sendVedio(data+"#");
+		businessService.sendVedio(data);
 	}
 }
