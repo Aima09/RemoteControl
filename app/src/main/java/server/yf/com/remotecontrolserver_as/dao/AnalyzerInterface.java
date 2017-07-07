@@ -10,5 +10,5 @@ public interface AnalyzerInterface {
 	 * 所有的数据的中转
 	 * @param buffer
 	 */
-	public void analy(byte[] buffer);
+	public void analy(byte[] buffer,String receiverId);
 }

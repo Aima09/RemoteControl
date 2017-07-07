@@ -60,7 +60,7 @@ public class TcpAnalyzerImpl implements AnalyzerInterface {
 	public static final String ZYGLQSRECEIVER = "com.app.main.ifileexplorer.receiver.ZyglqReceiver";
 
 	@Override
-	public void analy(byte[] buffer) {
+	public void analy(byte[] buffer,String receiverId) {
 		String data = new String(buffer).trim();
 		Log.i(TAG, data);
 		try {
@@ -105,6 +105,7 @@ public class TcpAnalyzerImpl implements AnalyzerInterface {
 				Intent intent = new Intent();
 				intent.setAction(MUSICRECEIVER);
 				intent.putExtra(MUSIC_KEY, data);
+				intent.putExtra("receiverId",receiverId);
 				App.getAppContext().sendBroadcast(intent);
 				// Log.i(TAG, "send"+data);
 			} else if (data.contains("cmd") && data.contains("BSsetplaysongid")) {
@@ -112,6 +113,7 @@ public class TcpAnalyzerImpl implements AnalyzerInterface {
 				Intent intent = new Intent();
 				intent.setAction(MUSICRECEIVER);
 				intent.putExtra(MUSIC_KEY, data);
+				intent.putExtra("receiverId",receiverId);
 				App.getAppContext().sendBroadcast(intent);
 			} else if (data.contains("cmd") && data.contains("BSsetvolumeadd")) {
 				// {"cmd":"BSsetvolumeadd","valume":"-"}
@@ -119,6 +121,7 @@ public class TcpAnalyzerImpl implements AnalyzerInterface {
 				Intent intent = new Intent();
 				intent.setAction(MUSICRECEIVER);
 				intent.putExtra(MUSIC_KEY, data);
+				intent.putExtra("receiverId",receiverId);
 				App.getAppContext().sendBroadcast(intent);
 			} else if (data.contains("cmd") && data.contains("BSsetplaystatus")) {
 				// {"cmd":"BSsetplaystatus","status":"previous"}
@@ -127,11 +130,13 @@ public class TcpAnalyzerImpl implements AnalyzerInterface {
 				Intent intent = new Intent();
 				intent.setAction(MUSICRECEIVER);
 				intent.putExtra(MUSIC_KEY, data);
+				intent.putExtra("receiverId",receiverId);
 				App.getAppContext().sendBroadcast(intent);
 			} else if (data.contains("cmd") && data.contains("BSgetvideolist")) {
 				Intent intent = new Intent();
 				intent.setAction(VIDEORECEIVER);
 				intent.putExtra(VIDEO_KEY, data);
+				intent.putExtra("receiverId",receiverId);
 				App.getAppContext().sendBroadcast(intent);
 			} else if (data.contains("cmd")
 					&& data.contains("BSsetplayvideoid")) {

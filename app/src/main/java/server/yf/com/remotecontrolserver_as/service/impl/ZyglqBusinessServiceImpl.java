@@ -19,7 +19,7 @@ public class ZyglqBusinessServiceImpl implements ZyglqBusinessService {
 			LanMinaCmdManager.getInstance().sendControlCmd(zyglqJson);
 		}else{//互联网
 			MinaCmdManager.getInstance()
-					.sendControlCmd(zyglqJson);
+					.sendControlCmd(zyglqJson,null);
 		}
 //		TCPIPServer.getInstans(MouseService.gateway, MouseService.equipment, TcpAnalyzerImpl.getInstans()).send(zyglqJson.getBytes());
 	}

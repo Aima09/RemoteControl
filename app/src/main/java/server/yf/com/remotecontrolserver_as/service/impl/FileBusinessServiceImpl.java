@@ -13,7 +13,7 @@ public class FileBusinessServiceImpl implements FileBusinessService {
 			LanMinaCmdManager.getInstance().sendControlCmd(fileJson);
 		}else{//互联网
 			MinaCmdManager.getInstance()
-					.sendControlCmd(fileJson);
+					.sendControlCmd(fileJson,null);
 		}
 //		TCPIPServer.getInstans(MouseService.gateway, MouseService.equipment, TcpAnalyzerImpl.getInstans()).send(fileJson.getBytes());
 	}

@@ -22,7 +22,7 @@ public class UdpAnalyzerImpl implements AnalyzerInterface{
 	private JsonAssistant jsonAssistant = new JsonAssistant();
 	
 	@Override
-	public void analy(byte[] buffer) {
+	public void analy(byte[] buffer,String receiverId) {
 		String data = new String(buffer).trim();
 //		Log.i(TAG, "data"+data);
 		if(data.contains("key")){

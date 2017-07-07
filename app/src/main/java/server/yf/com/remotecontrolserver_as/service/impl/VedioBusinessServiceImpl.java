@@ -16,7 +16,7 @@ public class VedioBusinessServiceImpl implements VedioBusinessService {
 			LanMinaCmdManager.getInstance().sendControlCmd(vedioJson);
 		}else{//互联网
 			MinaCmdManager.getInstance()
-					.sendControlCmd(vedioJson);
+					.sendControlCmd(vedioJson,null);
 		}
 //		TCPIPServer.getInstans(MouseService.gateway, MouseService.equipment, TcpAnalyzerImpl.getInstans()).send(vedioJson.getBytes());
 	}

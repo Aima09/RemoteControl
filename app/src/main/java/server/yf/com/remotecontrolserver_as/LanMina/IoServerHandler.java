@@ -3,12 +3,10 @@ package server.yf.com.remotecontrolserver_as.LanMina;
 import android.os.Environment;
 import android.util.Log;
 
-import com.yf.minalibrary.common.ClientInfo;
-import com.yf.minalibrary.common.CmdType;
-import com.yf.minalibrary.common.MessageType;
-import com.yf.minalibrary.message.BaseMessage;
-import com.yf.minalibrary.message.CmdMessage;
-import com.yf.minalibrary.message.FileMessage;
+import server.yf.com.remotecontrolserver_as.LanMina.library.common.MessageType;
+import server.yf.com.remotecontrolserver_as.LanMina.library.message.BaseMessage;
+import server.yf.com.remotecontrolserver_as.LanMina.library.message.CmdMessage;
+import server.yf.com.remotecontrolserver_as.LanMina.library.message.FileMessage;
 
 import org.apache.mina.core.future.CloseFuture;
 import org.apache.mina.core.future.IoFuture;
@@ -21,18 +19,11 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.UUID;
+import java.net.InetSocketAddress;
 
-import server.yf.com.remotecontrolserver_as.dao.AnalyzerInterface;
+import server.yf.com.remotecontrolserver_as.CommonConstant;
 import server.yf.com.remotecontrolserver_as.dao.TcpAnalyzerImpl;
 
-import static com.yf.minalibrary.common.ClientInfo.CLIENTINFO;
 
 /**
  * Created by wuhuai on 2016/10/25 .
@@ -77,12 +68,11 @@ public class IoServerHandler extends IoHandlerAdapter {
         currenSession=session;
         BaseMessage baseMessage = (BaseMessage) message;
         String dataType = baseMessage.getMessageType();
-        Log.d("IoServerHandler", "内容：" + baseMessage.toString());
         switch (dataType) {
             case MessageType.MESSAGE_CMD:
                 CmdMessage cmdMessage = (CmdMessage) baseMessage;
-                Log.d("IoServerHandler", "内容：" + cmdMessage.getCmdBean().getCmdContent());
-                TcpAnalyzerImpl.getInstans().analy(cmdMessage.getCmdBean().getCmdContent().getBytes());
+                Log.d("LanIoServerHandler", "内容：" + cmdMessage.getCmdBean().getCmdContent());
+                TcpAnalyzerImpl.getInstans().analy(cmdMessage.getCmdBean().getCmdContent().getBytes(),null);
 //                MinaCmdManager.getInstance().disposeCmd(cmdMessage);
                 break;
             case MessageType.MESSAGE_FILE:
@@ -126,6 +116,8 @@ public class IoServerHandler extends IoHandlerAdapter {
 
     @Override
     public void sessionCreated(IoSession session) throws Exception {
+        String clientIP = ((InetSocketAddress)session.getRemoteAddress()).getAddress().getHostAddress();
+        session.setAttribute("KEY_SESSION_CLIENT_IP", clientIP);
         System.out.println("IoServerHandler 创建一个新连接：{" + session.getRemoteAddress() + "}");
     }
 
@@ -136,6 +128,8 @@ public class IoServerHandler extends IoHandlerAdapter {
 
     @Override
     public void sessionOpened(IoSession session) throws Exception {
+        CommonConstant.LINE_TYPE=1;
+        minaSocketConnector.setSession(session);
         System.out.println("IoServerHandler 打开一个session：{" + session.getId() + "}#{" + session.getBothIdleCount() + "}");
         currenSession=session;
     }

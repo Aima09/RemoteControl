@@ -1,7 +1,7 @@
 package server.yf.com.remotecontrolserver_as.LanMina;
 
 
-import com.yf.minalibrary.encoderdecoder.MessageProtocolCodecFactory;
+import server.yf.com.remotecontrolserver_as.LanMina.library.encoderdecoder.MessageCodecFactory;
 
 import org.apache.mina.core.future.CloseFuture;
 import org.apache.mina.core.future.ConnectFuture;
@@ -14,7 +14,6 @@ import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
-import server.yf.com.remotecontrolserver_as.service.MouseBusinessService;
 import server.yf.com.remotecontrolserver_as.ui.serice.MouseService;
 
 /**
@@ -25,8 +24,6 @@ public class MinaSocketConnector {
     private IoSession session;
     private ConnectFuture future;
     private SocketConnector connector;
-
-
     private NioSocketAcceptor acceptor;
     private InetSocketAddress socketAddress;
 
@@ -42,7 +39,8 @@ public class MinaSocketConnector {
 //                new TextLineCodecFactory(Charset.forName("UTF-8"),
 //                        LineDelimiter.WINDOWS.getValue(),
 //                        LineDelimiter.WINDOWS.getValue())));
-            acceptor.getFilterChain().addLast("codec", new ProtocolCodecFilter(new MessageProtocolCodecFactory(true)));
+            //acceptor.getFilterChain().addLast("codec", new ProtocolCodecFilter(new MessageProtocolCodecFactory(true)));
+            acceptor.getFilterChain().addLast("codec", new ProtocolCodecFilter(new MessageCodecFactory()));
             acceptor.setHandler(new IoServerHandler(this));
             acceptor.setReuseAddress(true);
         }
@@ -90,5 +88,7 @@ public class MinaSocketConnector {
     public IoSession getSession() {
         return session;
     }
-
+    public void  setSession(IoSession ioSession){
+        this.session=ioSession;
+    }
 }

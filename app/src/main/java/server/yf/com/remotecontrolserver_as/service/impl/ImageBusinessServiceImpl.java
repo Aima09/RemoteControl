@@ -16,7 +16,7 @@ public class ImageBusinessServiceImpl implements ImageBusinessService {
 			LanMinaCmdManager.getInstance().sendControlCmd(imageJson);
 		}else{//互联网
 			MinaCmdManager.getInstance()
-					.sendControlCmd(imageJson);
+					.sendControlCmd(imageJson,null);
 		}
 //		TCPIPServer.getInstans(MouseService.gateway, MouseService.equipment, TcpAnalyzerImpl.getInstans()).send(imageJson.getBytes());
 	}

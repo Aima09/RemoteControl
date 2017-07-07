@@ -12,6 +12,9 @@ import com.yf.minalibrary.message.CmdMessage.CmdBean;
 import java.util.ArrayList;
 import java.util.List;
 
+import server.yf.com.remotecontrolserver_as.dao.TcpAnalyzerImpl;
+import server.yf.com.remotecontrolserver_as.dao.tcpip.TCPIPServer;
+
 /**
  * Created by wuhuai on 2017/6/23 .
  * ;
@@ -24,6 +27,7 @@ public class MinaCmdManager {
     private MinaServerController minaServerController;
     private DevicesManager devicesManager;
 
+    private IdListener idListener;
     public interface MinaCmdCallBack {
         void minaCmdCallBack(Object message);
     }
@@ -70,25 +74,43 @@ public class MinaCmdManager {
                 ServerDataDisposeCenter.setLocalSenderId(uuid);
                 Log.d("MinaCmdManager", uuid);
                 Log.d("IoClientHandler", uuid);
+                if (this.idListener!=null) {
+                    idListener.flushId(uuid);
+                }
                 break;
             case CmdType.CMD_LOGIN:
                 String loginResult = cmdBean.getCmdContent();
                 Log.d("MinaCmdManager", loginResult);
+                if (this.idListener!=null) {
+                    idListener.flushId(ServerDataDisposeCenter.getLocalSenderId());
+                }
                 break;
             case CmdType.CMD_MUSIC:
+                TcpAnalyzerImpl.getInstans().analy(cmdBean.getCmdContent().getBytes(),cmdBean.getSenderId());
                 Log.d("MinaCmdManager", "CMD_MUSIC"+cmdBean.getCmdContent());
-                sendControlCmd("音乐命令：+music");
+                Log.d("MinaCmdManager", "rid"+cmdBean.getReceiverId());
+                sendControlCmd("音乐命令：+music",cmdBean.getReceiverId());
                 break;
         }
     }
 
-    public void sendControlCmd(String cmdContent) {
+    public void sendControlCmd(String cmdContent,String receiverId) {
         if (null != minaServerController) {
             CmdBean cmdBean = new CmdBean(ServerDataDisposeCenter.getLocalSenderId(),
-                    ServerDataDisposeCenter.getRemoteReceiverId(), CmdType.CMD_MUSIC, DeviceType.DEVICE_TYPE_PHONE,cmdContent);
+                    receiverId, CmdType.CMD_MUSIC, DeviceType.DEVICE_TYPE_PHONE,cmdContent);
+
             CmdMessage cmdMessage = new CmdMessage(MessageType.MESSAGE_CMD, cmdBean);
             minaServerController.send(cmdMessage);
         }
+    }
+
+
+    public void setIdListener(IdListener idListener) {
+        this.idListener = idListener;
+    }
+
+    public interface IdListener{
+       void flushId(String id);
     }
 
 }

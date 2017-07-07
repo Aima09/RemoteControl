@@ -36,8 +36,7 @@ public class IoClientHandler extends IoHandlerAdapter {
         switch (dataType) {
             case MessageType.MESSAGE_CMD:
                 CmdMessage cmdMessage = (CmdMessage) baseMessage;
-                TcpAnalyzerImpl.getInstans().analy(cmdMessage.getCmdBean().getCmdContent().getBytes());
-//                MinaCmdManager.getInstance().disposeCmd(cmdMessage);
+                MinaCmdManager.getInstance().disposeCmd(cmdMessage);
                 break;
             case MessageType.MESSAGE_FILE:
                 FileMessage fileMessage = (FileMessage) baseMessage;
@@ -65,7 +64,8 @@ public class IoClientHandler extends IoHandlerAdapter {
 
     @Override
     public void exceptionCaught(IoSession session, Throwable cause) throws Exception {
-        Log.d("IoClientHandler", "服务器发生异常： {" + cause.getMessage() + "}");
+        Log.d("IoClientHandler", "服务器发生异常： {" + cause.toString() + "}");
+        cause.printStackTrace();
     }
 
     @Override public void sessionOpened(IoSession session) throws Exception {

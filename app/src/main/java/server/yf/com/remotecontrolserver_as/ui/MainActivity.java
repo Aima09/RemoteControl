@@ -6,8 +6,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.widget.TextView;
 
+import server.yf.com.remotecontrolserver_as.R;
+import server.yf.com.remotecontrolserver_as.minamachines.MinaCmdManager;
 import server.yf.com.remotecontrolserver_as.minamachines.MinaServer;
+import server.yf.com.remotecontrolserver_as.minamachines.ServerDataDisposeCenter;
 import server.yf.com.remotecontrolserver_as.service.DownloadBusinessService;
 import server.yf.com.remotecontrolserver_as.ui.serice.MouseService;
 import server.yf.com.remotecontrolserver_as.util.ToastUtil;
@@ -57,13 +61,27 @@ public class MainActivity extends Activity {
 			}
 		}
 	};
-	@Override
+	private TextView textView ;
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+		textView=(TextView) findViewById(R.id.tv_ycid);
 		Intent intent = new Intent(MainActivity.this, MouseService.class);
 		startService(intent);
+
+		MinaCmdManager.getInstance().setIdListener(new MinaCmdManager.IdListener() {
+			@Override
+			public void flushId(final String id) {
+				runOnUiThread(new Runnable() {
+
+					@Override
+					public void run() {
+						textView.setText(id);
+					}
+				});
+			}
+		});
 //		this.downloadBusinessService=new DownloadBusinessServiceImpl(this,mHandler);
-	    finish();
+//	    finish();
 	}
-	
 }

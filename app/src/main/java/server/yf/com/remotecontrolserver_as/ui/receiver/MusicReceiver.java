@@ -4,6 +4,7 @@ package server.yf.com.remotecontrolserver_as.ui.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import server.yf.com.remotecontrolserver_as.service.impl.MusicBusinessServiceImpl;
 
@@ -15,6 +16,8 @@ public class MusicReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		String data=intent.getStringExtra(MUSIC_KEY);
-		businessServiceImpl.sendMusic(data);
+		String receiverId=intent.getStringExtra("receiverId");
+		Log.i("MusicReceiver",receiverId);
+		businessServiceImpl.sendMusic(data,receiverId);
 	}
 }

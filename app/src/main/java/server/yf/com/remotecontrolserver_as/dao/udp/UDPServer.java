@@ -172,7 +172,7 @@ public class UDPServer {
 //							Log.i(TAG, "读到的数据"+new String(rb).trim());
 //							Log.i(TAG, "读到的数据ip"+readdatagramPacket.getAddress().getHostAddress());
 							MouseService.gateway.setGwIp(readdatagramPacket.getAddress().getHostAddress());
-							analyzerInterface.analy(rb);
+							analyzerInterface.analy(rb,null);
 						}
 					}
 				}
@@ -185,7 +185,7 @@ public class UDPServer {
 		@Override
 		public void run() {
 			try {
-				datagramSocket = new DatagramSocket(7320);
+				datagramSocket = new DatagramSocket(7420);
 			} catch (Exception e) {
 				e.printStackTrace();
 //				Log.e(TAG, "创建datagramSocket异常");

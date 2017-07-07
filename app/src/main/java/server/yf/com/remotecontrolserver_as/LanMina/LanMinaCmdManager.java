@@ -3,16 +3,16 @@ package server.yf.com.remotecontrolserver_as.LanMina;
 
 import android.util.Log;
 
-import com.yf.minalibrary.common.CmdType;
-import com.yf.minalibrary.common.DeviceType;
-import com.yf.minalibrary.common.MessageType;
-import com.yf.minalibrary.message.CmdMessage;
-import com.yf.minalibrary.message.CmdMessage.CmdBean;
+import server.yf.com.remotecontrolserver_as.LanMina.library.common.CmdType;
+import server.yf.com.remotecontrolserver_as.LanMina.library.common.DeviceType;
+import server.yf.com.remotecontrolserver_as.LanMina.library.common.MessageType;
+import server.yf.com.remotecontrolserver_as.LanMina.library.message.CmdMessage;
+import server.yf.com.remotecontrolserver_as.LanMina.library.message.CmdMessage.CmdBean;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import server.yf.com.remotecontrolserver_as.minamachines.ServerDataDisposeCenter;
+import server.yf.com.remotecontrolserver_as.ui.serice.MouseService;
 
 /**
  * Created by wuhuai on 2017/6/23 .
@@ -62,11 +62,11 @@ public class LanMinaCmdManager {
 
     public void sendControlCmd(String cmdContent) {
         if (null != minaServerController) {
-            CmdBean cmdBean = new CmdBean(ServerDataDisposeCenter.getLocalSenderId(),
-                    ServerDataDisposeCenter.getRemoteReceiverId(), CmdType.CMD_MUSIC, DeviceType.DEVICE_TYPE_PHONE,cmdContent);
+            Log.i("LanMinaCmdManager","发送数据");
+            CmdBean cmdBean = new CmdBean(MouseService.equipment.getIp(),
+                    (String)IoServerHandler.currenSession.getAttribute("KEY_SESSION_CLIENT_IP"), CmdType.CMD_MUSIC, DeviceType.DEVICE_TYPE_INVALID,cmdContent);
             CmdMessage cmdMessage = new CmdMessage(MessageType.MESSAGE_CMD, cmdBean);
             minaServerController.send(cmdMessage);
         }
     }
-
 }

@@ -145,7 +145,7 @@ public class TCPIPServer {
 								for (int i = 0; i < sp.length; i++) {
 									if (!TextUtils.isEmpty(sp[i])) {
 //										Log.i(TAG, "服务端读数据"+new String(sp[i]));
-										analyzerInterface.analy(sp[i].getBytes());
+										analyzerInterface.analy(sp[i].getBytes(),null);
 									}
 								}
 //							if(readString.contains("#")){
