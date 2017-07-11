@@ -17,6 +17,7 @@ import com.yf.minalibrary.message.CmdMessage.CmdBean;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import server.yf.com.remotecontrolserver_as.CommonConstant;
 import server.yf.com.remotecontrolserver_as.config_server;
 
 
@@ -95,6 +96,9 @@ public class MinaServer extends Service implements MinaServerController {
     private Object msg;
     @Override public void send(Object message) {
         msg = message;
+        if (!minaSocketConnector.isConnect()){
+            connectServer();
+        }
         fixedThreadPool.execute(new Runnable() {
             @Override public void run() {
                 minaSocketConnector.send(msg);

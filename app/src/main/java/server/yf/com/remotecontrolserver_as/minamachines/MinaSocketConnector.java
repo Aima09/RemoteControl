@@ -17,7 +17,8 @@ import java.net.InetSocketAddress;
 
 public class MinaSocketConnector {
 
-    public static final String SERVER_DEFAULT_IP = "139.196.98.226";
+//    public static final String SERVER_DEFAULT_IP = "139.196.98.226";
+    public static final String SERVER_DEFAULT_IP = "192.168.1.55";
     public static final int SERVER_DEFAULT_PROT = 9000;
 
     private IoSession session;
@@ -26,7 +27,6 @@ public class MinaSocketConnector {
     private InetSocketAddress socketAddress;
 
     public boolean connectServer() {
-//        return connectServer(SERVER_DEFAULT_IP,SERVER_DEFAULT_PROT);
         return connectServer(SERVER_DEFAULT_IP,SERVER_DEFAULT_PROT);
     }
 
@@ -53,7 +53,7 @@ public class MinaSocketConnector {
         return session != null && session.isConnected();
     }
 
-    public boolean reConnectServer(){
+    private boolean reConnectServer(){
         try {
             future = connector.connect(socketAddress);
             future.awaitUninterruptibly();// 等待连接创建完成
@@ -61,12 +61,14 @@ public class MinaSocketConnector {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (isConnect()){
-            Log.d("MinaSocketConnector", "连接服务器成功");
+        // 判断是否已连接服务器
+        if (isConnect()) {
+            Log.d("MinaSocketConnector", "已连接远程服务器");
+            Log.d("MinaSocketConnector", "session.getServiceAddress():" + session.getServiceAddress());
             return true;
         } else {
-            Log.d("MinaSocketConnector", "连接服务器失败");
-            return false;
+            Log.d("MinaSocketConnector", "未连接远程服务器");
+            return reConnectServer();
         }
     }
 
@@ -81,8 +83,6 @@ public class MinaSocketConnector {
             if (null != message){
                 session.write(message);
             }
-        } else {
-            connectServer();
         }
     }
 
