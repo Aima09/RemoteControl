@@ -30,7 +30,7 @@ public class BaseMessageEncoder implements MessageEncoder<BaseMessage> {
                 try {
                     String gsonMsg = gson.toJson(message);
                     System.out.println("BaseMessageEncoder gsonMsg = " + gsonMsg);
-                    buffer.putInt(gsonMsg.length());
+                    buffer.putInt(gsonMsg.getBytes(BeanUtil.UTF_8).length);
                     buffer.putString(gsonMsg, BeanUtil.UTF_8.newEncoder());
                     buffer.flip();
                     outPut.write(buffer);
