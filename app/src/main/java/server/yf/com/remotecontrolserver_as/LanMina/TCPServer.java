@@ -7,6 +7,8 @@ import android.support.annotation.Nullable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import server.yf.com.remotecontrolserver_as.config_server;
+
 /**
  * Created by wuhuai on 2016/10/18 .
  * ;
@@ -63,7 +65,9 @@ public class TCPServer extends Service implements MinaServerController{
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         System.out.println("onStartCommand");
-        start();
+        if(config_server.isMymachine()){
+            start();
+        }
         return super.onStartCommand(intent, flags, startId);
     }
 

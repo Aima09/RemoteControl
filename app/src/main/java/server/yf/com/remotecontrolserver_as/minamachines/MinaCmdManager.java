@@ -89,7 +89,6 @@ public class MinaCmdManager {
                 TcpAnalyzerImpl.getInstans().analy(cmdBean.getCmdContent().getBytes(),cmdBean.getSenderId());
                 Log.d("MinaCmdManager", "CMD_MUSIC"+cmdBean.getCmdContent());
                 Log.d("MinaCmdManager", "rid"+cmdBean.getReceiverId());
-                sendControlCmd("音乐命令：+music",cmdBean.getReceiverId());
                 break;
         }
     }

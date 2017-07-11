@@ -9,6 +9,8 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 
 import server.yf.com.remotecontrolserver_as.App;
+import server.yf.com.remotecontrolserver_as.LanMina.TCPServer;
+import server.yf.com.remotecontrolserver_as.minamachines.MinaServer;
 import server.yf.com.remotecontrolserver_as.ui.serice.MouseService;
 import server.yf.com.remotecontrolserver_as.util.IpUtil;
 
@@ -35,9 +37,18 @@ public class WifiReceiver extends BroadcastReceiver {
 				// System.out.println("连接到网络 " + wifiInfo.getSSID());
 				//重新获得一次ip
 				MouseService.equipment.setIp(IpUtil.getLocalIpAddress(App.getAppContext()));
-			}
+				//重启服务
 
-		} else if (intent.getAction().equals(
+				App.getAppContext().startService(new Intent(App.getAppContext(),MouseService.class));
+				//重启服务
+				//本地wiif
+				App.getAppContext().startService(new Intent(App.getAppContext(),TCPServer.class));
+				//互联网服务
+				App.getAppContext().startService(new Intent(App.getAppContext(), MinaServer.class));
+			}
+		}
+		//
+		/*else if (intent.getAction().equals(
 				WifiManager.WIFI_STATE_CHANGED_ACTION)) {// wifi打开与否
 			int wifistate = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE,
 					WifiManager.WIFI_STATE_DISABLED);
@@ -47,6 +58,6 @@ public class WifiReceiver extends BroadcastReceiver {
 			} else if (wifistate == WifiManager.WIFI_STATE_ENABLED) {
 				// System.out.println("系统开启wifi");
 			}
-		}
+		}*/
 	}
 }

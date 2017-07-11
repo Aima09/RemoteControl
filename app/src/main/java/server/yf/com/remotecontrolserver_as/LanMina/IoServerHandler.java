@@ -3,6 +3,8 @@ package server.yf.com.remotecontrolserver_as.LanMina;
 import android.os.Environment;
 import android.util.Log;
 
+import server.yf.com.remotecontrolserver_as.LanMina.library.common.CmdType;
+import server.yf.com.remotecontrolserver_as.LanMina.library.common.DeviceType;
 import server.yf.com.remotecontrolserver_as.LanMina.library.common.MessageType;
 import server.yf.com.remotecontrolserver_as.LanMina.library.message.BaseMessage;
 import server.yf.com.remotecontrolserver_as.LanMina.library.message.CmdMessage;
@@ -23,6 +25,7 @@ import java.net.InetSocketAddress;
 
 import server.yf.com.remotecontrolserver_as.CommonConstant;
 import server.yf.com.remotecontrolserver_as.dao.TcpAnalyzerImpl;
+import server.yf.com.remotecontrolserver_as.ui.serice.MouseService;
 
 
 /**
@@ -65,6 +68,7 @@ public class IoServerHandler extends IoHandlerAdapter {
     @Override
     public void messageReceived(IoSession session, Object message) throws Exception {
 //        session.getService().getManagedSessions();
+        CommonConstant.LINE_TYPE=1;
         currenSession=session;
         BaseMessage baseMessage = (BaseMessage) message;
         String dataType = baseMessage.getMessageType();
@@ -120,7 +124,7 @@ public class IoServerHandler extends IoHandlerAdapter {
         session.setAttribute("KEY_SESSION_CLIENT_IP", clientIP);
         System.out.println("IoServerHandler 创建一个新连接：{" + session.getRemoteAddress() + "}");
     }
-
+    long time=System.currentTimeMillis();
     @Override
     public void sessionIdle(IoSession session, IdleStatus status) throws Exception {
         System.out.println("IoServerHandler 当前连接{" + session.getRemoteAddress() + "}处于空闲状态：{" + status + "}");
@@ -128,7 +132,6 @@ public class IoServerHandler extends IoHandlerAdapter {
 
     @Override
     public void sessionOpened(IoSession session) throws Exception {
-        CommonConstant.LINE_TYPE=1;
         minaSocketConnector.setSession(session);
         System.out.println("IoServerHandler 打开一个session：{" + session.getId() + "}#{" + session.getBothIdleCount() + "}");
         currenSession=session;

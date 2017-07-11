@@ -15,6 +15,7 @@ import org.apache.mina.core.session.IoSession;
 import java.io.File;
 import java.io.FileOutputStream;
 
+import server.yf.com.remotecontrolserver_as.CommonConstant;
 import server.yf.com.remotecontrolserver_as.dao.TcpAnalyzerImpl;
 
 
@@ -31,6 +32,7 @@ public class IoClientHandler extends IoHandlerAdapter {
     }
 
     public void messageReceived(IoSession session, Object message) throws Exception {
+        CommonConstant.LINE_TYPE=2;
         BaseMessage baseMessage = (BaseMessage) message;
         String dataType = baseMessage.getMessageType();
         switch (dataType) {
@@ -68,27 +70,32 @@ public class IoClientHandler extends IoHandlerAdapter {
         cause.printStackTrace();
     }
 
-    @Override public void sessionOpened(IoSession session) throws Exception {
+    @Override
+    public void sessionOpened(IoSession session) throws Exception {
         super.sessionOpened(session);
         Log.d("IoClientHandler", "sessionOpened");
     }
 
-    @Override public void sessionCreated(IoSession session) throws Exception {
+    @Override
+    public void sessionCreated(IoSession session) throws Exception {
         super.sessionCreated(session);
         Log.d("IoClientHandler", "sessionCreated");
     }
 
-    @Override public void sessionClosed(IoSession session) throws Exception {
+    @Override
+    public void sessionClosed(IoSession session) throws Exception {
         super.sessionClosed(session);
         Log.d("IoClientHandler", "sessionClosed");
     }
 
-    @Override public void sessionIdle(IoSession session, IdleStatus status) throws Exception {
+    @Override
+    public void sessionIdle(IoSession session, IdleStatus status) throws Exception {
         super.sessionIdle(session, status);
         Log.d("IoClientHandler", "sessionIdle");
     }
 
-    @Override public void inputClosed(IoSession session) throws Exception {
+    @Override
+    public void inputClosed(IoSession session) throws Exception {
         super.inputClosed(session);
         Log.d("IoClientHandler", "inputClosed");
     }

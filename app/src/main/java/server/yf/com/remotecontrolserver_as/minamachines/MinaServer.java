@@ -17,6 +17,8 @@ import com.yf.minalibrary.message.CmdMessage.CmdBean;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import server.yf.com.remotecontrolserver_as.config_server;
+
 
 /**
  * Created by wuhuai on 2016/10/18 .
@@ -51,8 +53,10 @@ public class MinaServer extends Service implements MinaServerController {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d("MinaServer1", "onStartCommand");
-        connectServer();
+        if(config_server.isMymachine()){
+            Log.d("MinaServer1", "onStartCommand");
+            connectServer();
+        }
         return super.onStartCommand(intent, flags, startId);
     }
 

@@ -17,7 +17,7 @@ public class MusicReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		String data=intent.getStringExtra(MUSIC_KEY);
 		String receiverId=intent.getStringExtra("receiverId");
-		Log.i("MusicReceiver",receiverId);
+		//Log.i("MusicReceiver",receiverId);
 		businessServiceImpl.sendMusic(data,receiverId);
 	}
 }
