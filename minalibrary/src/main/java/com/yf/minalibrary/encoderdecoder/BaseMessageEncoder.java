@@ -1,7 +1,5 @@
 package com.yf.minalibrary.encoderdecoder;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.yf.minalibrary.common.BeanUtil;
 import com.yf.minalibrary.common.MessageType;
@@ -29,11 +27,17 @@ public class BaseMessageEncoder implements MessageEncoder<BaseMessage> {
             case MessageType.MESSAGE_CMD:
             case MessageType.MESSAGE_FILE:
             case MessageType.MESSAGE_TEXT:
-                String gsonMsg = gson.toJson(message);
-                Log.d("BaseMessageEncoder", gsonMsg);
-                buffer.putString(gsonMsg,BeanUtil.UTF_8.newEncoder());
-                buffer.flip();
-                outPut.write(buffer);
+                try {
+                    String gsonMsg = gson.toJson(message);
+                    System.out.println("BaseMessageEncoder gsonMsg = " + gsonMsg);
+                    buffer.putInt(gsonMsg.length());
+                    buffer.putString(gsonMsg, BeanUtil.UTF_8.newEncoder());
+                    buffer.flip();
+                    outPut.write(buffer);
+                } catch (Exception e) {
+                    System.out.println("BaseMessageEncoder 编码 error = " + e.toString());
+                    e.printStackTrace();
+                }
                 break;
         }
         System.out.println("BaseMessageEncoder " + "编码完成");

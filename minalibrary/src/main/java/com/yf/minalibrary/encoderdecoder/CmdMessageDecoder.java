@@ -11,8 +11,6 @@ import org.apache.mina.filter.codec.ProtocolDecoderOutput;
 import org.apache.mina.filter.codec.demux.MessageDecoder;
 import org.apache.mina.filter.codec.demux.MessageDecoderResult;
 
-import java.nio.charset.CharacterCodingException;
-
 /**
  * Created by wuhuai on 2016/11/12 .
  * ;
@@ -22,29 +20,43 @@ public class CmdMessageDecoder implements MessageDecoder {
 
     @Override public MessageDecoderResult decodable(IoSession ioSession, IoBuffer in) {
         System.out.println("CmdMessageDecoder" + " 解码器选择");
-        if (in.remaining() >  0) {
-            try {
-                String a = in.getString(BeanUtil.UTF_8.newDecoder());
-                if (null != a && a.length() > 0){
-                    Gson gson = new Gson();
-                    CmdMessage cmdMessage = gson.fromJson(a,CmdMessage.class);
-                    if (cmdMessage.getMessageType().equals(MessageType.MESSAGE_CMD)){
-                        return MessageDecoderResult.OK;
-                    }
+        if (in.remaining() < 4) {
+            return MessageDecoderResult.NEED_DATA;
+        }
+        try {
+            int messageLength = in.getInt();
+            if (in.remaining() < messageLength) {
+                return MessageDecoderResult.NEED_DATA;
+            } else {
+                String a = in.getString(messageLength, BeanUtil.UTF_8.newDecoder());
+                System.out.println("CmdMessageDecoder 得到的命令内容  = " + a);
+                Gson gson = new Gson();
+                CmdMessage cmdMessage = gson.fromJson(a, CmdMessage.class);
+                if (cmdMessage.getMessageType().equals(MessageType.MESSAGE_CMD)) {
+                    return MessageDecoderResult.OK;
                 }
-            } catch (CharacterCodingException e) {
-                e.printStackTrace();
             }
+        } catch (Exception e) {
+            System.out.println("CmdMessageDecoder decodable 解码出错 = " + e.toString());
+            e.printStackTrace();
+            return MessageDecoderResult.NOT_OK;
         }
         return MessageDecoderResult.NOT_OK;
     }
 
     @Override public MessageDecoderResult decode(IoSession ioSession, IoBuffer in, ProtocolDecoderOutput outPut) throws Exception {
-        String a = in.getString(BeanUtil.UTF_8.newDecoder());
-        Gson gson = new Gson();
-        CmdMessage cmdMessage = gson.fromJson(a,CmdMessage.class);
-        outPut.write(cmdMessage);
-        System.out.println("CmdMessageDecoder " + a);
+        try {
+            int messageLength = in.getInt();
+            String a = in.getString(messageLength, BeanUtil.UTF_8.newDecoder());
+            Gson gson = new Gson();
+            CmdMessage cmdMessage = gson.fromJson(a, CmdMessage.class);
+            System.out.println("CmdMessageDecoder " + cmdMessage.toString());
+            outPut.write(cmdMessage);
+        } catch (Exception e) {
+            System.out.println("CmdMessageDecoder decode 解码出错 = " + e.toString());
+            e.printStackTrace();
+            return MessageDecoderResult.NOT_OK;
+        }
         return MessageDecoderResult.OK;
     }
 
