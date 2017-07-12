@@ -14,7 +14,7 @@ import server.yf.com.remotecontrolserver_as.config_server;
  * ;
  */
 
-public class TCPServer extends Service implements MinaServerController{
+public class TCPServer extends Service implements MinaServerController {
 
     private MinaSocketConnector minaSocketConnector;
     private LanMinaCmdManager minaCmdManager;
