@@ -17,8 +17,8 @@ import java.net.InetSocketAddress;
 
 public class MinaSocketConnector {
 
-//    public static final String SERVER_DEFAULT_IP = "139.196.98.226";
-    public static final String SERVER_DEFAULT_IP = "192.168.1.55";
+    public static final String SERVER_DEFAULT_IP = "139.196.98.226";
+//    public static final String SERVER_DEFAULT_IP = "192.168.1.55";
     public static final int SERVER_DEFAULT_PROT = 9000;
 
     private IoSession session;
@@ -37,6 +37,7 @@ public class MinaSocketConnector {
             connector.setConnectTimeoutMillis(30000);
             connector.getFilterChain().addLast("codec", new ProtocolCodecFilter(new MessageProtocolCodecFactory(false)));
             connector.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, 30);
+            connector.getSessionConfig().setReadBufferSize(2048 * 10);
             connector.setHandler(new IoClientHandler(this));
         }
         // 判断是否已连接服务器
