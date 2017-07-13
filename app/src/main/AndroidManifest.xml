@@ -69,9 +69,9 @@
                 <action android:name="android.Net.wifi.WIFI_STATE_CHANGED"/>
             </intent-filter>
         </receiver>
-        <service android:name=".LanMina.TCPServer"
+        <service android:name=".localminaserver.LocalMinaServer"
             ></service>
-        <service android:name="server.yf.com.remotecontrolserver_as.minamachines.MinaServer"
+        <service android:name="server.yf.com.remotecontrolserver_as.remoteminaclient.ClientMinaServer"
         ></service>
     </application>
 

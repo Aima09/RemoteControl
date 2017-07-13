@@ -9,14 +9,14 @@ import android.content.IntentFilter;
 import android.os.IBinder;
 
 import server.yf.com.remotecontrolserver_as.App;
-import server.yf.com.remotecontrolserver_as.LanMina.TCPServer;
+import server.yf.com.remotecontrolserver_as.localminaserver.LocalMinaServer;
 import server.yf.com.remotecontrolserver_as.dao.SocketManager;
 import server.yf.com.remotecontrolserver_as.domain.Action;
 import server.yf.com.remotecontrolserver_as.domain.Boot;
 import server.yf.com.remotecontrolserver_as.domain.Equipment;
 import server.yf.com.remotecontrolserver_as.domain.Gateway;
 import server.yf.com.remotecontrolserver_as.domain.Writer;
-import server.yf.com.remotecontrolserver_as.minamachines.MinaServer;
+import server.yf.com.remotecontrolserver_as.remoteminaclient.ClientMinaServer;
 import server.yf.com.remotecontrolserver_as.service.MouseBusinessService;
 import server.yf.com.remotecontrolserver_as.service.impl.MouseBusinessServiceImpl;
 import server.yf.com.remotecontrolserver_as.util.EquipmentFactory;
@@ -122,8 +122,8 @@ public class MouseService extends Service {
 		mouseBusinessService = new MouseBusinessServiceImpl();
 		// 发起连接
 //		mouseBusinessService.echoGateway(MouseService.equipment);
-		minaloginServiceintent=new Intent(App.getAppContext(), MinaServer.class);
-		tcpServiceIntent=new Intent(getApplicationContext(),TCPServer.class);
+		minaloginServiceintent=new Intent(App.getAppContext(), ClientMinaServer.class);
+		tcpServiceIntent=new Intent(getApplicationContext(),LocalMinaServer.class);
 		super.onCreate();
 	}
 	

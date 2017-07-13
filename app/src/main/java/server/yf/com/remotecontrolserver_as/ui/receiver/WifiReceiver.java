@@ -9,8 +9,8 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 
 import server.yf.com.remotecontrolserver_as.App;
-import server.yf.com.remotecontrolserver_as.LanMina.TCPServer;
-import server.yf.com.remotecontrolserver_as.minamachines.MinaServer;
+import server.yf.com.remotecontrolserver_as.localminaserver.LocalMinaServer;
+import server.yf.com.remotecontrolserver_as.remoteminaclient.ClientMinaServer;
 import server.yf.com.remotecontrolserver_as.ui.serice.MouseService;
 import server.yf.com.remotecontrolserver_as.util.IpUtil;
 
@@ -42,9 +42,9 @@ public class WifiReceiver extends BroadcastReceiver {
 				App.getAppContext().startService(new Intent(App.getAppContext(),MouseService.class));
 				//重启服务
 				//本地wiif
-				App.getAppContext().startService(new Intent(App.getAppContext(),TCPServer.class));
+				App.getAppContext().startService(new Intent(App.getAppContext(),LocalMinaServer.class));
 				//互联网服务
-				App.getAppContext().startService(new Intent(App.getAppContext(), MinaServer.class));
+				App.getAppContext().startService(new Intent(App.getAppContext(), ClientMinaServer.class));
 			}
 		}
 		//

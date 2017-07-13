@@ -9,9 +9,7 @@ import android.os.Message;
 import android.widget.TextView;
 
 import server.yf.com.remotecontrolserver_as.R;
-import server.yf.com.remotecontrolserver_as.minamachines.MinaCmdManager;
-import server.yf.com.remotecontrolserver_as.minamachines.MinaServer;
-import server.yf.com.remotecontrolserver_as.minamachines.ServerDataDisposeCenter;
+import server.yf.com.remotecontrolserver_as.remoteminaclient.ClientMinaCmdManager;
 import server.yf.com.remotecontrolserver_as.service.DownloadBusinessService;
 import server.yf.com.remotecontrolserver_as.ui.serice.MouseService;
 import server.yf.com.remotecontrolserver_as.util.ToastUtil;
@@ -61,7 +59,10 @@ public class MainActivity extends Activity {
 			}
 		}
 	};
+
+
 	private TextView textView ;
+	private String id = "";
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -69,9 +70,11 @@ public class MainActivity extends Activity {
 		Intent intent = new Intent(MainActivity.this, MouseService.class);
 		startService(intent);
 
-		MinaCmdManager.getInstance().setIdListener(new MinaCmdManager.IdListener() {
-			@Override
-			public void flushId(final String id) {
+		ClientMinaCmdManager.getInstance().setMinaCmdCallBack(new ClientMinaCmdManager.MinaCmdCallBack() {
+			@Override public void minaCmdCallBack(Object message) {
+				if (message instanceof String){
+					id = (String) message;
+				}
 				runOnUiThread(new Runnable() {
 
 					@Override
