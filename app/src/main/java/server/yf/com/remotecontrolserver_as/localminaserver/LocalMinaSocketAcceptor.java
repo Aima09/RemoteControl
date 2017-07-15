@@ -75,8 +75,10 @@ public class LocalMinaSocketAcceptor {
 
     public void close() {
         try {
-            acceptor.unbind();
-            acceptor.dispose();
+            if (null != acceptor){
+                acceptor.unbind();
+                acceptor.dispose();
+            }
         } catch (Exception e){
             e.printStackTrace();
         }

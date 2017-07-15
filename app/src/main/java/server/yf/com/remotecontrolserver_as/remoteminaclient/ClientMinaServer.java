@@ -12,6 +12,8 @@ import com.yf.minalibrary.common.MessageType;
 import com.yf.minalibrary.message.CmdMessage;
 import com.yf.minalibrary.message.CmdMessage.CmdBean;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -40,15 +42,29 @@ public class ClientMinaServer extends Service implements ClientMinaServerControl
         clientMinaSocketConnector = new ClientMinaSocketConnector();
         clientMinaCmdManager = ClientMinaCmdManager.getInstance();
         clientMinaCmdManager.setClientMinaServerController(this);
+        startTimerCheck();
+        if(config_server.isMymachine()){
+            System.out.println("ClientMinaServer onCreate");
+            connectServer();
+        }
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if(config_server.isMymachine()){
-            Log.d("MinaServer1", "onStartCommand");
-            connectServer();
-        }
+        System.out.println("ClientMinaServer onStartCommand");
         return super.onStartCommand(intent, flags, startId);
+    }
+
+    // 每过十分钟检测远程客户端是否断开，断开则重连
+    private void startTimerCheck() {
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override public void run() {
+                if (!clientMinaSocketConnector.isConnect()){
+                    connectServer();
+                }
+            }
+        }, 10 * 60 * 1000, 10 * 60 * 1000);
     }
 
     private void connectServer(){

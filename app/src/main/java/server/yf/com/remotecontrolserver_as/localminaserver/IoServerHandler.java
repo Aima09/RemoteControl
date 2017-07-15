@@ -1,7 +1,5 @@
 package server.yf.com.remotecontrolserver_as.localminaserver;
 
-import android.util.Log;
-
 import org.apache.mina.core.future.CloseFuture;
 import org.apache.mina.core.future.IoFuture;
 import org.apache.mina.core.future.IoFutureListener;
@@ -9,13 +7,11 @@ import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
 
-import java.net.InetSocketAddress;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
 import server.yf.com.remotecontrolserver_as.CommonConstant;
-import server.yf.com.remotecontrolserver_as.dao.TcpAnalyzerImpl;
 import server.yf.com.remotecontrolserver_as.localminaserver.library.common.MessageType;
 import server.yf.com.remotecontrolserver_as.localminaserver.library.message.BaseMessage;
 import server.yf.com.remotecontrolserver_as.localminaserver.library.message.CmdMessage;
@@ -27,6 +23,8 @@ import server.yf.com.remotecontrolserver_as.localminaserver.library.message.CmdM
  */
 
 public class IoServerHandler extends IoHandlerAdapter {
+
+    public static final String BOTH_IDLE_TIMES = "Both_Idle_Times";
 
     @Override
     public void exceptionCaught(IoSession session, Throwable cause) throws Exception {
@@ -41,12 +39,12 @@ public class IoServerHandler extends IoHandlerAdapter {
         String datetime = sdf.format(new Date());
         CommonConstant.LINE_TYPE=1;
         BaseMessage baseMessage = (BaseMessage) message;
+        baseMessage.setTime(datetime);
         String dataType = baseMessage.getMessageType();
         switch (dataType) {
             case MessageType.MESSAGE_CMD:
                 CmdMessage cmdMessage = (CmdMessage) baseMessage;
-                Log.d("LanIoServerHandler", "内容：" + cmdMessage.getCmdBean().getCmdContent());
-                TcpAnalyzerImpl.getInstans().analy(cmdMessage.getCmdBean().getCmdContent().getBytes(),null);
+                LocalMinaCmdManager.getInstance().disposeCmd(cmdMessage);
                 break;
             case MessageType.MESSAGE_FILE:
                 break;
@@ -77,8 +75,6 @@ public class IoServerHandler extends IoHandlerAdapter {
     @Override
     public void sessionCreated(IoSession session) throws Exception {
         System.out.println("IoServerHandler 创建一个新连接：{" + session.getRemoteAddress() + "}");
-        String clientIP = ((InetSocketAddress)session.getRemoteAddress()).getAddress().getHostAddress();
-        session.setAttribute("KEY_SESSION_CLIENT_IP", clientIP);
     }
 
     @Override

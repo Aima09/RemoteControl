@@ -3,6 +3,7 @@ package server.yf.com.remotecontrolserver_as.localminaserver;
 
 import android.util.Log;
 
+import server.yf.com.remotecontrolserver_as.dao.TcpAnalyzerImpl;
 import server.yf.com.remotecontrolserver_as.localminaserver.library.common.CmdType;
 import server.yf.com.remotecontrolserver_as.localminaserver.library.common.DeviceType;
 import server.yf.com.remotecontrolserver_as.localminaserver.library.common.MessageType;
@@ -60,11 +61,20 @@ public class LocalMinaCmdManager {
         this.localMinaServerController = localMinaServerController;
     }
 
+    public void disposeCmd(CmdMessage cmdMessage){
+        CmdBean cmdBean = cmdMessage.getCmdBean();
+        String cmdType = cmdBean.getCmdType();
+        switch (cmdType) {
+            case CmdType.CMD_MUSIC:
+                Log.d("MinaCmdManager", "接收到音乐命令：" + cmdBean.getCmdContent());
+                TcpAnalyzerImpl.getInstans().analy(cmdBean.getCmdContent().getBytes(),null);
+                break;
+        }
+    }
+
     public void sendControlCmd(String cmdContent) {
         if (null != localMinaServerController) {
             Log.i("LocalMinaCmdManager","发送数据");
-//            CmdBean cmdBean = new CmdBean(MouseService.equipment.getIp(),
-//                    (String)IoServerHandler.currenSession.getAttribute("KEY_SESSION_CLIENT_IP"), CmdType.CMD_MUSIC, DeviceType.DEVICE_TYPE_INVALID,cmdContent);
             CmdBean cmdBean = new CmdBean( CmdType.CMD_MUSIC, DeviceType.DEVICE_TYPE_INVALID,cmdContent);
             CmdMessage cmdMessage = new CmdMessage(MessageType.MESSAGE_CMD, cmdBean);
             localMinaServerController.send(cmdMessage);

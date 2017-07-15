@@ -86,6 +86,7 @@ public class IoClientHandler extends IoHandlerAdapter {
     public void sessionIdle(IoSession session, IdleStatus status) throws Exception {
         super.sessionIdle(session, status);
         Log.d("IoClientHandler", "sessionIdle");
+        Log.d("IoClientHandler", "getLocalAddress" + session.getLocalAddress().toString());
     }
 
     @Override

@@ -7,6 +7,8 @@ import com.yf.minalibrary.encoderdecoder.MessageProtocolCodecFactory;
 
 import org.apache.mina.core.future.CloseFuture;
 import org.apache.mina.core.future.ConnectFuture;
+import org.apache.mina.core.future.IoFuture;
+import org.apache.mina.core.future.IoFutureListener;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
@@ -35,13 +37,14 @@ public class ClientMinaSocketConnector {
             connector = new NioSocketConnector();
             connector.setConnectTimeoutMillis(30000);
             connector.getFilterChain().addLast("codec", new ProtocolCodecFilter(new MessageProtocolCodecFactory(false)));
-            connector.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, 30);
+            connector.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, 60);
             connector.getSessionConfig().setReadBufferSize(2048 * 10);
             connector.setHandler(new IoClientHandler());
         }
         // 判断是否已连接服务器
         if (isConnect()) {
             Log.d("ClientMinaSocketConnect", "已连接远程服务器");
+            Log.d("ClientMinaSocketConnect", "session.getServiceAddress():" + session.getServiceAddress());
             return true;
         } else {
             Log.d("ClientMinaSocketConnect", "未连接远程服务器");
@@ -50,7 +53,7 @@ public class ClientMinaSocketConnector {
     }
 
     public boolean isConnect(){
-        if (session != null && session.isConnected() && session.isActive()){
+        if (null != session && session.isConnected() && session.isActive()){
             return true;
         } else {
             session = null;
@@ -73,7 +76,7 @@ public class ClientMinaSocketConnector {
             return true;
         } else {
             Log.d("ClientMinaSocketConnect", "连接远程服务器失败");
-            return reConnectServer();
+            return false;
         }
     }
 

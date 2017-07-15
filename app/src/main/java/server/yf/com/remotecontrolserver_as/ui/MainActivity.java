@@ -6,9 +6,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.View;
 import android.widget.TextView;
 
 import server.yf.com.remotecontrolserver_as.R;
+import server.yf.com.remotecontrolserver_as.remoteminaclient.ClientDataDisposeCenter;
 import server.yf.com.remotecontrolserver_as.remoteminaclient.ClientMinaCmdManager;
 import server.yf.com.remotecontrolserver_as.service.DownloadBusinessService;
 import server.yf.com.remotecontrolserver_as.ui.serice.MouseService;
@@ -86,5 +88,10 @@ public class MainActivity extends Activity {
 		});
 //		this.downloadBusinessService=new DownloadBusinessServiceImpl(this,mHandler);
 //	    finish();
+}
+
+	@Override protected void onStart() {
+		super.onStart();
+		textView.setText(ClientDataDisposeCenter.getLocalSenderId());
 	}
 }
