@@ -26,8 +26,6 @@
             </intent-filter>
         </activity>
 
-
-
         <service android:name="server.yf.com.remotecontrolserver_as.ui.serice.MouseService" >
         </service>
 
@@ -37,16 +35,6 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name="server.yf.com.remotecontrolserver_as.ui.receiver.MusicReceiver" >
-            <intent-filter>
-                <action android:name="COM.YF.SERVER.UI.RECEIVER.MUSICRECEIVER" />
-            </intent-filter>
-        </receiver>
-        <receiver android:name="server.yf.com.remotecontrolserver_as.ui.receiver.VideoReceiver" >
-            <intent-filter>
-                <action android:name="COM.YF.SERVER.UI.RECEIVER.VIDEORECEIVER" />
-            </intent-filter>
-        </receiver>
         <receiver android:name="server.yf.com.remotecontrolserver_as.ui.receiver.ImageReceiver" >
             <intent-filter>
                 <action android:name="com.yf.server.ui.receiver.ImageReceiver" />
