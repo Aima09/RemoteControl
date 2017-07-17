@@ -25,11 +25,13 @@ public class CmdMessageDecoder implements MessageDecoder {
         }
         try {
             int messageLength = in.getInt();
+            System.out.println("CmdMessageDecoder 命令总长度 messageLength = " + messageLength);
             if (in.remaining() < messageLength) {
                 return MessageDecoderResult.NEED_DATA;
             } else {
                 String a = in.getString(messageLength, BeanUtil.UTF_8.newDecoder());
                 System.out.println("CmdMessageDecoder 得到的命令内容  = " + a);
+                System.out.println("CmdMessageDecoder 得到的命令长度  = " + a.getBytes(BeanUtil.UTF_8).length);
                 Gson gson = new Gson();
                 CmdMessage cmdMessage = gson.fromJson(a, CmdMessage.class);
                 if (cmdMessage.getMessageType().equals(MessageType.MESSAGE_CMD)) {

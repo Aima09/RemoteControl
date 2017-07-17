@@ -38,10 +38,13 @@ public class ClientMinaSocketConnector {
             connector.setConnectTimeoutMillis(30000);
             connector.getFilterChain().addLast("codec", new ProtocolCodecFilter(new MessageProtocolCodecFactory(false)));
             connector.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, 60);
-            connector.getSessionConfig().setReadBufferSize(2048 * 10);
+//            connector.getSessionConfig().setReadBufferSize(2048 * 10);
+//            connector.getSessionConfig().setReceiveBufferSize(2048 * 10);
+            connector.getSessionConfig().setKeepAlive(true);
             connector.setHandler(new IoClientHandler());
         }
         // 判断是否已连接服务器
+            Log.d("ClientMinaSocketConnect", "connector.getConnectTimeoutCheckInterval():" + connector.getConnectTimeoutCheckInterval());
         if (isConnect()) {
             Log.d("ClientMinaSocketConnect", "已连接远程服务器");
             Log.d("ClientMinaSocketConnect", "session.getServiceAddress():" + session.getServiceAddress());

@@ -1,7 +1,9 @@
 package com.yf.minalibrary.encoderdecoder;
 
+import com.google.gson.Gson;
 import com.yf.minalibrary.common.BeanUtil;
 import com.yf.minalibrary.common.MessageType;
+import com.yf.minalibrary.message.FileMessage;
 
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.AttributeKey;
@@ -22,25 +24,35 @@ public class TextMessageDecoder implements MessageDecoder {
     private AttributeKey CONTEXT = new AttributeKey(getClass(), "context");
 
     public MessageDecoderResult decodable(IoSession session, IoBuffer in) {
-        TextMessageDecoder.Context context = getContext(session);
-        System.out.println("TextMessageDecoder " + "decodable exe  context.messageType = " + context.messageType);
+        System.out.println("TextMessageDecoder" + " 解码器选择");
+        Context context = getContext(session);
         if (context.messageType.equals(MessageType.MESSAGE_INVALID)) {
             if (in.remaining() < 4) {
                 return MessageDecoderResult.NEED_DATA;
             }
             try {
-                int messageTypeLength = in.getInt();
-                String messageType = in.getString(messageTypeLength, BeanUtil.UTF_8.newDecoder());
-                if (messageType.equals(MessageType.MESSAGE_TEXT)) {
-                    return MessageDecoderResult.OK;
+                int messageLength = in.getInt();
+                System.out.println("TextMessageDecoder Text内容总长度 messageLength = " + messageLength);
+                if (in.remaining() < messageLength){
+                    return MessageDecoderResult.NEED_DATA;
+                } else {
+                    String a = in.getString(messageLength, BeanUtil.UTF_8.newDecoder());
+                    System.out.println("TextMessageDecoder 得到的Text信息内容  = " + a);
+                    System.out.println("TextMessageDecoder 得到的Text信息内容长度  = " + a.getBytes(BeanUtil.UTF_8).length);
+                    Gson gson = new Gson();
+                    FileMessage fileMessage = gson.fromJson(a, FileMessage.class);
+                    if (fileMessage.getMessageType().equals(MessageType.MESSAGE_TEXT)) {
+                        return MessageDecoderResult.OK;
+                    }
                 }
-            } catch (CharacterCodingException e) {
+            } catch (Exception e) {
+                System.out.println("TextMessageDecoder" + " decodable 解码器出错："+ e.toString());
                 e.printStackTrace();
+                return MessageDecoderResult.NOT_OK;
             }
-
             return MessageDecoderResult.NOT_OK;
         } else {
-            if (context.messageType.equals(MessageType.MESSAGE_TEXT)) {
+            if (context.messageType.equals(MessageType.MESSAGE_FILE)) {
                 return MessageDecoderResult.OK;
             } else {
                 return MessageDecoderResult.NOT_OK;

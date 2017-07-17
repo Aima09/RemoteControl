@@ -12,6 +12,8 @@ import android.widget.TextView;
 import server.yf.com.remotecontrolserver_as.R;
 import server.yf.com.remotecontrolserver_as.remoteminaclient.ClientDataDisposeCenter;
 import server.yf.com.remotecontrolserver_as.remoteminaclient.ClientMinaCmdManager;
+import server.yf.com.remotecontrolserver_as.remoteminaclient.ClientMinaServer;
+import server.yf.com.remotecontrolserver_as.remoteminaclient.ClientMinaSocketConnector;
 import server.yf.com.remotecontrolserver_as.service.DownloadBusinessService;
 import server.yf.com.remotecontrolserver_as.ui.serice.MouseService;
 import server.yf.com.remotecontrolserver_as.util.ToastUtil;
@@ -71,7 +73,11 @@ public class MainActivity extends Activity {
 		textView=(TextView) findViewById(R.id.tv_ycid);
 		Intent intent = new Intent(MainActivity.this, MouseService.class);
 		startService(intent);
-
+		textView.setOnClickListener(new View.OnClickListener() {
+			@Override public void onClick(View view) {
+				stopService(new Intent(MainActivity.this, ClientMinaServer.class));
+			}
+		});
 		ClientMinaCmdManager.getInstance().setMinaCmdCallBack(new ClientMinaCmdManager.MinaCmdCallBack() {
 			@Override public void minaCmdCallBack(Object message) {
 				if (message instanceof String){
