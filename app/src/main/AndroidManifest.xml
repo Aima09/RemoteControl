@@ -26,15 +26,16 @@
             </intent-filter>
         </activity>
 
+
+
+        <service android:name="server.yf.com.remotecontrolserver_as.ui.serice.MouseService" >
+        </service>
+
         <receiver android:name="server.yf.com.remotecontrolserver_as.ui.RemoteControlMouseKeyReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
-        <service android:name="server.yf.com.remotecontrolserver_as.ui.serice.MouseService" >
-        </service>
-
 
         <receiver android:name="server.yf.com.remotecontrolserver_as.ui.receiver.MusicReceiver" >
             <intent-filter>
@@ -67,6 +68,11 @@
                 <action android:name="android.NET.wifi.RSSI_CHANGED"/>
                 <action android:name="android.net.wifi.STATE_CHANGE"/>
                 <action android:name="android.Net.wifi.WIFI_STATE_CHANGED"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name="server.yf.com.remotecontrolserver_as.ui.receiver.DataTypeReceiver" >
+            <intent-filter >
+                <action android:name="server.yf.com.remotecontrolserver_as.ui.receiver.dataTypeReceiver"/>
             </intent-filter>
         </receiver>
         <service android:name=".localminaserver.LocalMinaServer"
