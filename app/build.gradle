@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'android-apt'
 android {
     compileSdkVersion 25
     buildToolsVersion '25.0.0'
     defaultConfig {
-        applicationId "server.yf.com.remotecontrolserver_as"
+        applicationId "com.yf.remotecontrolserver"
         minSdkVersion 19
         targetSdkVersion 25
         versionCode 1
@@ -28,4 +28,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile files('libs/xUtils-2.6.14.jar')
     compile project(':minalibrary')
+    compile 'com.jakewharton:butterknife:8.4.0'
+    apt 'com.jakewharton:butterknife-compiler:8.4.0'
 }

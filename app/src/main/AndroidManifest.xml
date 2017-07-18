@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="server.yf.com.remotecontrolserver_as">
+    package="com.yf.remotecontrolserver">
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -9,14 +9,14 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
-        android:name="server.yf.com.remotecontrolserver_as.App"
+        android:name="com.yf.remotecontrolserver.common.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="server.yf.com.remotecontrolserver_as.ui.MainActivity"
+            android:name="com.yf.remotecontrolserver.common.ui.MainActivity"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent" >
             <intent-filter>
@@ -26,46 +26,46 @@
             </intent-filter>
         </activity>
 
-        <service android:name="server.yf.com.remotecontrolserver_as.ui.serice.MouseService" >
+        <service android:name=".common.ui.serice.MouseService" >
         </service>
 
-        <receiver android:name="server.yf.com.remotecontrolserver_as.ui.RemoteControlMouseKeyReceiver" >
+        <receiver android:name="com.yf.remotecontrolserver.common.ui.RemoteControlMouseKeyReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
-        <receiver android:name="server.yf.com.remotecontrolserver_as.ui.receiver.ImageReceiver" >
+        <receiver android:name=".common.ui.receiver.ImageReceiver" >
             <intent-filter>
                 <action android:name="com.yf.server.ui.receiver.ImageReceiver" />
             </intent-filter>
         </receiver>
-        <receiver android:name="server.yf.com.remotecontrolserver_as.ui.receiver.FileReceiver" >
+        <receiver android:name=".common.ui.receiver.FileReceiver" >
             <intent-filter>
                 <action android:name="com.yf.server.ui.receiver.FileReceiver" />
             </intent-filter>
         </receiver>
-        <receiver android:name="server.yf.com.remotecontrolserver_as.ui.receiver.ZyglReceiver" >
+        <receiver android:name=".common.ui.receiver.ZyglReceiver" >
             <intent-filter>
                 <action android:name="com.yf.server.ui.receiver.ZyglReceiver" />
             </intent-filter>
         </receiver>
 
-        <receiver android:name="server.yf.com.remotecontrolserver_as.ui.receiver.WifiReceiver" >
+        <receiver android:name=".common.ui.receiver.WifiReceiver" >
             <intent-filter >
                 <action android:name="android.NET.wifi.RSSI_CHANGED"/>
                 <action android:name="android.net.wifi.STATE_CHANGE"/>
                 <action android:name="android.Net.wifi.WIFI_STATE_CHANGED"/>
             </intent-filter>
         </receiver>
-        <receiver android:name="server.yf.com.remotecontrolserver_as.ui.receiver.DataTypeReceiver" >
+        <receiver android:name=".common.DataTypeReceiver" >
             <intent-filter >
-                <action android:name="server.yf.com.remotecontrolserver_as.ui.receiver.dataTypeReceiver"/>
+                <action android:name="com.yf.remotecontrolserver.ui.receiver.dataTypeReceiver"/>
             </intent-filter>
         </receiver>
-        <service android:name=".localminaserver.LocalMinaServer"
+        <service android:name="com.yf.remotecontrolserver.localminaserver.LocalMinaServer"
             ></service>
-        <service android:name="server.yf.com.remotecontrolserver_as.remoteminaclient.ClientMinaServer"
+        <service android:name="com.yf.remotecontrolserver.remoteminaclient.ClientMinaServer"
         ></service>
     </application>
 
