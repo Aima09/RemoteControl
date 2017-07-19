@@ -10,12 +10,12 @@ public class ZyglqBusinessServiceImpl implements ZyglqBusinessService {
 	private JsonAssistant jsonAssistant;
 	public static final String CMD="cmd";
 	@Override
-	public void sendZyglq(String zyglqJson) {
+	public void sendZyglq(String zyglqJson,String receiverId) {
 		if(CommonConstant.LINE_TYPE==1){//局域网
 			LocalMinaCmdManager.getInstance().sendControlCmd(zyglqJson);
 		}else{//互联网
 			ClientMinaCmdManager.getInstance()
-					.sendControlCmd(zyglqJson,null);
+					.sendControlCmd(zyglqJson,receiverId);
 		}
 //		TCPIPServer.getInstans(MouseService.gateway, MouseService.equipment, TcpAnalyzerImpl.getInstans()).send(zyglqJson.getBytes());
 	}

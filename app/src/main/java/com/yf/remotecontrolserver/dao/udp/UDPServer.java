@@ -73,7 +73,7 @@ public class UDPServer {
 		startThread.start();
 		readThread=new Thread(new ReadRunnable());
 		readThread.start();
-		
+		startConnection();
 	}
 	public void startConnection(){
 		isStopWrite=false;
@@ -185,7 +185,7 @@ public class UDPServer {
 		@Override
 		public void run() {
 			try {
-				datagramSocket = new DatagramSocket(7420);
+				datagramSocket = new DatagramSocket(7320);
 			} catch (Exception e) {
 				e.printStackTrace();
 //				Log.e(TAG, "创建datagramSocket异常");

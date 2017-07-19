@@ -40,15 +40,15 @@ public class DataTypeReceiver extends BroadcastReceiver {
             Log.i(TAG,"dataType为空");
         }else{
             if("file".equals(dataType)){
-                fileBusinessService.sendFile(data);
+                fileBusinessService.sendFile(data,intent.getStringExtra("receiverId"));
             }else if("image".equals(dataType)){
-                imageBusinessService.sendImage(data);
+                imageBusinessService.sendImage(data,intent.getStringExtra("receiverId"));
             }else if("music".equals(dataType)){
                 musicBusinessService.sendMusic(data,intent.getStringExtra("receiverId"));
             }else if("video".equals(dataType)){
-                vedioBusinessService.sendVedio(data);
+                vedioBusinessService.sendVedio(data,intent.getStringExtra("receiverId"));
             }else if("zyglq".equals(dataType)){
-                zyglqBusinessService.sendZyglq(data);
+                zyglqBusinessService.sendZyglq(data,intent.getStringExtra("receiverId"));
             }
         }
     }
