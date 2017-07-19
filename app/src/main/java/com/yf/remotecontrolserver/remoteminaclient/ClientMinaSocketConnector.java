@@ -16,8 +16,8 @@ import java.net.InetSocketAddress;
 
 public class ClientMinaSocketConnector {
 
-    public static final String SERVER_DEFAULT_IP = "139.196.98.226";
-//    public static final String SERVER_DEFAULT_IP = "192.168.1.55";
+//    public static final String SERVER_DEFAULT_IP = "139.196.98.226";
+    public static final String SERVER_DEFAULT_IP = "192.168.1.55";
     public static final int SERVER_DEFAULT_PROT = 9000;
 
     private IoSession session;
