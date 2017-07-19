@@ -3,12 +3,12 @@ package com.yf.remotecontrolserver.localminaserver;
 
 import android.util.Log;
 
+import com.yf.minalibrary.common.CmdType;
+import com.yf.minalibrary.common.DeviceType;
+import com.yf.minalibrary.common.MessageType;
+import com.yf.minalibrary.message.CmdMessage;
+import com.yf.minalibrary.message.CmdMessage.CmdBean;
 import com.yf.remotecontrolserver.dao.TcpAnalyzerImpl;
-import com.yf.remotecontrolserver.localminaserver.library.common.CmdType;
-import com.yf.remotecontrolserver.localminaserver.library.common.DeviceType;
-import com.yf.remotecontrolserver.localminaserver.library.common.MessageType;
-import com.yf.remotecontrolserver.localminaserver.library.message.CmdMessage;
-import com.yf.remotecontrolserver.localminaserver.library.message.CmdMessage.CmdBean;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,7 @@
 package com.yf.remotecontrolserver.localminaserver;
 
 
-import com.yf.remotecontrolserver.localminaserver.library.encoderdecoder.MessageCodecFactory;
+import com.yf.minalibrary.encoderdecoder.MessageProtocolCodecFactory;
 import com.yf.remotecontrolserver.common.ui.serice.MouseService;
 
 import org.apache.mina.core.session.IdleStatus;
@@ -32,8 +32,8 @@ public class LocalMinaSocketAcceptor {
             //自己地址
             socketAddress = new InetSocketAddress(MouseService.equipment.getIp(), 18888);
             acceptor.getSessionConfig().setReadBufferSize(2048 * 10);
-            acceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, 60);
-            acceptor.getFilterChain().addLast("codec", new ProtocolCodecFilter(new MessageCodecFactory()));
+            acceptor.getSessionConfig().setBothIdleTime(60);
+            acceptor.getFilterChain().addLast("codec", new ProtocolCodecFilter(new MessageProtocolCodecFactory(true)));
             acceptor.setHandler(new IoServerHandler());
             acceptor.setReuseAddress(true);
         }

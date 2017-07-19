@@ -11,10 +11,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import com.yf.minalibrary.common.MessageType;
+import com.yf.minalibrary.message.BaseMessage;
+import com.yf.minalibrary.message.CmdMessage;
 import com.yf.remotecontrolserver.common.CommonConstant;
-import com.yf.remotecontrolserver.localminaserver.library.common.MessageType;
-import com.yf.remotecontrolserver.localminaserver.library.message.BaseMessage;
-import com.yf.remotecontrolserver.localminaserver.library.message.CmdMessage;
 
 
 /**
