@@ -77,7 +77,7 @@ public class ClientMinaServer extends Service implements ClientMinaServerControl
                     } else {
                         cmdType = CmdType.CMD_LOGIN;
                     }
-                    CmdBean cmdBean = new CmdBean(cmdType, DeviceType.DEVICE_TYPE_PHONE,"");
+                    CmdBean cmdBean = new CmdBean(cmdType, DeviceType.DEVICE_TYPE_IPAD,"");
                     if (cmdType.equals(CmdType.CMD_LOGIN)){
                         cmdBean.setSenderId(ClientDataDisposeCenter.getLocalSenderId());
                     }

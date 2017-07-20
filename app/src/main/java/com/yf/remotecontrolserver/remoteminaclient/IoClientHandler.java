@@ -3,9 +3,12 @@ package com.yf.remotecontrolserver.remoteminaclient;
 import android.os.Environment;
 import android.util.Log;
 
+import com.yf.minalibrary.common.CmdType;
+import com.yf.minalibrary.common.DeviceType;
 import com.yf.minalibrary.common.MessageType;
 import com.yf.minalibrary.message.BaseMessage;
 import com.yf.minalibrary.message.CmdMessage;
+import com.yf.minalibrary.message.CmdMessage.CmdBean;
 import com.yf.minalibrary.message.FileMessage;
 
 import org.apache.mina.core.service.IoHandlerAdapter;
@@ -87,6 +90,9 @@ public class IoClientHandler extends IoHandlerAdapter {
         super.sessionIdle(session, status);
         Log.d("IoClientHandler", "sessionIdle");
         Log.d("IoClientHandler", "getLocalAddress" + session.getLocalAddress().toString());
+        CmdBean cmdBean = new CmdBean(CmdType.CMD_HEARTBEAT, DeviceType.DEVICE_TYPE_IPAD,"");
+        CmdMessage cmdMessage = new CmdMessage(MessageType.MESSAGE_CMD, cmdBean);
+        session.write(cmdMessage);
     }
 
     @Override

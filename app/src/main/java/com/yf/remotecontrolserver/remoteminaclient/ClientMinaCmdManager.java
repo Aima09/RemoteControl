@@ -71,6 +71,9 @@ public class ClientMinaCmdManager {
                 Log.d("ClientMinaCmdManager", loginResult);
                 exeMinaCmdCallBack(ClientDataDisposeCenter.getLocalSenderId());
                 break;
+            case CmdType.CMD_HEARTBEAT:
+                Log.d("ClientMinaCmdManager", "我的对应的远程服务 session 还在线。。。。。。");
+                break;
             case CmdType.CMD_MUSIC:
                 TcpAnalyzerImpl.getInstans().analy(cmdBean.getCmdContent().getBytes(), cmdBean.getSenderId());
                 Log.d("ClientMinaCmdManager", "CMD_MUSIC" + cmdBean.getCmdContent());
