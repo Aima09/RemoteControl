@@ -90,7 +90,7 @@ public class IoClientHandler extends IoHandlerAdapter {
         super.sessionIdle(session, status);
         Log.d("IoClientHandler", "sessionIdle");
         Log.d("IoClientHandler", "getLocalAddress" + session.getLocalAddress().toString());
-        CmdBean cmdBean = new CmdBean(CmdType.CMD_HEARTBEAT, DeviceType.DEVICE_TYPE_IPAD,"");
+        CmdBean cmdBean = new CmdBean(ClientDataDisposeCenter.getLocalSenderId(),"",CmdType.CMD_HEARTBEAT, DeviceType.DEVICE_TYPE_IPAD,"");
         CmdMessage cmdMessage = new CmdMessage(MessageType.MESSAGE_CMD, cmdBean);
         session.write(cmdMessage);
     }

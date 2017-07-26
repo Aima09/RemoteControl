@@ -30,4 +30,8 @@ dependencies {
     compile project(':minalibrary')
     compile 'com.jakewharton:butterknife:8.4.0'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
+    compile 'cn.bingoogolapple:bga-qrcodecore:1.1.7@aar'
+    compile 'cn.bingoogolapple:bga-zxing:1.1.7@aar'
+    compile 'com.google.zxing:core:3.3.0'
+    compile 'pub.devrel:easypermissions:0.1.7'
 }
