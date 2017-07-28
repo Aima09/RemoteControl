@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">对讲</string>
+    <string name="main_use_reminders">友好提醒：按住通讯IP地址可对讲，松开为断开。</string>
+</resources>
