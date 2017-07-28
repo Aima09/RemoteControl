@@ -26,13 +26,14 @@ import java.lang.ref.WeakReference;
 
 public abstract class WeakHandler<T> extends Handler {
     private WeakReference<T> mOwner;
-    //弱引用 
+
+    //弱引用
     public WeakHandler(T owner) {
         mOwner = new WeakReference<T>(owner);
     }
 
     public T getOwner() {
-		return mOwner.get();
-	} 
+        return mOwner.get();
+    }
 }
  

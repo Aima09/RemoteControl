@@ -23,32 +23,33 @@ import com.yf.remotecontrolserver.zyglq.ZyglqBusinessServiceImpl;
  * 多种类型的广播接收器
  */
 public class DataTypeReceiver extends BroadcastReceiver {
-    private final String TAG="DataTypeReceiver";
-    public final String DATA_TYPE_RECEIVER_KEY="com.yf.remotecontrolserver.ui.receiver.dataTypeReceiver";
-    private final String DATA_TYPE_KEY="dataTypeKey";
-    private final String DATA_KEY="dataKey";
-    FileBusinessService fileBusinessService=new FileBusinessServiceImpl();
-    ImageBusinessService imageBusinessService=new ImageBusinessServiceImpl();
-    MusicBusinessService musicBusinessService=new MusicBusinessServiceImpl();
-    VedioBusinessService vedioBusinessService=new VedioBusinessServiceImpl();
-    ZyglqBusinessService zyglqBusinessService=new ZyglqBusinessServiceImpl();
+    private final String TAG = "DataTypeReceiver";
+    public final String DATA_TYPE_RECEIVER_KEY = "com.yf.remotecontrolserver.ui.receiver.dataTypeReceiver";
+    private final String DATA_TYPE_KEY = "dataTypeKey";
+    private final String DATA_KEY = "dataKey";
+    FileBusinessService fileBusinessService = new FileBusinessServiceImpl();
+    ImageBusinessService imageBusinessService = new ImageBusinessServiceImpl();
+    MusicBusinessService musicBusinessService = new MusicBusinessServiceImpl();
+    VedioBusinessService vedioBusinessService = new VedioBusinessServiceImpl();
+    ZyglqBusinessService zyglqBusinessService = new ZyglqBusinessServiceImpl();
+
     @Override
     public void onReceive(Context context, Intent intent) {
-        String dataType=intent.getStringExtra(DATA_TYPE_KEY);
-        String data=intent.getStringExtra(DATA_KEY);
-        if (TextUtils.isEmpty(dataType)){
-            Log.i(TAG,"dataType为空");
-        }else{
-            if("file".equals(dataType)){
-                fileBusinessService.sendFile(data,intent.getStringExtra("receiverId"));
-            }else if("image".equals(dataType)){
-                imageBusinessService.sendImage(data,intent.getStringExtra("receiverId"));
-            }else if("music".equals(dataType)){
-                musicBusinessService.sendMusic(data,intent.getStringExtra("receiverId"));
-            }else if("video".equals(dataType)){
-                vedioBusinessService.sendVedio(data,intent.getStringExtra("receiverId"));
-            }else if("zyglq".equals(dataType)){
-                zyglqBusinessService.sendZyglq(data,intent.getStringExtra("receiverId"));
+        String dataType = intent.getStringExtra(DATA_TYPE_KEY);
+        String data = intent.getStringExtra(DATA_KEY);
+        if (TextUtils.isEmpty(dataType)) {
+            Log.i(TAG, "dataType为空");
+        } else {
+            if ("file".equals(dataType)) {
+                fileBusinessService.sendFile(data, intent.getStringExtra("receiverId"));
+            } else if ("image".equals(dataType)) {
+                imageBusinessService.sendImage(data, intent.getStringExtra("receiverId"));
+            } else if ("music".equals(dataType)) {
+                musicBusinessService.sendMusic(data, intent.getStringExtra("receiverId"));
+            } else if ("video".equals(dataType)) {
+                vedioBusinessService.sendVedio(data, intent.getStringExtra("receiverId"));
+            } else if ("zyglq".equals(dataType)) {
+                zyglqBusinessService.sendZyglq(data, intent.getStringExtra("receiverId"));
             }
         }
     }

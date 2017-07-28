@@ -105,8 +105,9 @@ public class MainActivity extends Activity {
     }
 
     String localID;
+
     private void createQRCode(String id) {
-        if (TextUtils.isEmpty(id)){
+        if (TextUtils.isEmpty(id)) {
             return;
         }
         localID = String.format("%s,%s", ID_HEAD_FLAG, id);

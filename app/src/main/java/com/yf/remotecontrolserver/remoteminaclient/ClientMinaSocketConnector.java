@@ -17,7 +17,7 @@ import java.net.InetSocketAddress;
 public class ClientMinaSocketConnector {
 
     public static final String SERVER_DEFAULT_IP = "139.196.98.226";
-//    public static final String SERVER_DEFAULT_IP = "192.168.1.55";
+    //    public static final String SERVER_DEFAULT_IP = "192.168.1.55";
     public static final int SERVER_DEFAULT_PROT = 9000;
 
     private IoSession session;
@@ -26,11 +26,11 @@ public class ClientMinaSocketConnector {
     private InetSocketAddress socketAddress;
 
     public boolean connectServer() {
-        return connectServer(SERVER_DEFAULT_IP,SERVER_DEFAULT_PROT);
+        return connectServer(SERVER_DEFAULT_IP, SERVER_DEFAULT_PROT);
     }
 
     public boolean connectServer(String serverIp, int port) {
-        if (null == connector){
+        if (null == connector) {
             socketAddress = new InetSocketAddress(serverIp, port);
             connector = new NioSocketConnector();
             connector.setConnectTimeoutMillis(30000);
@@ -42,7 +42,7 @@ public class ClientMinaSocketConnector {
             connector.setHandler(new IoClientHandler());
         }
         // 判断是否已连接服务器
-            Log.d("ClientMinaSocketConnect", "connector.getConnectTimeoutCheckInterval():" + connector.getConnectTimeoutCheckInterval());
+        Log.d("ClientMinaSocketConnect", "connector.getConnectTimeoutCheckInterval():" + connector.getConnectTimeoutCheckInterval());
         if (isConnect()) {
             Log.d("ClientMinaSocketConnect", "已连接远程服务器");
             Log.d("ClientMinaSocketConnect", "session.getServiceAddress():" + session.getServiceAddress());
@@ -53,8 +53,8 @@ public class ClientMinaSocketConnector {
         }
     }
 
-    public boolean isConnect(){
-        if (null != session && session.isConnected() && session.isActive()){
+    public boolean isConnect() {
+        if (null != session && session.isConnected() && session.isActive()) {
             return true;
         } else {
             session = null;
@@ -62,7 +62,7 @@ public class ClientMinaSocketConnector {
         }
     }
 
-    private boolean reConnectServer(){
+    private boolean reConnectServer() {
         try {
             future = connector.connect(socketAddress);
             future.awaitUninterruptibly();// 等待连接创建完成
@@ -82,8 +82,8 @@ public class ClientMinaSocketConnector {
     }
 
     public void send(Object message) {
-        if (isConnect()){
-            if (null != message){
+        if (isConnect()) {
+            if (null != message) {
                 session.write(message);
             }
         }
@@ -95,7 +95,7 @@ public class ClientMinaSocketConnector {
             future.awaitUninterruptibly(1000);
             connector.dispose();
             connector = null;
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

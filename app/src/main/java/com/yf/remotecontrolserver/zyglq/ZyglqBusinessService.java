@@ -1,7 +1,6 @@
 package com.yf.remotecontrolserver.zyglq;
 
 
-
 public interface ZyglqBusinessService {
-	 public void sendZyglq(String vedioJson,String receiverId) ;
+    public void sendZyglq(String vedioJson, String receiverId);
 }

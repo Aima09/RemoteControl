@@ -42,7 +42,7 @@ public class ClientMinaServer extends Service implements ClientMinaServerControl
         clientMinaCmdManager = ClientMinaCmdManager.getInstance();
         clientMinaCmdManager.setClientMinaServerController(this);
         startTimerCheck();
-        if(config_server.isMymachine()){
+        if (config_server.isMymachine()) {
             System.out.println("ClientMinaServer onCreate");
             connectServer();
         }
@@ -59,26 +59,26 @@ public class ClientMinaServer extends Service implements ClientMinaServerControl
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override public void run() {
-                if (!clientMinaSocketConnector.isConnect()){
+                if (!clientMinaSocketConnector.isConnect()) {
                     connectServer();
                 }
             }
         }, 10 * 60 * 1000, 10 * 60 * 1000);
     }
 
-    private void connectServer(){
+    private void connectServer() {
         fixedThreadPool.execute(new Runnable() {
             @Override public void run() {
                 boolean connectSuccess = clientMinaSocketConnector.connectServer();
-                if (connectSuccess){
+                if (connectSuccess) {
                     String cmdType;
-                    if (TextUtils.isEmpty(ClientDataDisposeCenter.getLocalSenderId())){
+                    if (TextUtils.isEmpty(ClientDataDisposeCenter.getLocalSenderId())) {
                         cmdType = CmdType.CMD_REGISTER;
                     } else {
                         cmdType = CmdType.CMD_LOGIN;
                     }
-                    CmdBean cmdBean = new CmdBean(cmdType, DeviceType.DEVICE_TYPE_IPAD,"");
-                    if (cmdType.equals(CmdType.CMD_LOGIN)){
+                    CmdBean cmdBean = new CmdBean(cmdType, DeviceType.DEVICE_TYPE_IPAD, "");
+                    if (cmdType.equals(CmdType.CMD_LOGIN)) {
                         cmdBean.setSenderId(ClientDataDisposeCenter.getLocalSenderId());
                     }
                     CmdMessage cmdMessage = new CmdMessage(MessageType.MESSAGE_CMD, cmdBean);
@@ -99,9 +99,10 @@ public class ClientMinaServer extends Service implements ClientMinaServerControl
     }
 
     private Object msg;
+
     @Override public void send(Object message) {
         msg = message;
-        if (!clientMinaSocketConnector.isConnect()){
+        if (!clientMinaSocketConnector.isConnect()) {
             connectServer();
         }
         fixedThreadPool.execute(new Runnable() {
