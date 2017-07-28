@@ -9,9 +9,15 @@ import com.yf.minalibrary.common.MessageType;
 import com.yf.minalibrary.message.CmdMessage;
 import com.yf.minalibrary.message.CmdMessage.CmdBean;
 import com.yf.remotecontrolserver.dao.TcpAnalyzerImpl;
+import com.yuanfang.intercom.data.AudioData;
+import com.yuanfang.intercom.data.MessageQueue;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import static com.yf.remotecontrolserver.dao.SocketManager.TAG;
 
 /**
  * Created by wuhuai on 2017/6/23 .
@@ -66,6 +72,16 @@ public class LocalMinaCmdManager {
             case CmdType.CMD_MUSIC:
                 Log.d("MinaCmdManager", "接收到音乐命令：" + cmdBean.getCmdContent());
                 TcpAnalyzerImpl.getInstans().analy(cmdBean.getCmdContent().getBytes(), null);
+                break;
+            case CmdType.CMD_INTERCOM:
+                Log.d(TAG, "disposeCmd: " + cmdType);
+                try {
+                    AudioData audioData = new AudioData(Arrays.copyOf(cmdBean.getCmdContent().getBytes("UTF-8"),
+                            cmdBean.getCmdContent().getBytes("UTF-8").length));
+                    MessageQueue.getInstance(MessageQueue.DECODER_DATA_QUEUE).put(audioData);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
                 break;
         }
     }
