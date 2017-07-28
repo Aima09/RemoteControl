@@ -57,43 +57,17 @@ public class FileMessageDecoder implements MessageDecoder {
 
     public MessageDecoderResult decode(IoSession session, IoBuffer in,
                                        ProtocolDecoderOutput outPut) throws Exception {
-        Context context = getContext(session);
-        if (!context.initMessageType) {
-            int messageTypeLength = in.getInt();
-            context.messageType = in.getString(messageTypeLength, BeanUtil.UTF_8.newDecoder());
-            int fileBeanHeadLength = in.getInt();
-            context.fileBeanHead = in.getString(fileBeanHeadLength, BeanUtil.UTF_8.newDecoder());
-            String[] fbs = context.fileBeanHead.split(",");
-            if (fbs.length == 4) {
-                context.senderId = fbs[0].split("=")[1];
-                context.receiverId = fbs[1].split("=")[1];
-                context.fileName = fbs[2].split("=")[1];
-                context.fileSize = Integer.valueOf(fbs[3].split("=")[1]);
-                context.byteFile = new byte[context.fileSize];
-            }
-            context.initMessageType = true;
-        }
-        int count = context.count;
-        while (in.hasRemaining()) {
-            byte b = in.get();
-            context.byteFile[count] = b;
-            if (count == context.fileSize - 1) {
-                break;
-            }
-            count++;
-        }
-        context.count = count;
-        session.setAttribute(CONTEXT, context);
-        if (context.count == context.fileSize - 1) {
-            FileMessage.FileBean bean = new FileMessage.FileBean();
-            bean.setSenderId(context.senderId);
-            bean.setReceiverId(context.receiverId);
-            bean.setFileName(context.fileName);
-            bean.setFileSize(context.fileSize);
-            bean.setFileContent(context.byteFile);
-            FileMessage message = new FileMessage(context.messageType,bean);
-            outPut.write(message);
-            context.reset();
+        try {
+            int messageLength = in.getInt();
+            String a = in.getString(messageLength, BeanUtil.UTF_8.newDecoder());
+            Gson gson = new Gson();
+            FileMessage fileMessage = gson.fromJson(a, FileMessage.class);
+            System.out.println("FileMessageDecoder " + fileMessage.toString());
+            outPut.write(fileMessage);
+        } catch (Exception e) {
+            System.out.println("FileMessageDecoder decode 解码出错 = " + e.toString());
+            e.printStackTrace();
+            return MessageDecoderResult.NOT_OK;
         }
         return MessageDecoderResult.OK;
     }
