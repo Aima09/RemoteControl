@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.yf.remotecontrolserver.R;
 import com.yf.remotecontrolserver.common.ui.serice.MouseService;
 import com.yf.remotecontrolserver.download.DownloadBusinessService;
+import com.yf.remotecontrolserver.intercom.IntercomPlayService;
 import com.yf.remotecontrolserver.remoteminaclient.ClientDataDisposeCenter;
 import com.yf.remotecontrolserver.remoteminaclient.ClientMinaCmdManager;
 import com.yf.remotecontrolserver.remoteminaclient.ClientMinaServer;
@@ -82,13 +83,16 @@ public class MainActivity extends Activity {
         ButterKnife.bind(this);
         Intent intent = new Intent(MainActivity.this, MouseService.class);
         startService(intent);
+        startService(new Intent(this, IntercomPlayService.class));
         qrcodeId.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View view) {
+            @Override
+            public void onClick(View view) {
                 stopService(new Intent(MainActivity.this, ClientMinaServer.class));
             }
         });
         ClientMinaCmdManager.getInstance().setMinaCmdCallBack(new ClientMinaCmdManager.MinaCmdCallBack() {
-            @Override public void minaCmdCallBack(Object message) {
+            @Override
+            public void minaCmdCallBack(Object message) {
 
                 String id = "";
                 if (message instanceof String) {
@@ -99,7 +103,8 @@ public class MainActivity extends Activity {
         });
     }
 
-    @Override protected void onStart() {
+    @Override
+    protected void onStart() {
         super.onStart();
         createQRCode(ClientDataDisposeCenter.getLocalSenderId());
     }
@@ -130,5 +135,11 @@ public class MainActivity extends Activity {
                 }
             }
         }.execute();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopService(new Intent(this, IntercomPlayService.class));
     }
 }

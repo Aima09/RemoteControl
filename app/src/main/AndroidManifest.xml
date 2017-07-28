@@ -1,72 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.yf.remotecontrolserver">
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+          package="com.yf.remotecontrolserver">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+
     <application
-        android:name="com.yf.remotecontrolserver.common.App"
+        android:name=".common.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.yf.remotecontrolserver.common.ui.MainActivity"
+            android:name=".common.ui.MainActivity"
             android:label="@string/app_name"
-            android:theme="@android:style/Theme.Translucent" >
+            android:theme="@android:style/Theme.Translucent">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
-        <service android:name=".common.ui.serice.MouseService" >
+        <service android:name=".common.ui.serice.MouseService">
         </service>
 
-        <receiver android:name="com.yf.remotecontrolserver.common.ui.RemoteControlMouseKeyReceiver" >
+        <receiver android:name=".common.ui.RemoteControlMouseKeyReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
-
-        <receiver android:name=".common.ui.receiver.ImageReceiver" >
+        <receiver android:name=".common.ui.receiver.ImageReceiver">
             <intent-filter>
-                <action android:name="com.yf.server.ui.receiver.ImageReceiver" />
+                <action android:name="com.yf.server.ui.receiver.ImageReceiver"/>
             </intent-filter>
         </receiver>
-        <receiver android:name=".common.ui.receiver.FileReceiver" >
+        <receiver android:name=".common.ui.receiver.FileReceiver">
             <intent-filter>
-                <action android:name="com.yf.server.ui.receiver.FileReceiver" />
+                <action android:name="com.yf.server.ui.receiver.FileReceiver"/>
             </intent-filter>
         </receiver>
-        <receiver android:name=".common.ui.receiver.ZyglReceiver" >
+        <receiver android:name=".common.ui.receiver.ZyglReceiver">
             <intent-filter>
-                <action android:name="com.yf.server.ui.receiver.ZyglReceiver" />
+                <action android:name="com.yf.server.ui.receiver.ZyglReceiver"/>
             </intent-filter>
         </receiver>
-
-        <receiver android:name=".common.ui.receiver.WifiReceiver" >
-            <intent-filter >
+        <receiver android:name=".common.ui.receiver.WifiReceiver">
+            <intent-filter>
                 <action android:name="android.NET.wifi.RSSI_CHANGED"/>
                 <action android:name="android.net.wifi.STATE_CHANGE"/>
                 <action android:name="android.Net.wifi.WIFI_STATE_CHANGED"/>
             </intent-filter>
         </receiver>
-        <receiver android:name=".common.DataTypeReceiver" >
-            <intent-filter >
+        <receiver android:name=".common.DataTypeReceiver">
+            <intent-filter>
                 <action android:name="com.yf.remotecontrolserver.ui.receiver.dataTypeReceiver"/>
             </intent-filter>
         </receiver>
-        <service android:name="com.yf.remotecontrolserver.localminaserver.LocalMinaServer"
-            ></service>
-        <service android:name="com.yf.remotecontrolserver.remoteminaclient.ClientMinaServer"
-        ></service>
+
+        <service android:name=".localminaserver.LocalMinaServer"/>
+        <service android:name=".remoteminaclient.ClientMinaServer"/>
+        <service
+            android:name=".intercom.IntercomPlayService"
+            android:enabled="true"
+            android:exported="false">
+        </service>
     </application>
 
 </manifest>
