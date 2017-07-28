@@ -17,7 +17,7 @@ import com.yf.remotecontrolserver.dao.TcpAnalyzerImpl;
  */
 
 public class ClientMinaCmdManager {
-
+    private static final String TAG = "ClientMinaCmdManager";
     private static ClientMinaCmdManager instance;
     private ClientMinaServerController clientMinaServerController;
     private MinaCmdCallBack minaCmdCallBack;
@@ -78,6 +78,9 @@ public class ClientMinaCmdManager {
                 TcpAnalyzerImpl.getInstans().analy(cmdBean.getCmdContent().getBytes(), cmdBean.getSenderId());
                 Log.d("ClientMinaCmdManager", "CMD_MUSIC" + cmdBean.getCmdContent());
                 Log.d("ClientMinaCmdManager", "rid" + cmdBean.getReceiverId());
+                break;
+            case CmdType.CMD_INTERCOM:
+                Log.d(TAG, "disposeCmd: " + cmdType);
                 break;
         }
     }
