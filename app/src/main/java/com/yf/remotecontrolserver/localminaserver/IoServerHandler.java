@@ -37,7 +37,7 @@ public class IoServerHandler extends IoHandlerAdapter {
     public void messageReceived(IoSession session, Object message) throws Exception {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         String datetime = sdf.format(new Date());
-        CommonConstant.LINE_TYPE=1;
+        CommonConstant.LINE_TYPE = 1;
         BaseMessage baseMessage = (BaseMessage) message;
         baseMessage.setTime(datetime);
         String dataType = baseMessage.getMessageType();
@@ -60,13 +60,13 @@ public class IoServerHandler extends IoHandlerAdapter {
 
     @Override
     public void sessionClosed(final IoSession session) throws Exception {
-        System.out.println( "IoServerHandler 关闭当前session：{" + session.getId() + "}#{" + session.getRemoteAddress() + "}");
+        System.out.println("IoServerHandler 关闭当前session：{" + session.getId() + "}#{" + session.getRemoteAddress() + "}");
         CloseFuture closeFuture = session.closeOnFlush();
         closeFuture.addListener(new IoFutureListener<IoFuture>() {
             public void operationComplete(IoFuture future) {
                 if (future instanceof CloseFuture) {
                     ((CloseFuture) future).setClosed();
-                    System.out.println( "IoServerHandler sessionClosed CloseFuture setClosed-->{" + future.getSession().getId() + "}");
+                    System.out.println("IoServerHandler sessionClosed CloseFuture setClosed-->{" + future.getSession().getId() + "}");
                 }
             }
         });

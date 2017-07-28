@@ -49,7 +49,7 @@ public class WifiReceiver extends BroadcastReceiver {
         }
         //
         /*else if (intent.getAction().equals(
-				WifiManager.WIFI_STATE_CHANGED_ACTION)) {// wifi打开与否
+                WifiManager.WIFI_STATE_CHANGED_ACTION)) {// wifi打开与否
 			int wifistate = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE,
 					WifiManager.WIFI_STATE_DISABLED);
 

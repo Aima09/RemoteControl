@@ -37,7 +37,7 @@ public class LocalMinaSocketAcceptor {
             acceptor.setHandler(new IoServerHandler());
             acceptor.setReuseAddress(true);
         }
-        if (isStart()){
+        if (isStart()) {
             System.out.println("本地服务已启动");
             return true;
         } else {
@@ -46,7 +46,7 @@ public class LocalMinaSocketAcceptor {
         }
     }
 
-    private boolean bind(){
+    private boolean bind() {
         try {
             acceptor.bind(socketAddress);
             System.out.println("启动本地服务成功");
@@ -58,14 +58,14 @@ public class LocalMinaSocketAcceptor {
         }
     }
 
-    public boolean isStart(){
+    public boolean isStart() {
         return null != acceptor && acceptor.isActive();
     }
 
     /*
     * 本地服务在收到手机本地控制时，应该反馈信息到所有连线的客户端
     * */
-    public void send(Object msg){
+    public void send(Object msg) {
         Collection<IoSession> sessions = acceptor.getManagedSessions().values();
         List<IoSession> ioSessions = new ArrayList<>(sessions);
         for (IoSession session : ioSessions) {
@@ -75,11 +75,11 @@ public class LocalMinaSocketAcceptor {
 
     public void close() {
         try {
-            if (null != acceptor){
+            if (null != acceptor) {
                 acceptor.unbind();
                 acceptor.dispose();
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
