@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/ll_grid_item"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_margin="10dp"
+        android:background="#F5F5DC"
+        >
+        <FrameLayout
+            android:id="@+id/starred_item_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/name_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:lines="1"
+                    android:textColor="@android:color/black"
+                    android:textSize="27sp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/name_tv_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dip"
+                    android:gravity="left"
+                    android:lines="1"
+                    android:textColor="@android:color/black"
+                    android:textSize="20sp"/>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/delete_markView"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="right|top"
+                android:adjustViewBounds="true"
+                android:src="@drawable/delete"
+                android:visibility="gone" />
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <include layout="@layout/my_spinner" />
+
+</FrameLayout>

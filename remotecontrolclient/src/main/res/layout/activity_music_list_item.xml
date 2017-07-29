@@ -1,0 +1,25 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context="com.yuanfang.venus.ui.media.MusicFragment"
+              android:padding="2dp"
+              >
+	<TextView 
+	    android:id="@+id/music_name"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="歌曲名："
+	    android:textSize="20sp"
+	    android:textColor="@android:color/black"
+	    />
+	<TextView 
+	    android:id="@+id/music_zz"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="作者："
+	    android:textSize="13sp"
+	    android:textColor="@android:color/black"
+	    />
+</LinearLayout>

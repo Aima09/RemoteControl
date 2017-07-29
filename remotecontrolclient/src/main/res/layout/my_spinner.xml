@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/my_spinner"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" 
+    android:descendantFocusability="afterDescendants"
+    android:visibility="gone"
+    >
+
+
+        <TextView
+            android:background="#282828"
+            android:id="@+id/tv_turn_sbkz"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:text="鼠标控制"
+            android:textColor="#BE661D"
+            android:textSize="28dp"
+            android:visibility="visible" 
+            android:focusable="true"
+            android:padding="5dp"
+            />
+
+        <TextView
+            android:id="@+id/tv_turn_srwz"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/tv_turn_sbkz"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/tv_turn_sbkz"
+            android:background="#282828"
+             android:padding="5dp"
+            android:text="输入文字"
+            android:textColor="#BE661D"
+            android:textSize="28dp"
+            android:visibility="visible" 
+            android:focusable="true"
+            />
+
+</RelativeLayout>
