@@ -34,7 +34,7 @@ public class ClientMinaSocketConnector {
             socketAddress = new InetSocketAddress(serverIp, port);
             connector = new NioSocketConnector();
             connector.setConnectTimeoutMillis(30000);
-            connector.getFilterChain().addLast("codec", new ProtocolCodecFilter(new MessageProtocolCodecFactory(false)));
+            connector.getFilterChain().addLast("codec", new ProtocolCodecFilter(new MessageProtocolCodecFactory()));
             connector.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, 60);
 //            connector.getSessionConfig().setReadBufferSize(2048 * 10);
 //            connector.getSessionConfig().setReceiveBufferSize(2048 * 10);

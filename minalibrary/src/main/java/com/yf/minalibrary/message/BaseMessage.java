@@ -35,9 +35,6 @@ public class BaseMessage implements Serializable {
     }
 
     @Override public String toString() {
-        return "BaseMessage{" +
-                "messageType='" + messageType + '\'' +
-                ", time='" + time + '\'' +
-                '}';
+        return "messageType=" + messageType +",time=" + time;
     }
 }

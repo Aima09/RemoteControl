@@ -18,6 +18,7 @@ import org.apache.mina.core.session.IoSession;
 import java.io.File;
 import java.io.FileOutputStream;
 
+import com.yf.minalibrary.message.IntercomMessage;
 import com.yf.remotecontrolserver.common.CommonConstant;
 
 
@@ -53,6 +54,10 @@ public class IoClientHandler extends IoHandlerAdapter {
                 }
                 break;
             case MessageType.MESSAGE_TEXT:
+                break;
+            case MessageType.MESSAGE_INTERCOM:
+                IntercomMessage intercomMessage = (IntercomMessage) baseMessage;
+                ClientMinaIntercomManager.getInstance().disposeIntercom(intercomMessage);
                 break;
         }
     }

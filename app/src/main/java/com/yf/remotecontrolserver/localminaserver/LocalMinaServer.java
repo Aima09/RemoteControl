@@ -18,7 +18,7 @@ import java.util.concurrent.Executors;
 
 public class LocalMinaServer extends Service implements LocalMinaServerController {
 
-    private LocalMinaCmdManager minaCmdManager;
+    private LocalMinaMassageManager minaCmdManager;
     private LocalMinaSocketAcceptor localMinaSocketAcceptor;
     private ExecutorService fixedThreadPool = Executors.newFixedThreadPool(30);
 
@@ -30,7 +30,7 @@ public class LocalMinaServer extends Service implements LocalMinaServerControlle
     @Override
     public void onCreate() {
         super.onCreate();
-        minaCmdManager = LocalMinaCmdManager.getInstance();
+        minaCmdManager = LocalMinaMassageManager.getInstance();
         minaCmdManager.setLocalMinaServerController(this);
         localMinaSocketAcceptor = new LocalMinaSocketAcceptor();
         startTimerCheck();

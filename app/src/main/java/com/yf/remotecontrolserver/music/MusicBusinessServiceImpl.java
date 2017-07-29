@@ -2,7 +2,7 @@ package com.yf.remotecontrolserver.music;
 
 
 import com.yf.remotecontrolserver.common.CommonConstant;
-import com.yf.remotecontrolserver.localminaserver.LocalMinaCmdManager;
+import com.yf.remotecontrolserver.localminaserver.LocalMinaMassageManager;
 import com.yf.remotecontrolserver.remoteminaclient.ClientMinaCmdManager;
 
 public class MusicBusinessServiceImpl implements MusicBusinessService {
@@ -10,7 +10,7 @@ public class MusicBusinessServiceImpl implements MusicBusinessService {
     @Override
     public void sendMusic(String musicListJson, String receiverId) {
         if (CommonConstant.LINE_TYPE == 1) {//局域网
-            LocalMinaCmdManager.getInstance().sendControlCmd(musicListJson);
+            LocalMinaMassageManager.getInstance().sendControlCmd(musicListJson);
         } else {//互联网
             ClientMinaCmdManager.getInstance()
                     .sendControlCmd(musicListJson, receiverId);

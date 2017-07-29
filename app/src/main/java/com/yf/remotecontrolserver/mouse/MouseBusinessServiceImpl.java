@@ -9,7 +9,7 @@ import com.yf.remotecontrolserver.common.CommonConstant;
 import com.yf.remotecontrolserver.domain.Boot;
 import com.yf.remotecontrolserver.domain.Equipment;
 import com.yf.remotecontrolserver.domain.Palpitation;
-import com.yf.remotecontrolserver.localminaserver.LocalMinaCmdManager;
+import com.yf.remotecontrolserver.localminaserver.LocalMinaMassageManager;
 import com.yf.remotecontrolserver.remoteminaclient.ClientMinaCmdManager;
 import com.yf.remotecontrolserver.util.JsonAssistant;
 
@@ -29,7 +29,7 @@ public class MouseBusinessServiceImpl implements MouseBusinessService {
             String data = "wlinkwulian" + equipment.getDevid();
 //			Log.i(TAG, "data="+data);
             if (CommonConstant.LINE_TYPE == 1) {//局域网
-                LocalMinaCmdManager.getInstance().sendControlCmd("wlinkwulian" + equipment.getDevid());
+                LocalMinaMassageManager.getInstance().sendControlCmd("wlinkwulian" + equipment.getDevid());
             } else {//互联网
                 ClientMinaCmdManager.getInstance()
                         .sendControlCmd("wlinkwulian" + equipment.getDevid(), null);
@@ -47,7 +47,7 @@ public class MouseBusinessServiceImpl implements MouseBusinessService {
         String bootjsonString = jsonAssistant.paseBoot(boot);
         if (!TextUtils.isEmpty(bootjsonString)) {
             if (CommonConstant.LINE_TYPE == 1) {//局域网
-                LocalMinaCmdManager.getInstance().sendControlCmd(bootjsonString);
+                LocalMinaMassageManager.getInstance().sendControlCmd(bootjsonString);
             } else {//互联网
                 ClientMinaCmdManager.getInstance()
                         .sendControlCmd(bootjsonString, null);
@@ -101,7 +101,7 @@ public class MouseBusinessServiceImpl implements MouseBusinessService {
     @Override
     public void sendPalpitation(Palpitation palpitation) {
         if (CommonConstant.LINE_TYPE == 1) {//局域网
-            LocalMinaCmdManager.getInstance().sendControlCmd(jsonAssistant.createPalpitation(palpitation));
+            LocalMinaMassageManager.getInstance().sendControlCmd(jsonAssistant.createPalpitation(palpitation));
         } else {//互联网
             ClientMinaCmdManager.getInstance()
                     .sendControlCmd(jsonAssistant.createPalpitation(palpitation), null);

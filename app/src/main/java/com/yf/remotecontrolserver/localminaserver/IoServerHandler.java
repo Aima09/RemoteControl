@@ -14,7 +14,7 @@ import java.util.Locale;
 import com.yf.minalibrary.common.MessageType;
 import com.yf.minalibrary.message.BaseMessage;
 import com.yf.minalibrary.message.CmdMessage;
-import com.yf.remotecontrolserver.common.CommonConstant;
+import com.yf.minalibrary.message.IntercomMessage;
 
 
 /**
@@ -37,18 +37,21 @@ public class IoServerHandler extends IoHandlerAdapter {
     public void messageReceived(IoSession session, Object message) throws Exception {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         String datetime = sdf.format(new Date());
-        CommonConstant.LINE_TYPE = 1;
         BaseMessage baseMessage = (BaseMessage) message;
         baseMessage.setTime(datetime);
         String dataType = baseMessage.getMessageType();
         switch (dataType) {
             case MessageType.MESSAGE_CMD:
                 CmdMessage cmdMessage = (CmdMessage) baseMessage;
-                LocalMinaCmdManager.getInstance().disposeCmd(cmdMessage);
+                LocalMinaMassageManager.getInstance().disposeCmd(cmdMessage);
                 break;
             case MessageType.MESSAGE_FILE:
                 break;
             case MessageType.MESSAGE_TEXT:
+                break;
+            case MessageType.MESSAGE_INTERCOM:
+                IntercomMessage intercomMessage = (IntercomMessage) baseMessage;
+                LocalMinaMassageManager.getInstance().disposeIntercom(intercomMessage);
                 break;
         }
     }

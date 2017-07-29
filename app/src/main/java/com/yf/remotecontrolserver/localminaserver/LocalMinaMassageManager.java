@@ -8,36 +8,35 @@ import com.yf.minalibrary.common.DeviceType;
 import com.yf.minalibrary.common.MessageType;
 import com.yf.minalibrary.message.CmdMessage;
 import com.yf.minalibrary.message.CmdMessage.CmdBean;
+import com.yf.minalibrary.message.IntercomMessage;
+import com.yf.minalibrary.message.IntercomMessage.IntercomBean;
 import com.yf.remotecontrolserver.dao.TcpAnalyzerImpl;
 import com.yuanfang.intercom.data.AudioData;
 import com.yuanfang.intercom.data.MessageQueue;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static com.yf.remotecontrolserver.dao.SocketManager.TAG;
 
 /**
  * Created by wuhuai on 2017/6/23 .
  * ;
  */
 
-public class LocalMinaCmdManager {
+public class LocalMinaMassageManager {
     private LocalMinaServerController localMinaServerController;
-    private static LocalMinaCmdManager instance;
+    private static LocalMinaMassageManager instance;
     private List<MinaCmdCallBack> minaCmdCallBacks = new ArrayList<>();
 
     public interface MinaCmdCallBack {
         void minaCmdCallBack(Object message);
     }
 
-    public static synchronized LocalMinaCmdManager getInstance() {
+    public static synchronized LocalMinaMassageManager getInstance() {
         if (instance == null) {
-            synchronized (LocalMinaCmdManager.class) {
+            synchronized (LocalMinaMassageManager.class) {
                 if (instance == null)
-                    instance = new LocalMinaCmdManager();
+                    instance = new LocalMinaMassageManager();
             }
         }
         return instance;
@@ -73,23 +72,20 @@ public class LocalMinaCmdManager {
                 Log.d("MinaCmdManager", "接收到音乐命令：" + cmdBean.getCmdContent());
                 TcpAnalyzerImpl.getInstans().analy(cmdBean.getCmdContent().getBytes(), null);
                 break;
-            case CmdType.CMD_INTERCOM:
-                Log.d(TAG, "disposeCmd: " + cmdType);
-                try {
-                    AudioData audioData = new AudioData(Arrays.copyOf(cmdBean.getCmdContent().getBytes("UTF-8"),
-                            cmdBean.getCmdContent().getBytes("UTF-8").length));
-                    MessageQueue.getInstance(MessageQueue.DECODER_DATA_QUEUE).put(audioData);
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-                break;
         }
+    }
+
+    public void disposeIntercom(IntercomMessage intercomMessage) {
+        IntercomBean intercomBean = intercomMessage.getIntercomBean();
+        Log.d("LocalMinaMassageManager", "MessageQueue.getInstance " + Arrays.toString(intercomBean.getIntercomContent()));
+        AudioData audioData = new AudioData(intercomBean.getIntercomContent());
+        MessageQueue.getInstance(MessageQueue.DECODER_DATA_QUEUE).put(audioData);
     }
 
     public void sendControlCmd(String cmdContent) {
         if (null != localMinaServerController) {
-            Log.i("LocalMinaCmdManager", "发送数据");
-            CmdBean cmdBean = new CmdBean(CmdType.CMD_MUSIC, DeviceType.DEVICE_TYPE_INVALID, cmdContent);
+            Log.i("LocalMinaMassageManager", "发送数据");
+            CmdBean cmdBean = new CmdBean(CmdType.CMD_MUSIC, DeviceType.DEVICE_TYPE_PHONE, cmdContent);
             CmdMessage cmdMessage = new CmdMessage(MessageType.MESSAGE_CMD, cmdBean);
             localMinaServerController.send(cmdMessage);
         }

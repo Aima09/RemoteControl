@@ -11,5 +11,6 @@ public class MessageType {
     public static final String MESSAGE_TEXT = "text";
     public static final String MESSAGE_FILE = "file";
     public static final String MESSAGE_CMD = "cmd";
+    public static final String MESSAGE_INTERCOM = "intercom";
 
 }

@@ -9,10 +9,6 @@ import com.yf.minalibrary.common.MessageType;
 import com.yf.minalibrary.message.CmdMessage;
 import com.yf.minalibrary.message.CmdMessage.CmdBean;
 import com.yf.remotecontrolserver.dao.TcpAnalyzerImpl;
-import com.yuanfang.intercom.data.AudioData;
-import com.yuanfang.intercom.data.MessageQueue;
-
-import java.util.Arrays;
 
 
 /**
@@ -82,12 +78,6 @@ public class ClientMinaCmdManager {
                 TcpAnalyzerImpl.getInstans().analy(cmdBean.getCmdContent().getBytes(), cmdBean.getSenderId());
                 Log.d("ClientMinaCmdManager", "CMD_MUSIC" + cmdBean.getCmdContent());
                 Log.d("ClientMinaCmdManager", "rid" + cmdBean.getReceiverId());
-                break;
-            case CmdType.CMD_INTERCOM:
-                Log.d(TAG, "disposeCmd: " + cmdType);
-                AudioData audioData = new AudioData(Arrays.copyOf(cmdBean.getCmdContent().getBytes(),
-                        cmdBean.getCmdContent().getBytes().length));
-                MessageQueue.getInstance(MessageQueue.DECODER_DATA_QUEUE).put(audioData);
                 break;
         }
     }

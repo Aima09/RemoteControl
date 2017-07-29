@@ -33,7 +33,7 @@ public class LocalMinaSocketAcceptor {
             socketAddress = new InetSocketAddress(MouseService.equipment.getIp(), 18888);
             acceptor.getSessionConfig().setReadBufferSize(2048 * 10);
             acceptor.getSessionConfig().setBothIdleTime(60);
-            acceptor.getFilterChain().addLast("codec", new ProtocolCodecFilter(new MessageProtocolCodecFactory(true)));
+            acceptor.getFilterChain().addLast("codec", new ProtocolCodecFilter(new MessageProtocolCodecFactory()));
             acceptor.setHandler(new IoServerHandler());
             acceptor.setReuseAddress(true);
         }
