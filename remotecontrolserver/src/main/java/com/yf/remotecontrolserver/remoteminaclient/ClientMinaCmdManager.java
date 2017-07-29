@@ -57,7 +57,6 @@ public class ClientMinaCmdManager {
     public void disposeCmd(CmdMessage cmdMessage) {
         CmdBean cmdBean = cmdMessage.getCmdBean();
         String cmdType = cmdBean.getCmdType();
-        Log.d("ClientMinaCmdManager", "CMD_BUSINESS" + cmdBean.getCmdContent());
         switch (cmdType) {
             case CmdType.CMD_REGISTER:
                 String uuid = cmdBean.getCmdContent();
