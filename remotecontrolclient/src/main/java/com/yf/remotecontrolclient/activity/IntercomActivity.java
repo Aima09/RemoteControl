@@ -56,11 +56,9 @@ public class IntercomActivity extends BaseActivity implements EasyPermissions.Pe
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        startSpeak.setText("正在对讲");
                         startRecord();
                         break;
                     case MotionEvent.ACTION_UP:
-                        startSpeak.setText("按下对讲");
                         stopRecord();
                         break;
                 }
