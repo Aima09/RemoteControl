@@ -7,7 +7,7 @@ public class ImageFolder implements Serializable {
     private Integer id;
     private String name;
     private String folderNumber;
-
+    private String b;//存放第一张图片的地方
     public String getName() {
         return name;
     }
@@ -38,5 +38,13 @@ public class ImageFolder implements Serializable {
 
     public void setCmd(String cmd) {
         this.cmd = cmd;
+    }
+
+    public String getB() {
+        return b;
+    }
+
+    public void setB(String b) {
+        this.b = b;
     }
 }
