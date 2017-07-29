@@ -15,6 +15,7 @@ import com.yf.minalibrary.common.MessageType;
 import com.yf.minalibrary.message.BaseMessage;
 import com.yf.minalibrary.message.CmdMessage;
 import com.yf.minalibrary.message.IntercomMessage;
+import com.yf.remotecontrolserver.common.CommonConstant;
 
 
 /**
@@ -39,6 +40,7 @@ public class IoServerHandler extends IoHandlerAdapter {
         String datetime = sdf.format(new Date());
         BaseMessage baseMessage = (BaseMessage) message;
         baseMessage.setTime(datetime);
+        CommonConstant.LINE_TYPE = 1;
         String dataType = baseMessage.getMessageType();
         switch (dataType) {
             case MessageType.MESSAGE_CMD:

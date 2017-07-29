@@ -8,6 +8,7 @@ public class ImageFolderList implements Serializable {
     private int pageSize;//多少条数据
     private int pageIndex;//从索引几开始
     private int total;//共多少个文件
+    byte[] b;
     private List<ImageFolder> imageFolderList;
 
     public String getCmd() {
@@ -50,4 +51,12 @@ public class ImageFolderList implements Serializable {
         this.imageFolderList = imageFolderList;
     }
 
+    public byte[] getB() {
+        return b;
+    }
+
+    public void setB(byte[] b) {
+        this.b = b;
+    }
 }
+
