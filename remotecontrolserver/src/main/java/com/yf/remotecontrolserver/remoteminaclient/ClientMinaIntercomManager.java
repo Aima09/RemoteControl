@@ -1,6 +1,7 @@
 package com.yf.remotecontrolserver.remoteminaclient;
 
 
+import android.util.Base64;
 import android.util.Log;
 
 import com.yf.minalibrary.message.IntercomMessage;
@@ -33,7 +34,7 @@ public class ClientMinaIntercomManager {
 
     public void disposeIntercom(IntercomMessage intercomMessage) {
         IntercomBean intercomBean = intercomMessage.getIntercomBean();
-        AudioData audioData = new AudioData(intercomBean.getIntercomContent());
+        AudioData audioData = new AudioData(Base64.decode(intercomBean.getIntercomContent(),Base64.DEFAULT));
         MessageQueue.getInstance(MessageQueue.DECODER_DATA_QUEUE).put(audioData);
     }
 

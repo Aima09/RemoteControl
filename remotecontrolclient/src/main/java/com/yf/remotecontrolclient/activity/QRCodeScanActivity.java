@@ -43,9 +43,9 @@ public class QRCodeScanActivity extends BaseActivity implements QRCodeView.Deleg
                     isOpenLight = false;
                 } else {
                     zxingview.openFlashlight();
-                    FileMessage.FileBean bean = new FileMessage.FileBean(ServerDataDisposeCenter.getLocalSenderId(),
-                            ServerDataDisposeCenter.getRemoteReceiverId(),Environment.getExternalStorageDirectory()+"/test.png");
-                    FileMessage fileMessage = new FileMessage(MessageType.MESSAGE_FILE);
+                    FileMessage.FileBean bean = new FileMessage.FileBean(Environment.getExternalStorageDirectory()+"/test.png");
+                    FileMessage fileMessage = new FileMessage(ServerDataDisposeCenter.getLocalSenderId(),
+                            ServerDataDisposeCenter.getRemoteReceiverId(),MessageType.MESSAGE_FILE,bean);
                     Log.d("IoClientHandler", "Received filename = " + bean.getFileName());
                     File file = new File(Environment.getExternalStorageDirectory() + "/tupian");
                     boolean b = file.exists();

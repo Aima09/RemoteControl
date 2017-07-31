@@ -1,119 +1,46 @@
 package com.yf.minalibrary.message;
 
-import android.util.Base64;
-
-import com.yf.minalibrary.common.FileHelper;
-
-import java.io.File;
-import java.io.IOException;
-
 public class TextMessage extends BaseMessage {
 
-    private FileBean fileBean;
+    private TextBean textBean;
 
-    public TextMessage(String messageType) {
-        super(messageType);
+    public TextMessage(String senderId, String receiverId, String messageType, TextBean textBean) {
+        super(senderId, receiverId, messageType);
+        this.textBean = textBean;
     }
 
-    public TextMessage(String messageType, FileBean fileBean) {
-        super(messageType);
-        this.fileBean = fileBean;
+    public TextBean getTextBean() {
+        return textBean;
     }
 
-    public FileBean getFileBean() {
-        return fileBean;
-    }
-
-    public void setFileBean(FileBean fileBean) {
-        this.fileBean = fileBean;
+    public void setTextBean(TextBean textBean) {
+        this.textBean = textBean;
     }
 
     @Override public String toString() {
-        return "FileMessage{" +
-                "fileBean=" + fileBean +
+        return "TextMessage{" +
+                "senderId='" + senderId + '\'' +
+                ", receiverId='" + receiverId + '\'' +
+                ", messageType='" + messageType + '\'' +
+                ", time='" + time + '\'' +
+                ", textBean=" + textBean +
                 '}';
     }
 
-    public static class FileBean {
-        private String senderId = "";         // 信息发送端
-        private String receiverId = "";       // 接收端ID号
-        private String fileName = "";
-        private int fileSize = 0;
-        private byte[] fileContent;
-
-        public FileBean() {
-        }
-
-        public FileBean(String filePath) {
-            File file = new File(filePath);
-            FileHelper helper = new FileHelper();
-            fileName = file.getName();
-            fileSize = (int) file.length();
-            try {
-                fileContent = helper.getContent(file);
-                String a = Base64.encodeToString(fileContent,Base64.DEFAULT);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        public String getSenderId() {
-            return senderId;
-        }
-
-        public void setSenderId(String senderId) {
-            this.senderId = senderId;
-        }
-
-        public String getReceiverId() {
-            return receiverId;
-        }
-
-        public void setReceiverId(String receiverId) {
-            this.receiverId = receiverId;
-        }
-
-        public String getFileName() {
-            return fileName;
-        }
-
-        public void setFileName(String fileName) {
-            this.fileName = fileName;
-        }
-
-        public int getFileSize() {
-            return fileSize;
-        }
-
-        public void setFileSize(int fileSize) {
-            this.fileSize = fileSize;
-        }
-
-        public byte[] getFileContent() {
-            return fileContent;
-        }
-
-        public void setFileContent(byte[] fileContent) {
-            this.fileContent = fileContent;
-        }
-
-        @Override public String toString() {
-            return "senderId=" + senderId +
-                    ",receiverId=" + receiverId +
-                    ",fileName=" + fileName+
-                    ",fileSize=" + fileSize;
-        }
-    }
-
-    /**
-     * Created by wuhuai on 2016/10/31 .
-     * ;
-     */
-
     public static class TextBean {
+        private String textContent;
 
-        private int textLength;
-        private byte[] textContent;
+        public TextBean(String textContent) {
+            this.textContent = textContent;
+        }
 
+        public String getTextContent() {
+            return textContent;
+        }
+
+        public void setTextContent(String textContent) {
+            this.textContent = textContent;
+        }
     }
+
 }

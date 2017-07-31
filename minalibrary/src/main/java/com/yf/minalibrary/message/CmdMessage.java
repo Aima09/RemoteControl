@@ -1,16 +1,20 @@
 package com.yf.minalibrary.message;
 
+import com.yf.minalibrary.common.CmdType;
+import com.yf.minalibrary.common.DeviceType;
+
 public class CmdMessage extends BaseMessage {
 
     private CmdBean cmdBean;
 
-    public CmdMessage(String messageType, CmdBean cmdBean) {
-        super(messageType);
+    public CmdMessage(String senderId, String receiverId, String messageType, CmdBean cmdBean) {
+        super(senderId, receiverId, messageType);
         this.cmdBean = cmdBean;
     }
 
-    public CmdMessage(String messageType) {
-        super(messageType);
+    public CmdMessage(String messageType, CmdBean cmdBean) {
+        super("", "", messageType);
+        this.cmdBean = cmdBean;
     }
 
     public CmdBean getCmdBean() {
@@ -23,7 +27,11 @@ public class CmdMessage extends BaseMessage {
 
     @Override public String toString() {
         return "CmdMessage{" +
-                "cmdBean=" + cmdBean +
+                "senderId='" + senderId + '\'' +
+                ", receiverId='" + receiverId + '\'' +
+                ", messageType='" + messageType + '\'' +
+                ", time='" + time + '\'' +
+                ", cmdBean=" + cmdBean +
                 '}';
     }
 
@@ -33,40 +41,14 @@ public class CmdMessage extends BaseMessage {
      */
 
     public static class CmdBean {
-        private String senderId;         // 信息发送端
-        private String receiverId;       // 接收端ID号
         private String cmdType;
         private String deviceType;
         private String cmdContent;
 
         public CmdBean(String cmdType, String deviceType, String cmdContent) {
-            this.cmdType = cmdType;
-            this.deviceType = deviceType;
+            this.cmdType = cmdType == null ? CmdType.CMD_INVALID : cmdType;
+            this.deviceType = deviceType == null ? DeviceType.DEVICE_TYPE_INVALID : deviceType;
             this.cmdContent = cmdContent;
-        }
-
-        public CmdBean(String senderId, String receiverId, String cmdType, String deviceType, String cmdContent) {
-            this.senderId = senderId;
-            this.receiverId = receiverId;
-            this.cmdType = cmdType;
-            this.deviceType = deviceType;
-            this.cmdContent = cmdContent;
-        }
-
-        public String getSenderId() {
-            return senderId;
-        }
-
-        public void setSenderId(String senderId) {
-            this.senderId = senderId;
-        }
-
-        public String getReceiverId() {
-            return receiverId;
-        }
-
-        public void setReceiverId(String receiverId) {
-            this.receiverId = receiverId;
         }
 
         public String getCmdType() {
@@ -95,8 +77,6 @@ public class CmdMessage extends BaseMessage {
 
         @Override public String toString() {
             return "CmdBean{" +
-                    "senderId='" + senderId + '\'' +
-                    ", receiverId='" + receiverId + '\'' +
                     ", cmdType='" + cmdType + '\'' +
                     ", deviceType='" + deviceType + '\'' +
                     ", cmdContent='" + cmdContent + '\'' +

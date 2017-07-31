@@ -1,6 +1,7 @@
 package com.yf.remotecontrolclient.minaclient.tcp;
 
 
+import android.util.Base64;
 import android.util.Log;
 
 import com.yf.minalibrary.common.CmdType;
@@ -8,8 +9,6 @@ import com.yf.minalibrary.common.DeviceType;
 import com.yf.minalibrary.common.MessageType;
 import com.yf.minalibrary.message.CmdMessage;
 import com.yf.minalibrary.message.CmdMessage.CmdBean;
-import com.yf.minalibrary.message.IntercomMessage;
-import com.yf.minalibrary.message.IntercomMessage.IntercomBean;
 import com.yf.remotecontrolclient.dao.TcpAnalyzerImpl;
 
 import java.util.ArrayList;
@@ -23,13 +22,7 @@ import java.util.List;
 public class MinaCmdManager {
 
     private static MinaCmdManager instance;
-    private List<MinaCmdCallBack> minaCmdCallBacks = new ArrayList<>();
     private MinaServerController minaServerController;
-    private DevicesManager devicesManager;
-
-    public interface MinaCmdCallBack {
-        void minaCmdCallBack(Object message);
-    }
 
     public static synchronized MinaCmdManager getInstance() {
         if (instance == null) {
@@ -39,24 +32,6 @@ public class MinaCmdManager {
             }
         }
         return instance;
-    }
-
-    public void addMinaCmdCallBack(MinaCmdCallBack callBack) {
-        if (!minaCmdCallBacks.contains(callBack)) {
-            minaCmdCallBacks.add(callBack);
-        }
-    }
-
-    public void removeMinaCmdCallBack(MinaCmdCallBack callBack) {
-        if (minaCmdCallBacks.contains(callBack)) {
-            minaCmdCallBacks.remove(callBack);
-        }
-    }
-
-    public void exeMinaCmdCallBack(Object cmd) {
-        for (MinaCmdCallBack callBack : minaCmdCallBacks) {
-            callBack.minaCmdCallBack(cmd);
-        }
     }
 
     public void setMinaServerController(MinaServerController minaServerController) {
@@ -89,9 +64,9 @@ public class MinaCmdManager {
 
     public void sendControlCmd(String cmdContent) {
         if (null != minaServerController) {
-            CmdBean cmdBean = new CmdBean(ServerDataDisposeCenter.getLocalSenderId(),
-                    ServerDataDisposeCenter.getRemoteReceiverId(), CmdType.CMD_MUSIC, DeviceType.DEVICE_TYPE_PHONE, cmdContent);
-            CmdMessage cmdMessage = new CmdMessage(MessageType.MESSAGE_CMD, cmdBean);
+            CmdBean cmdBean = new CmdBean(CmdType.CMD_MUSIC, DeviceType.DEVICE_TYPE_PHONE, cmdContent);
+            CmdMessage cmdMessage = new CmdMessage(ServerDataDisposeCenter.getLocalSenderId(),
+                    ServerDataDisposeCenter.getRemoteReceiverId(), MessageType.MESSAGE_CMD, cmdBean);
             minaServerController.send(cmdMessage);
         }
     }
@@ -102,12 +77,14 @@ public class MinaCmdManager {
      * @param content byte[]
      */
     public void sendIntercomContent(byte[] content) {
-        if (null != minaServerController) {
-            IntercomBean intercomBean = new IntercomBean(ServerDataDisposeCenter.getLocalSenderId(),
-                    ServerDataDisposeCenter.getRemoteReceiverId(),content);
-            IntercomMessage intercomMessage = new IntercomMessage(MessageType.MESSAGE_INTERCOM, intercomBean);
-            minaServerController.send(intercomMessage);
-        }
+        String cmdContent = Base64.encodeToString(content, Base64.DEFAULT);
+        sendControlCmd(cmdContent);
+//        if (null != minaServerController) {
+//            IntercomBean intercomBean = new IntercomBean(ServerDataDisposeCenter.getLocalSenderId(),
+//                    ServerDataDisposeCenter.getRemoteReceiverId(),content);
+//            IntercomMessage intercomMessage = new IntercomMessage(MessageType.MESSAGE_INTERCOM, intercomBean);
+//            minaServerController.send(intercomMessage);
+//        }
     }
 
 }

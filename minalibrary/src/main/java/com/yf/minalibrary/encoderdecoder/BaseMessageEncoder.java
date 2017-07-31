@@ -22,11 +22,13 @@ public class BaseMessageEncoder implements MessageEncoder<BaseMessage> {
 
     public void encode(IoSession session, BaseMessage message, ProtocolEncoderOutput outPut) throws Exception {
         IoBuffer buffer = IoBuffer.allocate(1000).setAutoExpand(true);
-        String messageType = message.getMessageType();
+        String messageType = message.messageType;
         System.out.println("BaseMessageEncoder " + messageType);
         try {
             switch (messageType) {
                 case MessageType.MESSAGE_CMD:
+                case MessageType.MESSAGE_TEXT:
+                case MessageType.MESSAGE_INTERCOM:
                     String gsonMsg = gson.toJson(message);
                     System.out.println("BaseMessageEncoder gsonMsg = " + gsonMsg);
                     buffer.putInt(gsonMsg.getBytes(BeanUtil.UTF_8).length);
@@ -36,18 +38,6 @@ public class BaseMessageEncoder implements MessageEncoder<BaseMessage> {
                     break;
                 case MessageType.MESSAGE_FILE:
                     break;
-                case MessageType.MESSAGE_TEXT:
-                    break;
-                case MessageType.MESSAGE_INTERCOM:
-                    IntercomMessage intercomMessage = (IntercomMessage) message;
-                    String messageHead = intercomMessage.toString();
-                    buffer.putInt(messageHead.getBytes(BeanUtil.UTF_8).length);
-                    buffer.putString(messageHead, BeanUtil.UTF_8.newEncoder());
-                    buffer.put(intercomMessage.getIntercomBean().getIntercomContent());
-                    buffer.flip();
-                    outPut.write(buffer);
-                    break;
-
             }
         } catch (Exception e) {
             System.out.println("BaseMessageEncoder 编码 error = " + e.toString());

@@ -71,17 +71,14 @@ public class ClientMinaServer extends Service implements ClientMinaServerControl
             @Override public void run() {
                 boolean connectSuccess = clientMinaSocketConnector.connectServer();
                 if (connectSuccess) {
-                    String cmdType;
+                    CmdMessage cmdMessage;
                     if (TextUtils.isEmpty(ClientDataDisposeCenter.getLocalSenderId())) {
-                        cmdType = CmdType.CMD_REGISTER;
+                        CmdBean cmdBean = new CmdBean(CmdType.CMD_REGISTER, DeviceType.DEVICE_TYPE_PHONE, "");
+                        cmdMessage = new CmdMessage(MessageType.MESSAGE_CMD, cmdBean);
                     } else {
-                        cmdType = CmdType.CMD_LOGIN;
+                        CmdBean cmdBean = new CmdBean(CmdType.CMD_LOGIN, DeviceType.DEVICE_TYPE_PHONE, "");
+                        cmdMessage = new CmdMessage(ClientDataDisposeCenter.getLocalSenderId(),"",MessageType.MESSAGE_CMD, cmdBean);
                     }
-                    CmdBean cmdBean = new CmdBean(cmdType, DeviceType.DEVICE_TYPE_IPAD, "");
-                    if (cmdType.equals(CmdType.CMD_LOGIN)) {
-                        cmdBean.setSenderId(ClientDataDisposeCenter.getLocalSenderId());
-                    }
-                    CmdMessage cmdMessage = new CmdMessage(MessageType.MESSAGE_CMD, cmdBean);
                     clientMinaSocketConnector.send(cmdMessage);
                 }
             }

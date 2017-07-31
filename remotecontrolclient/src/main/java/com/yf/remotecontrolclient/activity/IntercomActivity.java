@@ -84,7 +84,6 @@ public class IntercomActivity extends BaseActivity implements EasyPermissions.Pe
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        stopService(new Intent(this, InterService.class));
     }
 
     private void startRecord() {

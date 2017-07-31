@@ -26,6 +26,7 @@ import com.yf.remotecontrolclient.domain.Boot;
 import com.yf.remotecontrolclient.domain.Equipment;
 import com.yf.remotecontrolclient.domain.OpenSettings;
 import com.yf.remotecontrolclient.domain.Palpitation;
+import com.yf.remotecontrolclient.intercom.InterService;
 import com.yf.remotecontrolclient.minaclient.tcp.RemoteServerManager;
 import com.yf.remotecontrolclient.service.SettingsBusinessService;
 import com.yf.remotecontrolclient.service.imp.MouseBusinessServiceImpl;
@@ -324,6 +325,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         SocketManager.iscolle = false;
 
         stopService(new Intent(App.getAppContext(), MouseService.class));
+        stopService(new Intent(this, InterService.class));
         super.onDestroy();
     }
 }

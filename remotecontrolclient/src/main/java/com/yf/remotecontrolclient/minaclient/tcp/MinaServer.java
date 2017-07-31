@@ -54,17 +54,14 @@ public class MinaServer extends Service implements MinaServerController {
                 PromptUtil.connectionstatus("正在连接。。。");
                 boolean connectSuccess = minaSocketConnector.connectServer();
                 if (connectSuccess) {
-                    String cmdType;
+                    CmdMessage cmdMessage;
                     if (TextUtils.isEmpty(ServerDataDisposeCenter.getLocalSenderId())) {
-                        cmdType = CmdType.CMD_REGISTER;
+                        CmdBean cmdBean = new CmdBean(CmdType.CMD_REGISTER, DeviceType.DEVICE_TYPE_PHONE, "");
+                        cmdMessage = new CmdMessage(MessageType.MESSAGE_CMD, cmdBean);
                     } else {
-                        cmdType = CmdType.CMD_LOGIN;
+                        CmdBean cmdBean = new CmdBean(CmdType.CMD_LOGIN, DeviceType.DEVICE_TYPE_PHONE, "");
+                        cmdMessage = new CmdMessage(ServerDataDisposeCenter.getLocalSenderId(),"",MessageType.MESSAGE_CMD, cmdBean);
                     }
-                    CmdBean cmdBean = new CmdBean(cmdType, DeviceType.DEVICE_TYPE_PHONE, "");
-                    if (cmdType.equals(CmdType.CMD_LOGIN)) {
-                        cmdBean.setSenderId(ServerDataDisposeCenter.getLocalSenderId());
-                    }
-                    CmdMessage cmdMessage = new CmdMessage(MessageType.MESSAGE_CMD, cmdBean);
                     minaSocketConnector.send(cmdMessage);
                     //成功
                     PromptUtil.connectionstatus("连接成功");

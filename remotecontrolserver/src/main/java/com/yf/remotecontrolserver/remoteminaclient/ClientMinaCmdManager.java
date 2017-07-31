@@ -61,32 +61,34 @@ public class ClientMinaCmdManager {
             case CmdType.CMD_REGISTER:
                 String uuid = cmdBean.getCmdContent();
                 ClientDataDisposeCenter.setLocalSenderId(uuid);
-                Log.d("ClientMinaCmdManager", uuid);
-                Log.d("IoClientHandler", uuid);
+                Log.d(TAG, uuid);
                 exeMinaCmdCallBack(uuid);
                 break;
             case CmdType.CMD_LOGIN:
                 String loginResult = cmdBean.getCmdContent();
-                Log.d("ClientMinaCmdManager", loginResult);
+                Log.d(TAG, loginResult);
                 exeMinaCmdCallBack(ClientDataDisposeCenter.getLocalSenderId());
                 break;
             case CmdType.CMD_HEARTBEAT:
-                Log.d("ClientMinaCmdManager", "我的对应的远程服务 session 还在线。。。。。。");
+                Log.d(TAG, "我的对应的远程服务 session 还在线。。。。。。");
                 break;
             case CmdType.CMD_MUSIC:
-                TcpAnalyzerImpl.getInstans().analy(cmdBean.getCmdContent().getBytes(), cmdBean.getSenderId());
-                Log.d("ClientMinaCmdManager", "CMD_MUSIC" + cmdBean.getCmdContent());
-                Log.d("ClientMinaCmdManager", "rid" + cmdBean.getReceiverId());
+                Log.d(TAG, "CMD_MUSIC" + cmdBean.getCmdContent());
+                Log.d(TAG, "rid" + cmdMessage.receiverId);
+                TcpAnalyzerImpl.getInstans().analy(cmdBean.getCmdContent().getBytes(), cmdMessage.senderId);
                 break;
         }
     }
 
     public void sendControlCmd(String cmdContent, String receiverId) {
-        if (null != clientMinaServerController) {
-            CmdBean cmdBean = new CmdBean(ClientDataDisposeCenter.getLocalSenderId(),
-                    receiverId, CmdType.CMD_MUSIC, DeviceType.DEVICE_TYPE_PHONE, cmdContent);
+        sendControlCmd(CmdType.CMD_MUSIC,cmdContent,receiverId);
+    }
 
-            CmdMessage cmdMessage = new CmdMessage(MessageType.MESSAGE_CMD, cmdBean);
+    public void sendControlCmd(String cmdType, String cmdContent, String receiverId) {
+        if (null != clientMinaServerController) {
+            CmdBean cmdBean = new CmdBean(cmdType, DeviceType.DEVICE_TYPE_PHONE, cmdContent);
+            CmdMessage cmdMessage = new CmdMessage(ClientDataDisposeCenter.getLocalSenderId(),
+                    receiverId, MessageType.MESSAGE_CMD, cmdBean);
             clientMinaServerController.send(cmdMessage);
         }
     }

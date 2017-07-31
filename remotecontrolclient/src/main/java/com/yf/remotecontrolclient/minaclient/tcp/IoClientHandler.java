@@ -23,7 +23,7 @@ public class IoClientHandler extends IoHandlerAdapter {
 
     public void messageReceived(IoSession session, Object message) throws Exception {
         BaseMessage baseMessage = (BaseMessage) message;
-        String dataType = baseMessage.getMessageType();
+        String dataType = baseMessage.messageType;
         switch (dataType) {
             case MessageType.MESSAGE_CMD:
                 CmdMessage cmdMessage = (CmdMessage) baseMessage;
@@ -63,8 +63,8 @@ public class IoClientHandler extends IoHandlerAdapter {
 
     @Override public void sessionIdle(IoSession session, IdleStatus status) throws Exception {
         Log.d("IoClientHandler", "sessionIdle");
-        CmdBean cmdBean = new CmdBean(ServerDataDisposeCenter.getLocalSenderId(), "", CmdType.CMD_HEARTBEAT, DeviceType.DEVICE_TYPE_PHONE, "");
-        CmdMessage cmdMessage = new CmdMessage(MessageType.MESSAGE_CMD, cmdBean);
+        CmdBean cmdBean = new CmdBean(CmdType.CMD_HEARTBEAT, DeviceType.DEVICE_TYPE_PHONE, "");
+        CmdMessage cmdMessage = new CmdMessage(ServerDataDisposeCenter.getLocalSenderId(), "",MessageType.MESSAGE_CMD, cmdBean);
         session.write(cmdMessage);
         super.sessionIdle(session, status);
     }

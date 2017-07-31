@@ -34,7 +34,7 @@ public class CmdMessageDecoder implements MessageDecoder {
                 System.out.println("CmdMessageDecoder 得到的命令长度  = " + a.getBytes(BeanUtil.UTF_8).length);
                 Gson gson = new Gson();
                 CmdMessage cmdMessage = gson.fromJson(a, CmdMessage.class);
-                if (cmdMessage.getMessageType().equals(MessageType.MESSAGE_CMD)) {
+                if (cmdMessage.messageType.equals(MessageType.MESSAGE_CMD)) {
                     return MessageDecoderResult.OK;
                 }
             }

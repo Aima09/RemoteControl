@@ -25,8 +25,6 @@ import com.yf.remotecontrolserver.common.CommonConstant;
 
 public class IoServerHandler extends IoHandlerAdapter {
 
-    public static final String BOTH_IDLE_TIMES = "Both_Idle_Times";
-
     @Override
     public void exceptionCaught(IoSession session, Throwable cause) throws Exception {
         super.exceptionCaught(session, cause);
@@ -37,11 +35,10 @@ public class IoServerHandler extends IoHandlerAdapter {
     @Override
     public void messageReceived(IoSession session, Object message) throws Exception {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        String datetime = sdf.format(new Date());
         BaseMessage baseMessage = (BaseMessage) message;
-        baseMessage.setTime(datetime);
+        baseMessage.time = sdf.format(new Date());
         CommonConstant.LINE_TYPE = 1;
-        String dataType = baseMessage.getMessageType();
+        String dataType = baseMessage.messageType;
         switch (dataType) {
             case MessageType.MESSAGE_CMD:
                 CmdMessage cmdMessage = (CmdMessage) baseMessage;
@@ -64,6 +61,21 @@ public class IoServerHandler extends IoHandlerAdapter {
     }
 
     @Override
+    public void sessionCreated(IoSession session) throws Exception {
+        System.out.println("IoServerHandler 创建一个新连接：{" + session.getRemoteAddress() + "}");
+    }
+
+    @Override
+    public void sessionOpened(IoSession session) throws Exception {
+        System.out.println("IoServerHandler 打开一个session：{" + session.getId() + "}#{" + session.getBothIdleCount() + "}");
+    }
+
+    @Override
+    public void sessionIdle(IoSession session, IdleStatus status) throws Exception {
+        System.out.println("IoServerHandler 当前连接{" + session.getRemoteAddress() + "}处于空闲状态：{" + status + "}");
+    }
+
+    @Override
     public void sessionClosed(final IoSession session) throws Exception {
         System.out.println("IoServerHandler 关闭当前session：{" + session.getId() + "}#{" + session.getRemoteAddress() + "}");
         CloseFuture closeFuture = session.closeOnFlush();
@@ -75,21 +87,6 @@ public class IoServerHandler extends IoHandlerAdapter {
                 }
             }
         });
-    }
-
-    @Override
-    public void sessionCreated(IoSession session) throws Exception {
-        System.out.println("IoServerHandler 创建一个新连接：{" + session.getRemoteAddress() + "}");
-    }
-
-    @Override
-    public void sessionIdle(IoSession session, IdleStatus status) throws Exception {
-        System.out.println("IoServerHandler 当前连接{" + session.getRemoteAddress() + "}处于空闲状态：{" + status + "}");
-    }
-
-    @Override
-    public void sessionOpened(IoSession session) throws Exception {
-        System.out.println("IoServerHandler 打开一个session：{" + session.getId() + "}#{" + session.getBothIdleCount() + "}");
     }
 
 }

@@ -36,7 +36,7 @@ public class FileMessageDecoder implements MessageDecoder {
                     System.out.println("FileMessageDecoder 得到的文件信息内容长度  = " + a.getBytes(BeanUtil.UTF_8).length);
                     Gson gson = new Gson();
                     FileMessage fileMessage = gson.fromJson(a, FileMessage.class);
-                    if (fileMessage.getMessageType().equals(MessageType.MESSAGE_FILE)) {
+                    if (fileMessage.messageType.equals(MessageType.MESSAGE_FILE)) {
                         return MessageDecoderResult.OK;
                     }
                 }

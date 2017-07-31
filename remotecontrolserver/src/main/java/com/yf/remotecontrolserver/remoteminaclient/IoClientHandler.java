@@ -32,7 +32,7 @@ public class IoClientHandler extends IoHandlerAdapter {
     public void messageReceived(IoSession session, Object message) throws Exception {
         CommonConstant.LINE_TYPE = 2;
         BaseMessage baseMessage = (BaseMessage) message;
-        String dataType = baseMessage.getMessageType();
+        String dataType = baseMessage.messageType;
         switch (dataType) {
             case MessageType.MESSAGE_CMD:
                 CmdMessage cmdMessage = (CmdMessage) baseMessage;
@@ -95,8 +95,8 @@ public class IoClientHandler extends IoHandlerAdapter {
         super.sessionIdle(session, status);
         Log.d("IoClientHandler", "sessionIdle");
         Log.d("IoClientHandler", "getLocalAddress" + session.getLocalAddress().toString());
-        CmdBean cmdBean = new CmdBean(ClientDataDisposeCenter.getLocalSenderId(), "", CmdType.CMD_HEARTBEAT, DeviceType.DEVICE_TYPE_IPAD, "");
-        CmdMessage cmdMessage = new CmdMessage(MessageType.MESSAGE_CMD, cmdBean);
+        CmdBean cmdBean = new CmdBean(CmdType.CMD_HEARTBEAT, DeviceType.DEVICE_TYPE_IPAD, "");
+        CmdMessage cmdMessage = new CmdMessage(ClientDataDisposeCenter.getLocalSenderId(), "", MessageType.MESSAGE_CMD, cmdBean);
         session.write(cmdMessage);
     }
 

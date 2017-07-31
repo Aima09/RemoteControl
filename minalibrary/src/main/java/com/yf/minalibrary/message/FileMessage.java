@@ -9,12 +9,8 @@ public class FileMessage extends BaseMessage {
 
     private FileBean fileBean;
 
-    public FileMessage(String messageType) {
-        super(messageType);
-    }
-
-    public FileMessage(String messageType, FileBean fileBean) {
-        super(messageType);
+    public FileMessage(String senderId, String receiverId, String messageType, FileBean fileBean) {
+        super(senderId, receiverId, messageType);
         this.fileBean = fileBean;
     }
 
@@ -28,28 +24,20 @@ public class FileMessage extends BaseMessage {
 
     @Override public String toString() {
         return "FileMessage{" +
-                "fileBean=" + fileBean +
+                "senderId='" + senderId + '\'' +
+                ", receiverId='" + receiverId + '\'' +
+                ", messageType='" + messageType + '\'' +
+                ", time='" + time + '\'' +
+                ", fileBean=" + fileBean +
                 '}';
     }
 
     public static class FileBean {
-        private String senderId = "";         // 信息发送端
-        private String receiverId = "";       // 接收端ID号
         private String fileName = "";
         private int fileSize = 0;
         private byte[] fileContent;
 
-        public FileBean(String senderId, String receiverId,String filePath) {
-            this.senderId = senderId;
-            this.receiverId = receiverId;
-            init(filePath);
-        }
-
         public FileBean(String filePath) {
-            init(filePath);
-        }
-
-        private void init(String filePath){
             File file = new File(filePath);
             if (file.exists()){
                 FileHelper helper = new FileHelper();
@@ -63,20 +51,17 @@ public class FileMessage extends BaseMessage {
             }
         }
 
-        public String getSenderId() {
-            return senderId;
-        }
-
-        public void setSenderId(String senderId) {
-            this.senderId = senderId;
-        }
-
-        public String getReceiverId() {
-            return receiverId;
-        }
-
-        public void setReceiverId(String receiverId) {
-            this.receiverId = receiverId;
+        public FileBean(File file) {
+            if (file.exists()){
+                FileHelper helper = new FileHelper();
+                fileName = file.getName();
+                fileSize = (int) file.length();
+                try {
+                    fileContent = helper.getContent(file);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         public String getFileName() {
@@ -104,10 +89,10 @@ public class FileMessage extends BaseMessage {
         }
 
         @Override public String toString() {
-            return "senderId=" + senderId +
-                    ",receiverId=" + receiverId +
-                    ",fileName=" + fileName+
-                    ",fileSize=" + fileSize;
+            return "TextBean{" +
+                    ", fileName='" + fileName + '\'' +
+                    ", fileSize=" + fileSize +
+                    '}';
         }
     }
 }
