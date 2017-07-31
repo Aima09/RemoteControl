@@ -97,6 +97,12 @@ public class TcpAnalyzerImpl implements AnalyzerInterface {
                 intent.putExtra("getimageList", jsonAssistant.paseGetimageList(data));
                 // 发送自定义无序广播
                 App.getAppContext().sendBroadcast(intent);
+            }else if(data.contains("cmd")&&data.contains("BSopenImageFolder")){
+                Intent intent = new Intent();
+                intent.setAction(MediaImageFolderActivity.MBROADCASTRECEIVER);
+                intent.putExtra(ImageBusinessServiceImpl.CMD, "BSopenImageFolder");
+                // 发送自定义无序广播
+                App.getAppContext().sendBroadcast(intent);
             }
 //			else if(data.contains("cmd")&&data.contains("BSgetfile")){
 //				//{"cmd":"BSgetfile","fileName":"/mnt/internal_sd"}

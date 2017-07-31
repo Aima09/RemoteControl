@@ -7,6 +7,9 @@ public class Image implements Serializable {
     private String name;
     private String folderName;
 
+    //缩略图片内容
+    private String b;
+
     public Integer getId() {
         return id;
     }
@@ -29,5 +32,12 @@ public class Image implements Serializable {
 
     public void setFolderName(String folderName) {
         this.folderName = folderName;
+    }
+    public String getB() {
+        return b;
+    }
+
+    public void setB(String b) {
+        this.b = b;
     }
 }

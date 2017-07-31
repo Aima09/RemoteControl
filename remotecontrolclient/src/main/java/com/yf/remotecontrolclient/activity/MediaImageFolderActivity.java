@@ -48,6 +48,9 @@ public class MediaImageFolderActivity extends BaseActivity implements
                 imageFolders.addAll(list);
                 Message message = Message.obtain();
                 handler.sendEmptyMessage(0);
+            }else if(cmd.equals("BSopenImageFolder")){
+                startActivity(new Intent(getApplicationContext(),
+                        MediaImageActivity.class));
             }
         }
     };
@@ -93,11 +96,11 @@ public class MediaImageFolderActivity extends BaseActivity implements
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position,
                             long id) {
-        ImageFolder imageFolder = imageFolders.get(position);
+        ImageFolder imageFolder=new ImageFolder();
         imageFolder.setCmd("BSopenImageFolder");
+        imageFolder.setId(position);
+        imageFolder.setName(imageFolders.get(position).getName());
         imageBusinessService.sendBsopenFolder(imageFolder);
-        startActivity(new Intent(getApplicationContext(),
-                MediaImageActivity.class));
     }
 
     @Override
