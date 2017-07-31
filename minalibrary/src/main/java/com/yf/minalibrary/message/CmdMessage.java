@@ -77,7 +77,7 @@ public class CmdMessage extends BaseMessage {
 
         @Override public String toString() {
             return "CmdBean{" +
-                    ", cmdType='" + cmdType + '\'' +
+                    "cmdType='" + cmdType + '\'' +
                     ", deviceType='" + deviceType + '\'' +
                     ", cmdContent='" + cmdContent + '\'' +
                     '}';

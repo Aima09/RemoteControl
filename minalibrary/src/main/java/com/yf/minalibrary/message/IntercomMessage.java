@@ -47,6 +47,12 @@ public class IntercomMessage extends BaseMessage {
         public void setIntercomContent(String intercomContent) {
             this.intercomContent = intercomContent;
         }
+
+        @Override public String toString() {
+            return "IntercomBean{" +
+                    "intercomContent='" + intercomContent + '\'' +
+                    '}';
+        }
     }
 
 }

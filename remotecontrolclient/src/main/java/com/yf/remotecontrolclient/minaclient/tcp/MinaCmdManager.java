@@ -9,10 +9,9 @@ import com.yf.minalibrary.common.DeviceType;
 import com.yf.minalibrary.common.MessageType;
 import com.yf.minalibrary.message.CmdMessage;
 import com.yf.minalibrary.message.CmdMessage.CmdBean;
+import com.yf.minalibrary.message.IntercomMessage;
+import com.yf.minalibrary.message.IntercomMessage.IntercomBean;
 import com.yf.remotecontrolclient.dao.TcpAnalyzerImpl;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by wuhuai on 2017/6/23 .
@@ -63,8 +62,12 @@ public class MinaCmdManager {
     }
 
     public void sendControlCmd(String cmdContent) {
+        sendControlCmd(CmdType.CMD_MUSIC,cmdContent);
+    }
+
+    public void sendControlCmd(String cmdType, String cmdContent) {
         if (null != minaServerController) {
-            CmdBean cmdBean = new CmdBean(CmdType.CMD_MUSIC, DeviceType.DEVICE_TYPE_PHONE, cmdContent);
+            CmdBean cmdBean = new CmdBean(cmdType, DeviceType.DEVICE_TYPE_PHONE, cmdContent);
             CmdMessage cmdMessage = new CmdMessage(ServerDataDisposeCenter.getLocalSenderId(),
                     ServerDataDisposeCenter.getRemoteReceiverId(), MessageType.MESSAGE_CMD, cmdBean);
             minaServerController.send(cmdMessage);
@@ -78,13 +81,12 @@ public class MinaCmdManager {
      */
     public void sendIntercomContent(byte[] content) {
         String cmdContent = Base64.encodeToString(content, Base64.DEFAULT);
-        sendControlCmd(cmdContent);
-//        if (null != minaServerController) {
-//            IntercomBean intercomBean = new IntercomBean(ServerDataDisposeCenter.getLocalSenderId(),
-//                    ServerDataDisposeCenter.getRemoteReceiverId(),content);
-//            IntercomMessage intercomMessage = new IntercomMessage(MessageType.MESSAGE_INTERCOM, intercomBean);
-//            minaServerController.send(intercomMessage);
-//        }
+        if (null != minaServerController) {
+            IntercomBean intercomBean = new IntercomBean(cmdContent);
+            IntercomMessage intercomMessage = new IntercomMessage(ServerDataDisposeCenter.getLocalSenderId(),
+                    ServerDataDisposeCenter.getRemoteReceiverId(),MessageType.MESSAGE_INTERCOM, intercomBean);
+            minaServerController.send(intercomMessage);
+        }
     }
 
 }

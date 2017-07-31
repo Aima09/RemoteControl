@@ -4,6 +4,7 @@ import com.yf.minalibrary.common.FileHelper;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class FileMessage extends BaseMessage {
 
@@ -89,8 +90,8 @@ public class FileMessage extends BaseMessage {
         }
 
         @Override public String toString() {
-            return "TextBean{" +
-                    ", fileName='" + fileName + '\'' +
+            return "FileBean{" +
+                    "fileName='" + fileName + '\'' +
                     ", fileSize=" + fileSize +
                     '}';
         }

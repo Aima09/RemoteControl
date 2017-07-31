@@ -41,6 +41,12 @@ public class TextMessage extends BaseMessage {
         public void setTextContent(String textContent) {
             this.textContent = textContent;
         }
+
+        @Override public String toString() {
+            return "TextBean{" +
+                    "textContent='" + textContent + '\'' +
+                    '}';
+        }
     }
 
 }
