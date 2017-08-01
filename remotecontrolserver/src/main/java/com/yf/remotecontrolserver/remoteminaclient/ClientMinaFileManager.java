@@ -48,7 +48,7 @@ public class ClientMinaFileManager {
                 os.close();
                 Intent it = new Intent(Intent.ACTION_VIEW);
                 it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                Uri mUri = Uri.parse("file://" + file.getAbsolutePath());
+                Uri mUri = Uri.parse("file://" + file.getPath() + "/" + bean.getFileName());
                 it.setDataAndType(mUri, "image/*");
                 App.getAppContext().startActivity(it);
             }
