@@ -4,7 +4,6 @@ import com.yf.minalibrary.common.FileHelper;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 
 public class FileMessage extends BaseMessage {
 
@@ -24,19 +23,23 @@ public class FileMessage extends BaseMessage {
     }
 
     @Override public String toString() {
-        return "FileMessage{" +
-                "senderId='" + senderId + '\'' +
-                ", receiverId='" + receiverId + '\'' +
-                ", messageType='" + messageType + '\'' +
-                ", time='" + time + '\'' +
-                ", fileBean=" + fileBean +
-                '}';
+        return "senderId=" + senderId +
+                ",receiverId=" + receiverId +
+                ",messageType=" + messageType +
+                ",time=" + time +
+                ","+ fileBean.toString();
     }
 
     public static class FileBean {
         private String fileName = "";
         private int fileSize = 0;
         private byte[] fileContent;
+
+        public FileBean(String fileName, int fileSize, byte[] fileContent) {
+            this.fileName = fileName;
+            this.fileSize = fileSize;
+            this.fileContent = fileContent;
+        }
 
         public FileBean(String filePath) {
             File file = new File(filePath);
@@ -90,10 +93,8 @@ public class FileMessage extends BaseMessage {
         }
 
         @Override public String toString() {
-            return "FileBean{" +
-                    "fileName='" + fileName + '\'' +
-                    ", fileSize=" + fileSize +
-                    '}';
+            return "fileName=" + fileName +
+                    ",fileSize=" + fileSize;
         }
     }
 }

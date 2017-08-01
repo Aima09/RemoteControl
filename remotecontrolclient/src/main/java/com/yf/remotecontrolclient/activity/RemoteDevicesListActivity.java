@@ -17,7 +17,6 @@ import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +28,7 @@ import com.yf.remotecontrolclient.CommonConstant;
 import com.yf.remotecontrolclient.R;
 import com.yf.remotecontrolclient.minaclient.tcp.DeviceInfo;
 import com.yf.remotecontrolclient.minaclient.tcp.DevicesManager;
-import com.yf.remotecontrolclient.minaclient.tcp.MinaCmdManager;
+import com.yf.remotecontrolclient.minaclient.tcp.MinaMessageManager;
 import com.yf.remotecontrolclient.minaclient.tcp.RemoteServerManager;
 import com.yf.remotecontrolclient.minaclient.tcp.ServerDataDisposeCenter;
 
@@ -63,7 +62,7 @@ public class RemoteDevicesListActivity extends BaseActivity implements DevicesMa
                 } else {
 //                    RemoteServerManager.getInstance().stopRemoteServer();
                     Log.d("RemoteDevicesListActivi", "音乐控制测试指令发送。。。");
-                    MinaCmdManager.getInstance().sendControlCmd("我是音乐控制测试指令");
+                    MinaMessageManager.getInstance().sendControlCmd("我是音乐控制测试指令");
                 }
             }
         });

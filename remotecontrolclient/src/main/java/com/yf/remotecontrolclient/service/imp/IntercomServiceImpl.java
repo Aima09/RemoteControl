@@ -1,6 +1,6 @@
 package com.yf.remotecontrolclient.service.imp;
 
-import com.yf.remotecontrolclient.minaclient.tcp.MinaCmdManager;
+import com.yf.remotecontrolclient.minaclient.tcp.MinaMessageManager;
 import com.yf.remotecontrolclient.service.IntercomService;
 import com.yf.remotecontrolclient.util.JsonAssistant;
 
@@ -29,7 +29,7 @@ public class IntercomServiceImpl implements IntercomService {
     @Override
     public void send(byte[] content) {
         if (content.length > 0){
-            MinaCmdManager.getInstance().sendIntercomContent(content);
+            MinaMessageManager.getInstance().sendIntercomContent(content);
         }
     }
 }

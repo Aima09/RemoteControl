@@ -2,7 +2,7 @@ package com.yf.remotecontrolclient.service.imp;
 
 
 import com.yf.remotecontrolclient.domain.OpenBrower;
-import com.yf.remotecontrolclient.minaclient.tcp.MinaCmdManager;
+import com.yf.remotecontrolclient.minaclient.tcp.MinaMessageManager;
 import com.yf.remotecontrolclient.service.BrowserBussinessService;
 import com.yf.remotecontrolclient.util.JsonAssistant;
 
@@ -17,6 +17,6 @@ public class BrowserBusinessServiceImpl implements BrowserBussinessService {
 
     @Override
     public void senBsOpenBrowser(OpenBrower openBrower) {
-        MinaCmdManager.getInstance().sendControlCmd(jsonAssistant.createOpenBrowser(openBrower));
+        MinaMessageManager.getInstance().sendControlCmd(jsonAssistant.createOpenBrowser(openBrower));
     }
 }

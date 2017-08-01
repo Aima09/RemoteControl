@@ -24,7 +24,7 @@ import java.util.concurrent.Executors;
 
 public class MinaServer extends Service implements MinaServerController {
 
-    private MinaCmdManager minaCmdManager;
+    private MinaMessageManager minaMessageManager;
     private MinaSocketConnector minaSocketConnector;
     private ExecutorService fixedThreadPool = Executors.newFixedThreadPool(30);
 
@@ -36,8 +36,8 @@ public class MinaServer extends Service implements MinaServerController {
     @Override
     public void onCreate() {
         super.onCreate();
-        minaCmdManager = MinaCmdManager.getInstance();
-        minaCmdManager.setMinaServerController(this);
+        minaMessageManager = MinaMessageManager.getInstance();
+        minaMessageManager.setMinaServerController(this);
         minaSocketConnector = new MinaSocketConnector();
     }
 

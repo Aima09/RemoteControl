@@ -27,7 +27,7 @@ public class IoClientHandler extends IoHandlerAdapter {
         switch (dataType) {
             case MessageType.MESSAGE_CMD:
                 CmdMessage cmdMessage = (CmdMessage) baseMessage;
-                MinaCmdManager.getInstance().disposeCmd(cmdMessage);
+                MinaMessageManager.getInstance().disposeCmd(cmdMessage);
                 break;
             case MessageType.MESSAGE_FILE:
                 break;

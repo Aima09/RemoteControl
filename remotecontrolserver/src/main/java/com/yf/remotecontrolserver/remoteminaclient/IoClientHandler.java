@@ -40,18 +40,7 @@ public class IoClientHandler extends IoHandlerAdapter {
                 break;
             case MessageType.MESSAGE_FILE:
                 FileMessage fileMessage = (FileMessage) baseMessage;
-                FileMessage.FileBean bean = fileMessage.getFileBean();
-                Log.d("IoClientHandler", "Received filename = " + bean.getFileName());
-                File file = new File(Environment.getExternalStorageDirectory() + "/tupian");
-                boolean b = file.exists();
-                if (!b) {
-                    b = file.mkdir();
-                }
-                if (b) {
-                    FileOutputStream os = new FileOutputStream(file.getPath() + "/" + bean.getFileName());
-                    os.write(bean.getFileContent());
-                    os.close();
-                }
+                ClientMinaFileManager.getInstance().disposeFile(fileMessage);
                 break;
             case MessageType.MESSAGE_TEXT:
                 break;

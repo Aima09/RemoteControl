@@ -12,7 +12,7 @@ import com.yf.remotecontrolclient.domain.Gateway;
 import com.yf.remotecontrolclient.domain.Palpitation;
 import com.yf.remotecontrolclient.domain.Position;
 import com.yf.remotecontrolclient.domain.Writer;
-import com.yf.remotecontrolclient.minaclient.tcp.MinaCmdManager;
+import com.yf.remotecontrolclient.minaclient.tcp.MinaMessageManager;
 import com.yf.remotecontrolclient.service.MouseBusinessService;
 import com.yf.remotecontrolclient.util.JsonAssistant;
 
@@ -38,32 +38,32 @@ public class MouseBusinessServiceImpl implements MouseBusinessService {
     public void linkEquipment(Boot boot) {
         String bootjsonString = jsonAssistant.paseBoot(boot);
         if (!TextUtils.isEmpty(bootjsonString)) {
-            MinaCmdManager.getInstance().sendControlCmd(bootjsonString);
+            MinaMessageManager.getInstance().sendControlCmd(bootjsonString);
         }
     }
 
     //发位置
     @Override
     public synchronized void sendPosition(Position position) {
-        MinaCmdManager.getInstance()
+        MinaMessageManager.getInstance()
                 .sendControlCmd(jsonAssistant.createPosition(position));
     }
 
     @Override
     public void sendAction(Action action) {
-        MinaCmdManager.getInstance()
+        MinaMessageManager.getInstance()
                 .sendControlCmd(jsonAssistant.createAction(action));
     }
 
     @Override
     public void sendPalpitation(Palpitation palpitation) {
-        MinaCmdManager.getInstance()
+        MinaMessageManager.getInstance()
                 .sendControlCmd(jsonAssistant.createPalpitation(palpitation));
     }
 
     @Override
     public void sendWriter(Writer writer) {
-        MinaCmdManager.getInstance()
+        MinaMessageManager.getInstance()
                 .sendControlCmd(jsonAssistant.createWriter(writer));
     }
 }

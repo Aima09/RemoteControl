@@ -5,7 +5,7 @@ import com.yf.remotecontrolclient.domain.ImageFolder;
 import com.yf.remotecontrolclient.domain.ImageFolderList;
 import com.yf.remotecontrolclient.domain.ImageList;
 import com.yf.remotecontrolclient.domain.OpenImage;
-import com.yf.remotecontrolclient.minaclient.tcp.MinaCmdManager;
+import com.yf.remotecontrolclient.minaclient.tcp.MinaMessageManager;
 import com.yf.remotecontrolclient.service.ImageBusinessService;
 import com.yf.remotecontrolclient.util.JsonAssistant;
 
@@ -20,24 +20,24 @@ public class ImageBusinessServiceImpl implements ImageBusinessService {
 
     @Override
     public void sendBsgetFolderList(ImageFolderList imageFolderList) {
-        MinaCmdManager.getInstance()
+        MinaMessageManager.getInstance()
                 .sendControlCmd(jsonAssistant.createGetFolderList(imageFolderList));
     }
 
     @Override
     public void sendBSgetImageList(ImageList imageList) {
-        MinaCmdManager.getInstance()
+        MinaMessageManager.getInstance()
                 .sendControlCmd(jsonAssistant.createGetImageList(imageList));
     }
 
     @Override
     public void sendBsopenFolder(ImageFolder imageFolder) {
-        MinaCmdManager.getInstance()
+        MinaMessageManager.getInstance()
                 .sendControlCmd(jsonAssistant.createOpenImageFolder(imageFolder));
     }
 
     public void senBsopenImage(OpenImage openImage) {
-        MinaCmdManager.getInstance()
+        MinaMessageManager.getInstance()
                 .sendControlCmd(jsonAssistant.createOpenImage(openImage));
     }
 }

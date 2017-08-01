@@ -12,7 +12,7 @@
         android:id="@+id/open_light"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="发送文件测试"/>
+        android:text="开灯"/>
 
     <cn.bingoogolapple.qrcode.zxing.ZXingView
         android:id="@+id/zxingview"

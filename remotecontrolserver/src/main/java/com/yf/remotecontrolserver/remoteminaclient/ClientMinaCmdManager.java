@@ -81,7 +81,7 @@ public class ClientMinaCmdManager {
     }
 
     public void sendControlCmd(String cmdContent, String receiverId) {
-        sendControlCmd(CmdType.CMD_MUSIC,cmdContent,receiverId);
+        sendControlCmd(CmdType.CMD_MUSIC, cmdContent, receiverId);
     }
 
     public void sendControlCmd(String cmdType, String cmdContent, String receiverId) {

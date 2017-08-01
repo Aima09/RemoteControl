@@ -12,6 +12,7 @@ import com.yf.minalibrary.common.MessageType;
 import com.yf.minalibrary.message.FileMessage;
 import com.yf.remotecontrolclient.R;
 import com.yf.remotecontrolclient.minaclient.tcp.DeviceInfo;
+import com.yf.remotecontrolclient.minaclient.tcp.MinaMessageManager;
 import com.yf.remotecontrolclient.minaclient.tcp.ServerDataDisposeCenter;
 
 import java.io.File;
@@ -41,31 +42,18 @@ public class QRCodeScanActivity extends BaseActivity implements QRCodeView.Deleg
                 if (isOpenLight){
                     zxingview.closeFlashlight();
                     isOpenLight = false;
+                    openLight.setText("开灯");
                 } else {
                     zxingview.openFlashlight();
-                    FileMessage.FileBean bean = new FileMessage.FileBean(Environment.getExternalStorageDirectory()+"/test.png");
-                    FileMessage fileMessage = new FileMessage(ServerDataDisposeCenter.getLocalSenderId(),
-                            ServerDataDisposeCenter.getRemoteReceiverId(),MessageType.MESSAGE_FILE,bean);
-                    Log.d("IoClientHandler", "Received filename = " + bean.getFileName());
-                    File file = new File(Environment.getExternalStorageDirectory() + "/tupian");
-                    boolean b = file.exists();
-                    if (!b) {
-                        b = file.mkdir();
-                    }
-                    if (b) {
-                        try {
-                            FileOutputStream os = new FileOutputStream(file.getPath() + "/" + bean.getFileName());
-                            os.write(bean.getFileContent());
-                            os.close();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
+                    isOpenLight = true;
+                    openLight.setText("关灯");
+                    Log.d("QRCodeScanActivity", Environment.getExternalStorageDirectory() + "/test.png");
+                    Log.d("QRCodeScanActivity", " "+ new File(Environment.getExternalStorageDirectory() + "/test.png").exists());
+//                    MinaMessageManager.getInstance().sendFile(Environment.getExternalStorageDirectory()+"/test.png");
                 }
             }
         });
     }
-
 
     @Override protected void onStart() {
         super.onStart();

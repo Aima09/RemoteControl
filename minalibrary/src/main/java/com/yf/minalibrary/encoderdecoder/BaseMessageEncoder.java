@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.yf.minalibrary.common.BeanUtil;
 import com.yf.minalibrary.common.MessageType;
 import com.yf.minalibrary.message.BaseMessage;
-import com.yf.minalibrary.message.IntercomMessage;
+import com.yf.minalibrary.message.FileMessage;
 
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.IoSession;
@@ -37,6 +37,13 @@ public class BaseMessageEncoder implements MessageEncoder<BaseMessage> {
                     outPut.write(buffer);
                     break;
                 case MessageType.MESSAGE_FILE:
+                    FileMessage fileMessage = (FileMessage) message;
+                    String fileHead = fileMessage.toString();
+                    buffer.putInt(fileHead.getBytes(BeanUtil.UTF_8).length);
+                    buffer.putString(fileHead,BeanUtil.UTF_8.newEncoder());
+                    buffer.put(fileMessage.getFileBean().getFileContent());
+                    buffer.flip();
+                    outPut.write(buffer);
                     break;
             }
         } catch (Exception e) {

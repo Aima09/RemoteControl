@@ -3,8 +3,8 @@ package com.yf.minalibrary.encoderdecoder;
 import com.google.gson.Gson;
 import com.yf.minalibrary.common.BeanUtil;
 import com.yf.minalibrary.common.MessageType;
-import com.yf.minalibrary.message.CmdMessage;
 import com.yf.minalibrary.message.FileMessage;
+import com.yf.minalibrary.message.FileMessage.FileBean;
 
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.AttributeKey;
@@ -57,13 +57,39 @@ public class FileMessageDecoder implements MessageDecoder {
 
     public MessageDecoderResult decode(IoSession session, IoBuffer in,
                                        ProtocolDecoderOutput outPut) throws Exception {
+        Context context = getContext(session);
         try {
-            int messageLength = in.getInt();
-            String a = in.getString(messageLength, BeanUtil.UTF_8.newDecoder());
-            Gson gson = new Gson();
-            FileMessage fileMessage = gson.fromJson(a, FileMessage.class);
-            System.out.println("FileMessageDecoder " + fileMessage.toString());
-            outPut.write(fileMessage);
+            if (!context.initFlag) {
+                int messageLength = in.getInt();
+                context.fileBeanHead = in.getString(messageLength, BeanUtil.UTF_8.newDecoder());
+                String[] fbs = context.fileBeanHead.split(",");
+                if (fbs.length == 6) {
+                    context.senderId = fbs[0].split("=").length > 1 ? fbs[0].split("=")[1] : "";
+                    context.receiverId = fbs[1].split("=").length > 1 ? fbs[1].split("=")[1] : "";
+                    context.messageType = fbs[2].split("=").length > 1 ? fbs[2].split("=")[1] : MessageType.MESSAGE_INVALID;
+                    context.fileName = fbs[4].split("=").length > 1 ? fbs[4].split("=")[1] : "";
+                    context.fileSize = fbs[5].split("=").length > 1 ? Integer.valueOf(fbs[5].split("=")[1]) : 0;
+                    context.byteFile = new byte[context.fileSize];
+                }
+                context.initFlag = true;
+            }
+            int count = context.count;
+            while (in.hasRemaining()) {
+                byte b = in.get();
+                context.byteFile[count] = b;
+                if (count == context.fileSize - 1) {
+                    break;
+                }
+                count++;
+            }
+            context.count = count;
+            session.setAttribute(CONTEXT, context);
+            if (context.count == context.fileSize - 1) {
+                FileBean bean = new FileBean(context.fileName,context.fileSize,context.byteFile);
+                FileMessage message = new FileMessage(context.senderId,context.receiverId,context.messageType,bean);
+                outPut.write(message);
+                context.reset();
+            }
         } catch (Exception e) {
             System.out.println("FileMessageDecoder decode 解码出错 = " + e.toString());
             e.printStackTrace();
@@ -86,7 +112,7 @@ public class FileMessageDecoder implements MessageDecoder {
     }
 
     private class Context {
-        boolean initMessageType = false;
+        boolean initFlag = false;
         String messageType = MessageType.MESSAGE_INVALID;
         int count = 0;
         String fileBeanHead;
@@ -97,7 +123,7 @@ public class FileMessageDecoder implements MessageDecoder {
         byte[] byteFile;
 
         void reset() {
-            initMessageType = false;
+            initFlag = false;
             messageType = MessageType.MESSAGE_INVALID;
             count = 0;
             fileBeanHead = null;
