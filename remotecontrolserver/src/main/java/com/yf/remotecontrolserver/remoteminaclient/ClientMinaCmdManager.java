@@ -86,7 +86,7 @@ public class ClientMinaCmdManager {
 
     public void sendControlCmd(String cmdType, String cmdContent, String receiverId) {
         if (null != clientMinaServerController) {
-            CmdBean cmdBean = new CmdBean(cmdType, DeviceType.DEVICE_TYPE_PHONE, cmdContent);
+            CmdBean cmdBean = new CmdBean(cmdType, DeviceType.DEVICE_TYPE_IPAD, cmdContent);
             CmdMessage cmdMessage = new CmdMessage(ClientDataDisposeCenter.getLocalSenderId(),
                     receiverId, MessageType.MESSAGE_CMD, cmdBean);
             clientMinaServerController.send(cmdMessage);

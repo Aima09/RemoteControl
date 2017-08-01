@@ -1,6 +1,5 @@
 package com.yf.minalibrary.encoderdecoder;
 
-import com.google.gson.Gson;
 import com.yf.minalibrary.common.BeanUtil;
 import com.yf.minalibrary.common.MessageType;
 import com.yf.minalibrary.message.FileMessage;
@@ -31,13 +30,16 @@ public class FileMessageDecoder implements MessageDecoder {
                 if (in.remaining() < messageLength){
                     return MessageDecoderResult.NEED_DATA;
                 } else {
-                    String a = in.getString(messageLength, BeanUtil.UTF_8.newDecoder());
-                    System.out.println("FileMessageDecoder 得到的文件信息内容  = " + a);
-                    System.out.println("FileMessageDecoder 得到的文件信息内容长度  = " + a.getBytes(BeanUtil.UTF_8).length);
-                    Gson gson = new Gson();
-                    FileMessage fileMessage = gson.fromJson(a, FileMessage.class);
-                    if (fileMessage.messageType.equals(MessageType.MESSAGE_FILE)) {
-                        return MessageDecoderResult.OK;
+                    String fileBeanHead = in.getString(messageLength, BeanUtil.UTF_8.newDecoder());
+                    System.out.println("FileMessageDecoder 得到的文件信息内容  = " + fileBeanHead);
+                    System.out.println("FileMessageDecoder 得到的文件信息内容长度  = " + fileBeanHead.getBytes(BeanUtil.UTF_8).length);
+                    String[] fbh = fileBeanHead.split(",");
+                    if (fbh.length == 6){
+                        if (fbh[2].split("=").length > 1){
+                            if (fbh[2].split("=")[1].equals(MessageType.MESSAGE_FILE)) {
+                                return MessageDecoderResult.OK;
+                            }
+                        }
                     }
                 }
             } catch (Exception e) {
@@ -82,6 +84,8 @@ public class FileMessageDecoder implements MessageDecoder {
                 }
                 count++;
             }
+            System.out.println("FileMessageDecoder count - context.count = " + (count - context.count));
+            System.out.println("FileMessageDecoder count = " + count);
             context.count = count;
             session.setAttribute(CONTEXT, context);
             if (context.count == context.fileSize - 1) {

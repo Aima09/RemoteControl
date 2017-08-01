@@ -49,7 +49,7 @@ public class QRCodeScanActivity extends BaseActivity implements QRCodeView.Deleg
                     openLight.setText("关灯");
                     Log.d("QRCodeScanActivity", Environment.getExternalStorageDirectory() + "/test.png");
                     Log.d("QRCodeScanActivity", " "+ new File(Environment.getExternalStorageDirectory() + "/test.png").exists());
-//                    MinaMessageManager.getInstance().sendFile(Environment.getExternalStorageDirectory()+"/test.png");
+                    MinaMessageManager.getInstance().sendFile(Environment.getExternalStorageDirectory()+"/test.png");
                 }
             }
         });

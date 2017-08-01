@@ -1,15 +1,18 @@
 package com.yf.remotecontrolserver.remoteminaclient;
 
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
 import com.yf.minalibrary.message.FileMessage;
+import com.yf.remotecontrolserver.common.App;
 
 import java.io.File;
 import java.io.FileOutputStream;
 
-import static com.yf.remotecontrolserver.common.ui.serice.MouseService.TAG;
+import static com.yf.remotecontrolserver.common.config_server.TAG;
 
 
 /**
@@ -33,7 +36,7 @@ public class ClientMinaFileManager {
     public void disposeFile(FileMessage fileMessage) {
         try {
             FileMessage.FileBean bean = fileMessage.getFileBean();
-            Log.d(TAG, "Received filename = " + bean.getFileName());
+            Log.d("ClientMinaFileManager", "Received filename = " + bean.getFileName());
             File file = new File(Environment.getExternalStorageDirectory() + "/tupian");
             boolean b = file.exists();
             if (!b) {
@@ -43,8 +46,12 @@ public class ClientMinaFileManager {
                 FileOutputStream os = new FileOutputStream(file.getPath() + "/" + bean.getFileName());
                 os.write(bean.getFileContent());
                 os.close();
+                Intent it = new Intent(Intent.ACTION_VIEW);
+                it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                Uri mUri = Uri.parse("file://" + file.getAbsolutePath());
+                it.setDataAndType(mUri, "image/*");
+                App.getAppContext().startActivity(it);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
