@@ -10,6 +10,7 @@ public class CmdType {
     public static final String CMD_INVALID = "invalid";
     public static final String CMD_REGISTER = "register";
     public static final String CMD_LOGIN = "login";
+    public static final String CMD_OPEN_NEW_SESSION = "open_new_session";
     public static final String CMD_HEARTBEAT = "heartbeat";
     public static final String CMD_MUSIC = "music";
     public static final String CMD_SECURITY = "security";

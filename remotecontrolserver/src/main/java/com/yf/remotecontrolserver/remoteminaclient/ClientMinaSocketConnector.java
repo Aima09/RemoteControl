@@ -49,7 +49,7 @@ public class ClientMinaSocketConnector {
             return true;
         } else {
             Log.d("ClientMinaSocketConnect", "未连接远程服务器");
-            return reConnectServer();
+            return initSession();
         }
     }
 
@@ -62,7 +62,11 @@ public class ClientMinaSocketConnector {
         }
     }
 
-    private boolean reConnectServer() {
+    public void disConnect(){
+        session = null;
+    }
+
+    private boolean initSession() {
         try {
             future = connector.connect(socketAddress);
             future.awaitUninterruptibly();// 等待连接创建完成
@@ -91,10 +95,15 @@ public class ClientMinaSocketConnector {
 
     public void close() {
         try {
-            CloseFuture future = session.getCloseFuture();
-            future.awaitUninterruptibly(1000);
-            connector.dispose();
-            connector = null;
+            if (null != session) {
+                CloseFuture future = session.getCloseFuture();
+                future.awaitUninterruptibly(1000);
+                session = null;
+            }
+            if (null != connector) {
+                connector.dispose();
+                connector = null;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

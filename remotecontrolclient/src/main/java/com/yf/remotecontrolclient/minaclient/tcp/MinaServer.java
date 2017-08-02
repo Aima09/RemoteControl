@@ -106,7 +106,9 @@ public class MinaServer extends Service implements MinaServerController {
         fixedThreadPool.execute(new Runnable() {
             @Override public void run() {
                 IoSession session = minaSocketConnector.getSession();
-                session.write(message);
+                if (null != session){
+                    session.write(message);
+                }
             }
         });
     }

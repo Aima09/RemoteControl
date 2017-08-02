@@ -7,4 +7,5 @@ package com.yf.remotecontrolserver.remoteminaclient;
 
 public interface ClientMinaServerController {
     void send(Object message);
+    void getSessionSend(Object message);
 }

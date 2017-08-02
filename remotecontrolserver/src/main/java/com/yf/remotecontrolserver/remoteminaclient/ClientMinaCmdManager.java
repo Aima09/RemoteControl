@@ -69,6 +69,12 @@ public class ClientMinaCmdManager {
                 Log.d(TAG, loginResult);
                 exeMinaCmdCallBack(ClientDataDisposeCenter.getLocalSenderId());
                 break;
+            case CmdType.CMD_OPEN_NEW_SESSION:
+                Log.d(TAG, "CMD_OPEN_NEW_SESSION。。。。。。");
+                cmdMessage.senderId = ClientDataDisposeCenter.getLocalSenderId();
+                cmdBean.setDeviceType(DeviceType.DEVICE_TYPE_IPAD);
+                clientMinaServerController.getSessionSend(cmdMessage);
+                break;
             case CmdType.CMD_HEARTBEAT:
                 Log.d(TAG, "我的对应的远程服务 session 还在线。。。。。。");
                 break;

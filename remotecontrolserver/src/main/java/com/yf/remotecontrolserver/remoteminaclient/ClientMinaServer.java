@@ -108,4 +108,17 @@ public class ClientMinaServer extends Service implements ClientMinaServerControl
             }
         });
     }
+
+    @Override public void getSessionSend(Object message) {
+        msg = message;
+        clientMinaSocketConnector.disConnect();
+        fixedThreadPool.execute(new Runnable() {
+            @Override public void run() {
+                boolean connectSuccess = clientMinaSocketConnector.connectServer();
+                if (connectSuccess) {
+                    clientMinaSocketConnector.send(msg);
+                }
+            }
+        });
+    }
 }
