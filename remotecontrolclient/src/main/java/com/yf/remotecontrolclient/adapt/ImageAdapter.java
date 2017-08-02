@@ -62,7 +62,7 @@ public class ImageAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.name.setText("文件名称：" + images.get(position).getName() + "  ");
+        holder.name.setText(images.get(position).getName());
         byte[] imageb= Base64.decode(images.get(position).getB(), Base64.DEFAULT);
         holder.imageView.setImageBitmap(MyThumbnailUtils.Bytes2Bimap(imageb));
         return convertView;

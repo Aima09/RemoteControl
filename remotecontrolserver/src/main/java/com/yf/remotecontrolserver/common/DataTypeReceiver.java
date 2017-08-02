@@ -43,6 +43,7 @@ public class DataTypeReceiver extends BroadcastReceiver {
             if ("file".equals(dataType)) {
                 fileBusinessService.sendFile(data, intent.getStringExtra("receiverId"));
             } else if ("image".equals(dataType)) {
+                Log.i(TAG,"receiverId = "+intent.getStringExtra("receiverId"));
                 imageBusinessService.sendImage(data, intent.getStringExtra("receiverId"));
             } else if ("music".equals(dataType)) {
                 musicBusinessService.sendMusic(data, intent.getStringExtra("receiverId"));

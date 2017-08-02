@@ -7,7 +7,8 @@ public class Video implements Serializable {
     private String videoname;
     private String signer;
     private int duration;
-
+    //缩略图片内容
+    private String b;
     public int getVideoid() {
         return videoid;
     }
@@ -40,9 +41,11 @@ public class Video implements Serializable {
         this.duration = duration;
     }
 
-    @Override
-    public String toString() {
-        return "Video [videoid=" + videoid + ", videoname=" + videoname
-                + ", signer=" + signer + ", duration=" + duration + "]";
+    public String getB() {
+        return b;
+    }
+
+    public void setB(String b) {
+        this.b = b;
     }
 }

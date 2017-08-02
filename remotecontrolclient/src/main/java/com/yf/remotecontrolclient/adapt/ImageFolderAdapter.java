@@ -66,7 +66,7 @@ public class ImageFolderAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.name.setText("文件名称：" + imageFolders.get(position).getName() + "  ");
+        holder.name.setText(imageFolders.get(position).getName());
         holder.number.setText("(" + imageFolders.get(position).getFolderNumber() + ")");
 //        holder.ivFolderFirstImage.
         String bs=imageFolders.get(position).getB();
