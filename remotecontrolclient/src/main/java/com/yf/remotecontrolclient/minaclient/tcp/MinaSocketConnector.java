@@ -82,6 +82,19 @@ public class MinaSocketConnector {
         }
     }
 
+    public IoSession getSession(){
+        IoSession session = null;
+        try {
+            ConnectFuture future = connector.connect(socketAddress);
+            future.awaitUninterruptibly();// 等待连接创建完成
+            session = future.getSession();// 获得session
+        } catch (Exception e) {
+            session = null;
+            e.printStackTrace();
+        }
+        return session;
+    }
+
     private boolean initSession() {
         try {
             ConnectFuture future = connector.connect(socketAddress);

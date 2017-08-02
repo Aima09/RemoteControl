@@ -13,6 +13,8 @@ import com.yf.minalibrary.message.CmdMessage;
 import com.yf.minalibrary.message.CmdMessage.CmdBean;
 import com.yf.remotecontrolclient.util.PromptUtil;
 
+import org.apache.mina.core.session.IoSession;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -96,4 +98,17 @@ public class MinaServer extends Service implements MinaServerController {
             }
         });
     }
+
+    @Override public void getSessionSend(final Object message) {
+        if (!minaSocketConnector.isConnect()) {
+            connectServer();
+        }
+        fixedThreadPool.execute(new Runnable() {
+            @Override public void run() {
+                IoSession session = minaSocketConnector.getSession();
+                session.write(message);
+            }
+        });
+    }
+
 }

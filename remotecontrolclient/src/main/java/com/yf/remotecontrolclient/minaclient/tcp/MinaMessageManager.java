@@ -1,7 +1,6 @@
 package com.yf.remotecontrolclient.minaclient.tcp;
 
 
-import android.os.Environment;
 import android.util.Base64;
 import android.util.Log;
 
@@ -86,7 +85,9 @@ public class MinaMessageManager {
         FileBean bean = new FileBean(filePath);
         FileMessage fileMessage = new FileMessage(ServerDataDisposeCenter.getLocalSenderId(),
                 ServerDataDisposeCenter.getRemoteReceiverId(),MessageType.MESSAGE_FILE,bean);
-        send(fileMessage);
+        if (null != minaServerController) {
+            minaServerController.getSessionSend(fileMessage);
+        }
     }
     /**
      * 对讲所用发送的MINA接口

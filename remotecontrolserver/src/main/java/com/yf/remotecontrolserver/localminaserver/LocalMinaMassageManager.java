@@ -1,6 +1,9 @@
 package com.yf.remotecontrolserver.localminaserver;
 
 
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Environment;
 import android.util.Base64;
 import android.util.Log;
 
@@ -9,12 +12,16 @@ import com.yf.minalibrary.common.DeviceType;
 import com.yf.minalibrary.common.MessageType;
 import com.yf.minalibrary.message.CmdMessage;
 import com.yf.minalibrary.message.CmdMessage.CmdBean;
+import com.yf.minalibrary.message.FileMessage;
 import com.yf.minalibrary.message.IntercomMessage;
 import com.yf.minalibrary.message.IntercomMessage.IntercomBean;
+import com.yf.remotecontrolserver.common.App;
 import com.yf.remotecontrolserver.dao.TcpAnalyzerImpl;
 import com.yuanfang.intercom.data.AudioData;
 import com.yuanfang.intercom.data.MessageQueue;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -48,11 +55,35 @@ public class LocalMinaMassageManager {
         String cmdType = cmdBean.getCmdType();
         switch (cmdType) {
             case CmdType.CMD_MUSIC:
-                Log.d("MinaCmdManager", "接收到音乐命令：" + cmdBean.getCmdContent());
+                Log.d("LocalMinaMassageManager", "接收到音乐命令：" + cmdBean.getCmdContent());
                 TcpAnalyzerImpl.getInstans().analy(cmdBean.getCmdContent().getBytes(), null);
                 break;
             case CmdType.CMD_SECURITY:
                 break;
+        }
+    }
+
+    public void disposeFile(FileMessage fileMessage) {
+        try {
+            FileMessage.FileBean bean = fileMessage.getFileBean();
+            Log.d("LocalMinaMassageManager", "Received filename = " + bean.getFileName());
+            File file = new File(Environment.getExternalStorageDirectory() + "/tupian");
+            boolean b = file.exists();
+            if (!b) {
+                b = file.mkdir();
+            }
+            if (b) {
+                FileOutputStream os = new FileOutputStream(file.getPath() + "/" + bean.getFileName());
+                os.write(bean.getFileContent());
+                os.close();
+                Intent it = new Intent(Intent.ACTION_VIEW);
+                it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                Uri mUri = Uri.parse("file://" + file.getPath() + "/" + bean.getFileName());
+                it.setDataAndType(mUri, "image/*");
+                App.getAppContext().startActivity(it);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

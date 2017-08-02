@@ -26,6 +26,9 @@ public class CmdMessageDecoder implements MessageDecoder {
         try {
             int messageLength = in.getInt();
             System.out.println("CmdMessageDecoder 命令总长度 messageLength = " + messageLength);
+            if (messageLength <= 0){
+                return MessageDecoderResult.NOT_OK;
+            }
             if (in.remaining() < messageLength) {
                 return MessageDecoderResult.NEED_DATA;
             } else {

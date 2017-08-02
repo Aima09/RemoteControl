@@ -27,6 +27,9 @@ public class IntercomMessageDecoder implements MessageDecoder {
         try {
             int messageLength = in.getInt();
             System.out.println("IntercomMessageDecoder 录音总长度 messageLength = " + messageLength);
+            if (messageLength <= 0){
+                return MessageDecoderResult.NOT_OK;
+            }
             if (in.remaining() < messageLength) {
                 return MessageDecoderResult.NEED_DATA;
             } else {

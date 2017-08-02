@@ -8,6 +8,7 @@ import com.yf.minalibrary.common.MessageType;
 import com.yf.minalibrary.message.BaseMessage;
 import com.yf.minalibrary.message.CmdMessage;
 import com.yf.minalibrary.message.CmdMessage.CmdBean;
+import com.yf.minalibrary.message.FileMessage;
 
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IdleStatus;
@@ -38,6 +39,11 @@ public class IoClientHandler extends IoHandlerAdapter {
 
     public void messageSent(IoSession session, Object message) throws Exception {
         Log.d("IoClientHandler", "messageSent 客户端发送消息：" + message);
+        if (message instanceof FileMessage){
+            if (((FileMessage) message).messageType.equals(MessageType.MESSAGE_FILE)){
+                session.closeNow();
+            }
+        }
     }
 
     @Override

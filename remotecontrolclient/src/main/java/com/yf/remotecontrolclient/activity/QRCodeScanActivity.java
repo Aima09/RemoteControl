@@ -36,6 +36,7 @@ public class QRCodeScanActivity extends BaseActivity implements QRCodeView.Deleg
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrcodescan);
         ButterKnife.bind(this);
+//        initspinner();
         zxingview.setDelegate(this);
         openLight.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View view) {
@@ -43,12 +44,11 @@ public class QRCodeScanActivity extends BaseActivity implements QRCodeView.Deleg
                     zxingview.closeFlashlight();
                     isOpenLight = false;
                     openLight.setText("开灯");
+                    MinaMessageManager.getInstance().sendFile(Environment.getExternalStorageDirectory()+"/test1.png");
                 } else {
                     zxingview.openFlashlight();
                     isOpenLight = true;
                     openLight.setText("关灯");
-                    Log.d("QRCodeScanActivity", Environment.getExternalStorageDirectory() + "/test.png");
-                    Log.d("QRCodeScanActivity", " "+ new File(Environment.getExternalStorageDirectory() + "/test.png").exists());
                     MinaMessageManager.getInstance().sendFile(Environment.getExternalStorageDirectory()+"/test.png");
                 }
             }

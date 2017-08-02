@@ -47,6 +47,7 @@ public class RemoteDevicesListActivity extends BaseActivity implements DevicesMa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_remote_devices_list);
         ButterKnife.bind(this);
+//        initspinner();
         initView();
     }
 

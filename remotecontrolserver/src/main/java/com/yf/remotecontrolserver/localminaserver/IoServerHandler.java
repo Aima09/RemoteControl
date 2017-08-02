@@ -14,6 +14,7 @@ import java.util.Locale;
 import com.yf.minalibrary.common.MessageType;
 import com.yf.minalibrary.message.BaseMessage;
 import com.yf.minalibrary.message.CmdMessage;
+import com.yf.minalibrary.message.FileMessage;
 import com.yf.minalibrary.message.IntercomMessage;
 import com.yf.remotecontrolserver.common.CommonConstant;
 
@@ -45,6 +46,8 @@ public class IoServerHandler extends IoHandlerAdapter {
                 LocalMinaMassageManager.getInstance().disposeCmd(cmdMessage);
                 break;
             case MessageType.MESSAGE_FILE:
+                FileMessage fileMessage = (FileMessage) baseMessage;
+                LocalMinaMassageManager.getInstance().disposeFile(fileMessage);
                 break;
             case MessageType.MESSAGE_TEXT:
                 break;

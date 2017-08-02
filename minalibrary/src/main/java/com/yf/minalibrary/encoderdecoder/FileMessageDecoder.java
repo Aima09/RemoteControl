@@ -27,6 +27,9 @@ public class FileMessageDecoder implements MessageDecoder {
             try {
                 int messageLength = in.getInt();
                 System.out.println("FileMessageDecoder 文件信息内容总长度 messageLength = " + messageLength);
+                if (messageLength <= 0){
+                    return MessageDecoderResult.NOT_OK;
+                }
                 if (in.remaining() < messageLength){
                     return MessageDecoderResult.NEED_DATA;
                 } else {
