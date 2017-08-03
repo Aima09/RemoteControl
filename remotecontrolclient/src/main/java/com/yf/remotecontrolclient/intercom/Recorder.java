@@ -2,15 +2,12 @@ package com.yf.remotecontrolclient.intercom;
 
 import android.media.AudioRecord;
 import android.os.Handler;
-import android.util.Log;
 
 import com.yf.remotecontrolclient.service.imp.IntercomServiceImpl;
 import com.yuanfang.intercom.data.AudioData;
 import com.yuanfang.intercom.job.JobHandler;
 import com.yuanfang.intercom.util.AudioDataUtil;
 import com.yuanfang.intercom.util.Constants;
-
-import java.util.Arrays;
 
 /**
  * 音频录制数据格式ENCODING_PCM_16BIT，返回数据类型为short[]
@@ -62,13 +59,8 @@ public class Recorder extends JobHandler {
 
             audioData.setEncodedData(AudioDataUtil.raw2spx(audioData.getRawData()));
             // 通过MINA，发送数据
-            Log.d(TAG, "run: send msg!!!!");
             try {
-                Log.d(TAG, "run: send msg!!!!" + Arrays.toString(audioData.getEncodedData()));
-//                String a = new String(audioData.getEncodedData(),"UTF-8");
-//                Log.d(TAG, "run: send msg!!!!" + Arrays.toString(a.getBytes("UTF-8")));
                 IntercomServiceImpl.get().send(audioData.getEncodedData());
-//                IntercomServiceImpl.get().send(Arrays.toString(audioData.getEncodedData()));
             } catch (Exception e){
                 e.printStackTrace();
             }
