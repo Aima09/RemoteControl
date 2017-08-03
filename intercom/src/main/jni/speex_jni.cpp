@@ -53,7 +53,10 @@ JNIEXPORT jint JNICALL Java_com_yuanfang_intercom_audio_Speex_open(JNIEnv *env, 
     speex_preprocess_ctl(preprocess_state, SPEEX_PREPROCESS_SET_VAD, &vad);
     speex_preprocess_ctl(preprocess_state, SPEEX_PREPROCESS_SET_PROB_START , &vadProbStart);
     speex_preprocess_ctl(preprocess_state, SPEEX_PREPROCESS_SET_PROB_CONTINUE, &vadProbContinue);
-
+    int di = 1;
+    speex_preprocess_ctl(preprocess_state, SPEEX_PREPROCESS_SET_DENOISE, &di);
+    int ns = -25;
+    speex_preprocess_ctl(preprocess_state, SPEEX_PREPROCESS_SET_NOISE_SUPPRESS, &ns);
     return (jint)0;
 }
 
