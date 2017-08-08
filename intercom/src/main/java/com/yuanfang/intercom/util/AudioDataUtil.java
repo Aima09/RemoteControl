@@ -8,9 +8,9 @@ import com.yuanfang.intercom.audio.Speex;
 
 public class AudioDataUtil {
     /*The frame size in hardcoded for this sample code but it doesn't have to be*/
-    private static int encFrameSize = 160;
-    private static int decFrameSize = 160;
-    private static int encodedFrameSize = 28;
+    private static final int encFrameSize = 160;
+    private static final int decFrameSize = 160;
+    private static final int encodedFrameSize = 46;
 
     /**
      * 将raw原始音频文件编码为Speex格式

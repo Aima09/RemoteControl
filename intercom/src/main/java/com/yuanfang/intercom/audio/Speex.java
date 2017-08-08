@@ -6,7 +6,7 @@ package com.yuanfang.intercom.audio;
 
 public class Speex {
 
-    private static final int DEFAULT_COMPRESSION = 5;
+    private static final int DEFAULT_COMPRESSION = 9;
 
     static {
         try {
