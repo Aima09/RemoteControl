@@ -30,7 +30,7 @@ public class WifiReceiver extends BroadcastReceiver {
 
                 WifiManager wifiManager = (WifiManager) context
                         .getSystemService(Context.WIFI_SERVICE);
-                WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+//                WifiInfo wifiInfo = wifiManager.getConnectionInfo();
 
                 // 获取当前wifi名称
                 // System.out.println("连接到网络 " + wifiInfo.getSSID());
@@ -39,7 +39,6 @@ public class WifiReceiver extends BroadcastReceiver {
                 App.getAppContext().startService(new Intent(App.getAppContext(), MouseService.class));
                 //重启服务
                 RemoteServerManager.getInstance().startRemoteServer();
-
             }
         }
         //

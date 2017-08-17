@@ -66,10 +66,9 @@
             android:label="@string/app_name"
             android:launchMode="singleTask"/>
         <activity android:name=".activity.MediaMusicActivity"/>
-        <activity android:name=".activity.NewMediaMusicActivity"/>
         <activity android:name=".activity.MediaVideoActivity"/>
         <activity
-            android:name=".activity.MouseActivity"
+        android:name=".activity.MouseActivity"
             android:launchMode="singleTask"/>
         <activity android:name=".activity.MediaImageFolderActivity"/>
         <activity android:name=".activity.MediaImageActivity"/>

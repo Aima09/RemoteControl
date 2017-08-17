@@ -11,9 +11,11 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.yf.remotecontrolclient.CommonConstant;
 import com.yf.remotecontrolclient.R;
@@ -28,9 +30,9 @@ import com.yf.remotecontrolclient.util.SpUtil;
 
 
 public class BrowserActivity extends BaseActivity implements AdapterView.OnItemLongClickListener {
+    private String TAG="BrowserActivity";
     private EditText editText;
     private Button btn;
-    JsonAssistant assistant;
     BrowserBussinessService browserBussinessService;
     private RadioButton radioButton;
 
@@ -46,7 +48,6 @@ public class BrowserActivity extends BaseActivity implements AdapterView.OnItemL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_browser);
         setContentView(R.layout.activity_website);
         jsonAssistant = new JsonAssistant();
         browserBussinessService = new BrowserBusinessServiceImpl();
@@ -60,26 +61,21 @@ public class BrowserActivity extends BaseActivity implements AdapterView.OnItemL
                 startActivity(intent);
             }
         });
-        String wjsong = SpUtil.getString(this, CommonConstant.BROWSER_WEBSITELIST_JSON, "");
-        websiteList.setWebsites(new ArrayList<Website>());
-        if (!TextUtils.isEmpty(wjsong)) {
-            websiteList = jsonAssistant.paseWebsiteList(wjsong);
-        }
+
         gridView = (GridView) findViewById(R.id.gv_website);
         gridView.setOnItemLongClickListener(this);//长按事件监听
-
+        //查
+        websiteList=query();
+        Log.i(TAG,"查询"+websiteList.getWebsites().size());
         mAdapter = new WebsiteAdapter(BrowserActivity.this, websiteList);
         gridView.setAdapter(mAdapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (isShowDelete) {
-
                     delete(position);//删除选中项
-                    Log.i("------>", "进来了么");
                     mAdapter = new WebsiteAdapter(BrowserActivity.this, websiteList);//重新绑定一次adapter
                     gridView.setAdapter(mAdapter);
-                    mAdapter.notifyDataSetChanged();//刷新gridview
                 } else {
                     websiteList.getWebsites().get(position).setDate(new Date());
                     SpUtil.putString(getApplication(), CommonConstant.BROWSER_WEBSITELIST_JSON, jsonAssistant.createWebsite(websiteList));
@@ -112,14 +108,9 @@ public class BrowserActivity extends BaseActivity implements AdapterView.OnItemL
 
     @Override
     protected void onResume() {
-        String wjsong = SpUtil.getString(this, CommonConstant.BROWSER_WEBSITELIST_JSON, "");
-        websiteList.setWebsites(new ArrayList<Website>());
-        if (!TextUtils.isEmpty(wjsong)) {
-            websiteList = jsonAssistant.paseWebsiteList(wjsong);
-        }
+        websiteList=query();
         gridView = (GridView) findViewById(R.id.gv_website);
         gridView.setOnItemLongClickListener(this);//长按事件监听
-
         mAdapter = new WebsiteAdapter(BrowserActivity.this, websiteList);
         gridView.setAdapter(mAdapter);
         super.onResume();
@@ -127,9 +118,44 @@ public class BrowserActivity extends BaseActivity implements AdapterView.OnItemL
 
     private void delete(int position) {//删除选中项方法
         if (isShowDelete) {
+            Log.i(TAG,"isShowDelete="+isShowDelete);
+            Log.i(TAG,"position="+position);
+            if(position==0||position==1){
+                Toast.makeText(getApplicationContext(),"无法删除",Toast.LENGTH_LONG).show();
+                isShowDelete = false;
+                return;
+            }
             websiteList.getWebsites().remove(position);
             isShowDelete = false;
         }//写回数据
+        update(websiteList);
+    }
+
+
+    private WebsiteList query(){
+        String wjsong = SpUtil.getString(this, CommonConstant.BROWSER_WEBSITELIST_JSON, "");
+        websiteList.setWebsites(new ArrayList<Website>());
+        if (!TextUtils.isEmpty(wjsong)) {
+            websiteList = jsonAssistant.paseWebsiteList(wjsong);
+        }
+        List<Website> websites=websiteList.getWebsites();
+        boolean b=false;//有百度
+        boolean b1=false;//有华尔思官网
+        if(websites.size()<2){
+            Website website1=new Website();
+            website1.setUrl("https://www.baidu.com");
+            website1.setDate(new Date());
+            websites.add(0,website1);
+            Website website2=new Website();
+            website2.setUrl("http://www.fhwise.com");
+            website2.setDate(new Date());
+            websites.add(0,website2);
+            websiteList.setWebsites(websites);
+            update(websiteList);
+        }
+        return websiteList;
+    }
+    private void update(WebsiteList websiteList){
         SpUtil.putString(getApplication(), CommonConstant.BROWSER_WEBSITELIST_JSON, jsonAssistant.createWebsite(websiteList));
     }
 }

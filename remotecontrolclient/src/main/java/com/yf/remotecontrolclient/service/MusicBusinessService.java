@@ -1,7 +1,9 @@
 package com.yf.remotecontrolclient.service;
 
 
+import com.yf.remotecontrolclient.domain.GetSongStuatus;
 import com.yf.remotecontrolclient.domain.Setmode;
+import com.yf.remotecontrolclient.domain.SetplaysongProgress;
 import com.yf.remotecontrolclient.domain.Setplaysongid;
 import com.yf.remotecontrolclient.domain.Setplaystatus;
 import com.yf.remotecontrolclient.domain.Setvolumeadd;
@@ -17,4 +19,7 @@ public interface MusicBusinessService {
     public void sendBssetplaystatus(Setplaystatus setplaystatus);
 
     public void sendMediaMode(Setmode setmode);
+
+    public void sendSetplaysongProgress(SetplaysongProgress setplaysongProgress);
+    public void sendBsgetSongstatus(GetSongStuatus getSongStuatus);
 }

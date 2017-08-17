@@ -20,7 +20,7 @@ import com.yf.remotecontrolclient.R;
 /**
  * 包含下拉刷新功能的ListView
  *
- * @author poplar
+ * @author sujuntao
  */
 public class RefreshListView extends ListView implements OnScrollListener {
 

@@ -4,8 +4,10 @@ package com.yf.remotecontrolclient.minaclient.tcp;
 import android.util.Log;
 
 import com.yf.minalibrary.encoderdecoder.MessageProtocolCodecFactory;
+import com.yf.remotecontrolclient.App;
 import com.yf.remotecontrolclient.CommonConstant;
 import com.yf.remotecontrolclient.activity.service.MouseService;
+import com.yf.remotecontrolclient.util.SpUtil;
 
 import org.apache.mina.core.future.CloseFuture;
 import org.apache.mina.core.future.ConnectFuture;
@@ -14,6 +16,8 @@ import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.transport.socket.nio.NioSocketConnector;
 
 import java.net.InetSocketAddress;
+
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 public class MinaSocketConnector {
 
@@ -26,7 +30,7 @@ public class MinaSocketConnector {
     private InetSocketAddress socketAddress;
 
     public boolean connectServer() {
-        if (CommonConstant.LINE_TYPE == CommonConstant.LINE_TYPE_LOCAL) {
+        if (SpUtil.getInt(App.getAppContext(),CommonConstant.LINK_TYPE_KEY,100) == CommonConstant.LINE_TYPE_LOCAL) {
             if (null != socketAddress) {
                 if (socketAddress.getPort() != LOCAL_SERVER_DEFAULT_PROT) {
                     close();
@@ -36,11 +40,13 @@ public class MinaSocketConnector {
                     }
                 }
             }
+            Log.i("MinaSoketConnector",MouseService.equipment.getIp()+"");
             return connectServer(MouseService.equipment.getIp(), LOCAL_SERVER_DEFAULT_PROT);
-        } else if (CommonConstant.LINE_TYPE == CommonConstant.LINE_TYPE_REMOTE) {
+        } else if (SpUtil.getInt(App.getAppContext(),CommonConstant.LINK_TYPE_KEY,100) == CommonConstant.LINE_TYPE_REMOTE) {
             if (null != socketAddress && socketAddress.getPort() != REMOTE_SERVER_DEFAULT_PROT) {
                 close();
             }
+            Log.i("MinaSoketConnector",MouseService.equipment.getIp()+"");
             return connectServer(SERVER_DEFAULT_IP, REMOTE_SERVER_DEFAULT_PROT);
         } else {
             return false;
@@ -85,7 +91,7 @@ public class MinaSocketConnector {
     public IoSession getSession(){
         IoSession session = null;
         try {
-            ConnectFuture future = connector.connect(socketAddress);
+                ConnectFuture future = connector.connect(socketAddress);
             future.awaitUninterruptibly();// 等待连接创建完成
             session = future.getSession();// 获得session
         } catch (Exception e) {

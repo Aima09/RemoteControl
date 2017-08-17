@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.yf.remotecontrolclient.App;
+import com.yf.remotecontrolclient.CommonConstant;
 import com.yf.remotecontrolclient.activity.FileActivity;
 import com.yf.remotecontrolclient.activity.FileShowListActivity;
 import com.yf.remotecontrolclient.activity.MediaImageActivity;
@@ -17,6 +18,7 @@ import com.yf.remotecontrolclient.service.imp.MouseBusinessServiceImpl;
 import com.yf.remotecontrolclient.service.imp.MusicBusinessServiceImpl;
 import com.yf.remotecontrolclient.service.imp.VideoBusinessServiceImpl;
 import com.yf.remotecontrolclient.util.JsonAssistant;
+import com.yf.remotecontrolclient.util.SpUtil;
 
 public class TcpAnalyzerImpl implements AnalyzerInterface {
     private static String TAG = "TcpAnalyzerImpl";
@@ -142,6 +144,15 @@ public class TcpAnalyzerImpl implements AnalyzerInterface {
                 intent.setAction(FileShowListActivity.MBROADCASTRECEIVER);
                 intent.putExtra(FileBusinessServiceImpl.CMD, "BSfileShowList");
                 intent.putExtra("fileShowList", jsonAssistant.paseFileShowList(data));
+                App.getAppContext().sendBroadcast(intent);
+            }else if (data.contains("cmd") && data.contains("BSgetsongstatus")) {
+                Log.i(TAG,"BSgetsongstatus");
+                //写入文件
+                SpUtil.putString(App.getAppContext(),CommonConstant.GET_SONG_STATUS_KEY,data);
+                Intent intent = new Intent();
+                intent.setAction(MediaMusicActivity.MBROADCASTRECEIVER);
+                intent.putExtra(MusicBusinessServiceImpl.CMD, "BSgetsongstatus");
+                // 发送自定义无序广播
                 App.getAppContext().sendBroadcast(intent);
             }
 //			Log.i(TAG, data);

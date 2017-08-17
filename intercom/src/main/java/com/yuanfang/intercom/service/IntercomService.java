@@ -245,7 +245,7 @@ public class IntercomService extends Service {
         free();
         // 停止前台Service
         stopForeground(true);
-        stopSelf();
+        stopSelf(   );
     }
 
     /**

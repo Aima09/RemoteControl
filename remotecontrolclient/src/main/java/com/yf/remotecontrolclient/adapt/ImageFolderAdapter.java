@@ -28,6 +28,23 @@ public class ImageFolderAdapter extends BaseAdapter {
         this.imageFolders = imageFolders;
     }
 
+    /**
+     * 添加并刷新数据
+     * @param list
+     */
+    public void addAndrefresh(List<ImageFolder> list) {
+        this.imageFolders.addAll(list);
+        this.notifyDataSetChanged();
+    }
+
+    /**
+     * 清除数据
+     */
+    public void clear() {
+        this.imageFolders.clear();
+        this.notifyDataSetChanged();
+    }
+
     @Override
     public int getCount() {
         return imageFolders.size();
@@ -68,7 +85,6 @@ public class ImageFolderAdapter extends BaseAdapter {
         }
         holder.name.setText(imageFolders.get(position).getName());
         holder.number.setText("(" + imageFolders.get(position).getFolderNumber() + ")");
-//        holder.ivFolderFirstImage.
         String bs=imageFolders.get(position).getB();
         byte[] imageb= Base64.decode(bs, Base64.DEFAULT);
         holder.ivFolderFirstImage.setImageBitmap(MyThumbnailUtils.Bytes2Bimap(imageb));

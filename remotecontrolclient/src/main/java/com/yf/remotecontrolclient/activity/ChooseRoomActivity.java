@@ -13,6 +13,7 @@ import com.yf.remotecontrolclient.R;
 import com.yf.remotecontrolclient.activity.service.MouseService;
 import com.yf.remotecontrolclient.domain.Equipment;
 import com.yf.remotecontrolclient.minaclient.tcp.RemoteServerManager;
+import com.yf.remotecontrolclient.util.SpUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,8 +66,10 @@ public class ChooseRoomActivity extends BaseActivity implements OnItemClickListe
                             long id) {
         //MinaActivity.getMainActivity().restart();
         //当前设备
-        CommonConstant.LINE_TYPE = CommonConstant.LINE_TYPE_LOCAL;
+        SpUtil.putInt(getApplication(),CommonConstant.LINK_TYPE_KEY,CommonConstant.LINE_TYPE_LOCAL);
         MouseService.equipment = equipments.get(position);
+        //存下设
+        SpUtil.putString(getApplication(),CommonConstant.LOCAL_LINK_ADRESS_KEY,MouseService.equipment.getIp());
         RemoteServerManager.getInstance().startRemoteServer();
         finish();
     }

@@ -37,8 +37,15 @@ public class CommonConstant {
      * 1为本地类型(局域网)
      * 2为互联网类型（www通过服务器转发）
      */
-    public static int LINE_TYPE = CommonConstant.LINE_TYPE_REMOTE;
+//    public static int LINE_TYPE = CommonConstant.LINE_TYPE_REMOTE;
     public static final int LINE_TYPE_LOCAL = 1;
     public static final int LINE_TYPE_REMOTE = 2;
+    public static final String LINK_TYPE_KEY="link_type_key";
+    //本地连接的id
+    public static final String LOCAL_LINK_ADRESS_KEY="local_link_adress_key";
+
+    //存储歌曲状态的key
+    public static final String GET_SONG_STATUS_KEY="get_song_status_key";
+
 
 }

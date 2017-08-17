@@ -58,10 +58,8 @@ public class RemoteDevicesListActivity extends BaseActivity implements DevicesMa
             @Override public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 Log.d("RemoteDevicesListActivi", "b:" + b);
                 if (b) {
-                    CommonConstant.LINE_TYPE = 2;
                     RemoteServerManager.getInstance().startRemoteServer();
                 } else {
-//                    RemoteServerManager.getInstance().stopRemoteServer();
                     Log.d("RemoteDevicesListActivi", "音乐控制测试指令发送。。。");
                     MinaMessageManager.getInstance().sendControlCmd("我是音乐控制测试指令");
                 }

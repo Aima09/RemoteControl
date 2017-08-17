@@ -23,13 +23,14 @@ import com.yf.remotecontrolclient.domain.ImageFolderList;
 import com.yf.remotecontrolclient.service.ImageBusinessService;
 import com.yf.remotecontrolclient.service.imp.ImageBusinessServiceImpl;
 
+import static org.slf4j.MDC.clear;
+
 public class MediaImageFolderActivity extends BaseActivity implements
         AdapterView.OnItemClickListener {
     public static String TAG = "MediaImageFolderActivity";
     private ListView listView;
     private ImageFolderAdapter imageAdapter;
     public final static String MBROADCASTRECEIVER = "com.yf.client.activity.MediaImageActivity.image.folder";
-    private List<ImageFolder> imageFolders = new ArrayList<ImageFolder>();
     private ImageFolderList imageFolderList;
     private ImageBusinessService imageBusinessService;
     int total;
@@ -44,9 +45,7 @@ public class MediaImageFolderActivity extends BaseActivity implements
                     return;
                 }
                 total = imageFolderList.getTotal();
-                List<ImageFolder> list = imageFolderList.getImageFolderList();
-                imageFolders.addAll(list);
-                Message message = Message.obtain();
+                imageAdapter.addAndrefresh(imageFolderList.getImageFolderList());
                 handler.sendEmptyMessage(0);
             }else if(cmd.equals("BSopenImageFolder")){
                 startActivity(new Intent(getApplicationContext(),
@@ -61,14 +60,11 @@ public class MediaImageFolderActivity extends BaseActivity implements
             switch (msg.what) {
                 case 0:
                     imageAdapter.notifyDataSetChanged();
-                    if (imageFolders == null) {
-                        return;
-                    }
-                    if (imageFolders.size() <= total) {
+                    if (imageAdapter.getCount() <= total) {
                         ImageFolderList imageFolderList = new ImageFolderList();
                         imageFolderList.setCmd("BSgetimageFolderList");
                         imageFolderList.setPageSize(2);
-                        imageFolderList.setPageIndex(imageFolders.size());
+                        imageFolderList.setPageIndex(imageAdapter.getCount());
                         imageBusinessService.sendBsgetFolderList(imageFolderList);
                     }
                     break;
@@ -83,7 +79,7 @@ public class MediaImageFolderActivity extends BaseActivity implements
         initspinner();
         listView = (ListView) findViewById(R.id.image_list_view);
         imageAdapter = new ImageFolderAdapter();
-        imageAdapter.setImageFolders(imageFolders);
+        imageAdapter.setImageFolders(new ArrayList<ImageFolder>());
         listView.setAdapter(imageAdapter);
 
         IntentFilter filter = new IntentFilter();
@@ -99,14 +95,13 @@ public class MediaImageFolderActivity extends BaseActivity implements
         ImageFolder imageFolder=new ImageFolder();
         imageFolder.setCmd("BSopenImageFolder");
         imageFolder.setId(position);
-        imageFolder.setName(imageFolders.get(position).getName());
+        imageFolder.setName(imageAdapter.getImageFolders().get(position).getName());
         imageBusinessService.sendBsopenFolder(imageFolder);
     }
 
     @Override
     protected void onResume() {
-        imageFolders.clear();
-        Log.i(TAG, "MediaImageFolderActivity.onResume");
+        imageAdapter.clear();
         ImageFolderList imageFolderList = new ImageFolderList();
         imageFolderList.setCmd("BSgetimageFolderList");
         imageFolderList.setPageSize(2);
@@ -118,7 +113,10 @@ public class MediaImageFolderActivity extends BaseActivity implements
 
     @Override
     protected void onDestroy() {
-        imageFolders.clear();
+        imageAdapter.clear();
+        imageAdapter=null;
+        listView=null;
+        System.gc();
         unregisterReceiver(mBroadcastReceiver);
         super.onDestroy();
     }

@@ -99,7 +99,19 @@ public class TcpAnalyzerImpl implements AnalyzerInterface {
                 intent.putExtra(MUSIC_KEY, data);
                 intent.putExtra("receiverId", receiverId);
                 App.getAppContext().sendBroadcast(intent);
-            } else if (data.contains("cmd") && data.contains("BSsetvolumeadd")) {
+            }else if(data.contains("cmd") && data.contains("BSsetplaysongProgress")){
+                Intent intent = new Intent();
+                intent.setAction(MUSICRECEIVER);
+                intent.putExtra(MUSIC_KEY, data);
+                intent.putExtra("receiverId", receiverId);
+                App.getAppContext().sendBroadcast(intent);
+            }else if(data.contains("cmd") && data.contains("BSgetsongstatus")){
+                Intent intent = new Intent();
+                intent.setAction(MUSICRECEIVER);
+                intent.putExtra(MUSIC_KEY, data);
+                intent.putExtra("receiverId", receiverId);
+                App.getAppContext().sendBroadcast(intent);
+            }else if (data.contains("cmd") && data.contains("BSsetvolumeadd")) {
                 // {"cmd":"BSsetvolumeadd","valume":"-"}
                 // 声音调低
                 Intent intent = new Intent();

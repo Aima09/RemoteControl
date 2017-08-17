@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -24,13 +25,10 @@ import com.yf.remotecontrolclient.dao.TcpAnalyzerImpl;
 import com.yf.remotecontrolclient.dao.tcpip.TCPIPServer;
 import com.yf.remotecontrolclient.domain.Boot;
 import com.yf.remotecontrolclient.domain.Equipment;
-import com.yf.remotecontrolclient.domain.OpenSettings;
 import com.yf.remotecontrolclient.domain.Palpitation;
 import com.yf.remotecontrolclient.intercom.InterService;
 import com.yf.remotecontrolclient.minaclient.tcp.RemoteServerManager;
-import com.yf.remotecontrolclient.service.SettingsBusinessService;
 import com.yf.remotecontrolclient.service.imp.MouseBusinessServiceImpl;
-import com.yf.remotecontrolclient.service.imp.SettingsBusinessServiceImpl;
 import com.yf.remotecontrolclient.util.IpUtil;
 import com.yf.remotecontrolclient.util.SpUtil;
 
@@ -46,14 +44,12 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
     private static final int REQUEST_CODE_QRCODE_PERMISSIONS = 1;
     // 定义图标数组
     private int[] imageRes = {R.drawable.timg, R.drawable.text, R.drawable.btn_music,
-            R.drawable.vidio, R.drawable.tk, R.drawable.llq,
-            R.drawable.setting, R.drawable.zyglq, R.drawable.timg,
+            R.drawable.vidio, R.drawable.tk, R.drawable.llq,R.drawable.zyglq, R.drawable.timg,
             R.drawable.timg, R.drawable.setting, R.mipmap.ic_talk};//R.drawable.zyglq
 
     // 定义图标下方的名称数组
     private String[] name = {"鼠标控制", "输入文字", "播放音乐",
-            "播放视频", "图库", "浏览器",
-            "设置控制", "资源管理", "本地控制",
+            "播放视频", "图库", "浏览器", "资源管理", "本地控制",
             "远程控制", "设置", "对讲"};//"资源管理"
 
     public MouseBusinessServiceImpl mouseBusinessService;
@@ -165,16 +161,11 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
     }
 
     private void initBusiness() {
-
-        // Log.i(TAG, "启动服务");
-//		SocketManager.getSocketManager().stop();// 先关掉之前的
         // 再开启新的
         SocketManager.getSocketManager().startUdp();
 
         mouseBusinessService = new MouseBusinessServiceImpl();
         // 自动连接
-        /*SocketManager.iscolle = true;
-        SocketManager.getSocketManager().outoCollection();*/
         RemoteServerManager.getInstance().startRemoteServer();
         startService(new Intent(App.getAppContext(), MouseService.class));
     }
@@ -196,6 +187,12 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
     }
 
     private void initView() {
+        String localLinkAdress=SpUtil.getString(getApplication(),CommonConstant.LOCAL_LINK_ADRESS_KEY,null);
+        Equipment eq=new Equipment();
+        eq.setIp(localLinkAdress);
+        if(!TextUtils.isEmpty(localLinkAdress)){
+            MouseService.equipment=eq;
+        }
         GridView gridview = (GridView) findViewById(R.id.gridview);
         // 添加并且显示
         gridview.setAdapter(saImageItems);
@@ -208,6 +205,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         // 3.注册广播接收者
         registerReceiver(mMainActivityBroadcastReceiver, filter);
         handler = new MainHandler();
+//        startService(new Intent(this,));
     }
 
     @Override
@@ -226,7 +224,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
                 break;
             case 2:
                 Intent intent1 = new Intent(getApplicationContext(),
-                        NewMediaMusicActivity.class);
+                        MediaMusicActivity.class);
                 startActivity(intent1);
                 break;
             case 3:
@@ -244,7 +242,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
                         BrowserActivity.class);
                 startActivity(intent5);
                 break;
-            case 6:
+            /*case 6:
                 //设置
                 OpenSettings openSettings = new OpenSettings();
                 openSettings.setCmd("BSopenSettings");
@@ -253,25 +251,25 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
                 Intent intent6 = new Intent(getApplicationContext(),
                         MouseActivity.class);
                 startActivity(intent6);
-                break;
-            case 7:
+                break;*/
+            case 6:
                 Intent intent7 = new Intent(getApplicationContext(),
                         FileActivity.class);
                 startActivity(intent7);
                 break;
-            case 8://本地控制
+            case 7://本地控制
                 startActivity(new Intent(getApplicationContext(), ChooseRoomActivity.class));
                 break;
-            case 9:
+            case 8:
                 //远程控制
                 Intent intent9 = new Intent(getApplicationContext(),
                         RemoteDevicesListActivity.class);
                 startActivity(intent9);
                 break;
-            case 10://设置
+            case 9://设置
                 startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
                 break;
-            case 11:
+            case 10:
                 startActivity(new Intent(getApplicationContext(), IntercomActivity.class));
                 break;
         }
@@ -280,16 +278,6 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
     //跳转回主页功能
     @Override
     protected void onResume() {
-        //打开play
-        /*
-        Log.i(TAG, "onResume");
-		MusicBusinessService musicBusinessService =new MusicBusinessServiceImpl();
-		// 获取音乐列表
-		SongList songList = new SongList();
-		songList.setCmd("BSgetsonglist");
-		songList.setPageSize(2);
-		songList.setPageIndex(0);
-		musicBusinessService.sendBsgetSongList(songList);*/
         super.onResume();
     }
 

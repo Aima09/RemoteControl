@@ -1,6 +1,7 @@
 package com.yf.remotecontrolclient.activity;
 
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -21,7 +22,7 @@ import com.yf.remotecontrolclient.CommonConstant;
 import com.yf.remotecontrolclient.R;
 import com.yf.remotecontrolclient.util.SpUtil;
 
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends Activity {
 
     private LinearLayout contentLayout;
     private ImageView chooseRoom;
@@ -144,21 +145,10 @@ public class BaseActivity extends AppCompatActivity {
         });
     }
 
-    private void showspinner() {
-
-    }
-
-    private void hidespinner() {
-
-    }
 
     @Override
     protected void onDestroy() {
         unregisterReceiver(mBaseActivitybroadcastReceiver);
         super.onDestroy();
     }
-//	@Override
-//	public void setTitle(CharSequence title) {
-////		mTitleTx.setText(title);
-//	}
 }

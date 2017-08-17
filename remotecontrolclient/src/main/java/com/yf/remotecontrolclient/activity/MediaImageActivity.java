@@ -7,7 +7,6 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -17,14 +16,14 @@ import java.util.List;
 
 import com.yf.remotecontrolclient.R;
 import com.yf.remotecontrolclient.adapt.ImageAdapter;
-import com.yf.remotecontrolclient.domain.Action;
 import com.yf.remotecontrolclient.domain.Image;
 import com.yf.remotecontrolclient.domain.ImageList;
 import com.yf.remotecontrolclient.domain.OpenImage;
 import com.yf.remotecontrolclient.service.ImageBusinessService;
 import com.yf.remotecontrolclient.service.imp.ImageBusinessServiceImpl;
-import com.yf.remotecontrolclient.service.imp.MouseBusinessServiceImpl;
 import com.yf.remotecontrolclient.service.imp.MusicBusinessServiceImpl;
+
+import static android.media.CamcorderProfile.get;
 
 /**
  * 用于显示文件夹的图片activity
@@ -35,7 +34,6 @@ public class MediaImageActivity extends BaseActivity implements AdapterView.OnIt
     private ListView listView;
     private ImageAdapter imageAdapter;
     public final static String MBROADCASTRECEIVER = "com.yf.client.activity.MediaImageActivity.image";
-    private List<Image> Images = new ArrayList<Image>();
     private ImageList imageList;
     private ImageBusinessService imageBusinessService;
     int total;
@@ -49,12 +47,9 @@ public class MediaImageActivity extends BaseActivity implements AdapterView.OnIt
                 if (imageList == null) {
                     return;
                 }
-//				Log.i(TAG, ImageList.toString());
                 total = imageList.getTotal();
-//				Toast.makeText(getApplicationContext(), total+"", Toast.LENGTH_LONG).show();
                 List<Image> list = imageList.getImageList();
-                Images.addAll(list);
-                Message message = Message.obtain();
+                imageAdapter.addAndrefresh(list);
                 handler.sendEmptyMessage(0);
             }
         }
@@ -66,14 +61,11 @@ public class MediaImageActivity extends BaseActivity implements AdapterView.OnIt
             switch (msg.what) {
                 case 0:
                     imageAdapter.notifyDataSetChanged();
-                    if (Images == null) {
-                        return;
-                    }
-                    if (Images.size() <= total) {
+                    if (imageAdapter.getDataCount() <= total) {
                         ImageList ImageList = new ImageList();
                         ImageList.setCmd("BSgetimageList");
                         ImageList.setPageSize(2);
-                        ImageList.setPageIndex(Images.size());
+                        ImageList.setPageIndex(imageAdapter.getDataCount());
                         imageBusinessService.sendBSgetImageList(ImageList);
                     }
                     break;
@@ -88,7 +80,7 @@ public class MediaImageActivity extends BaseActivity implements AdapterView.OnIt
         initspinner();
         listView = (ListView) findViewById(R.id.image_list_view);
         imageAdapter = new ImageAdapter();
-        imageAdapter.setImages(Images);
+        imageAdapter.setImages(new ArrayList<Image>());
         listView.setAdapter(imageAdapter);
 
         IntentFilter filter = new IntentFilter();
@@ -108,6 +100,10 @@ public class MediaImageActivity extends BaseActivity implements AdapterView.OnIt
     @Override
     protected void onDestroy() {
         unregisterReceiver(mBroadcastReceiver);
+        imageAdapter.clear();
+        imageAdapter=null;
+        listView=null;
+        System.gc();
         super.onDestroy();
     }
 
@@ -115,24 +111,15 @@ public class MediaImageActivity extends BaseActivity implements AdapterView.OnIt
 
     @Override
     public void onBackPressed() {
-//		if(isOpenImage)
-//			back();
         isOpenImage = false;
         super.onBackPressed();
-    }
-
-    private void back() {
-        Action action = new Action();
-        action.setCmd("KEY");
-        action.setData(String.valueOf(KeyEvent.KEYCODE_BACK));
-        new MouseBusinessServiceImpl().sendAction(action);
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position,
                             long id) {
         OpenImage openImage = new OpenImage();
-        Image image = Images.get(position);
+        Image image = imageAdapter.getImages().get(position);
         openImage.setCmd("BSopenImage");
         openImage.setImageFileName(image.getName());
         //发送打开图片命令

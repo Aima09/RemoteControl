@@ -12,6 +12,7 @@ import com.yf.remotecontrolclient.domain.FileCategoryList;
 import com.yf.remotecontrolclient.domain.FileList;
 import com.yf.remotecontrolclient.domain.FileShowList;
 import com.yf.remotecontrolclient.domain.Gateway;
+import com.yf.remotecontrolclient.domain.GetSongStuatus;
 import com.yf.remotecontrolclient.domain.ImageFolder;
 import com.yf.remotecontrolclient.domain.ImageFolderList;
 import com.yf.remotecontrolclient.domain.ImageList;
@@ -25,6 +26,7 @@ import com.yf.remotecontrolclient.domain.Palpitation;
 import com.yf.remotecontrolclient.domain.Position;
 import com.yf.remotecontrolclient.domain.Setmode;
 import com.yf.remotecontrolclient.domain.Setopenfileid;
+import com.yf.remotecontrolclient.domain.SetplaysongProgress;
 import com.yf.remotecontrolclient.domain.Setplaysongid;
 import com.yf.remotecontrolclient.domain.Setplaystatus;
 import com.yf.remotecontrolclient.domain.Setplayvideoid;
@@ -608,4 +610,41 @@ public class JsonAssistant {
         }
         return websiteList;
     }
+
+
+    public GetSongStuatus paseGetsongstatus(String data){
+        GetSongStuatus getSongStuatus = null;
+        try {
+            Gson gson = new Gson();
+            getSongStuatus = gson.fromJson(data, GetSongStuatus.class);// 对于javabean直接给出class实例
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return getSongStuatus;
+    }
+
+
+    public String createSetplaysongProgress(SetplaysongProgress setplaysongProgress){
+        String json = null;
+        try {
+            Gson gson = new Gson();
+            json = gson.toJson(setplaysongProgress);
+            return json;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return json;
+    }
+    public String createGetSongStuatus(GetSongStuatus getSongStuatus){
+        String json = null;
+        try {
+            Gson gson = new Gson();
+            json = gson.toJson(getSongStuatus);
+            return json;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return json;
+    }
+
 }

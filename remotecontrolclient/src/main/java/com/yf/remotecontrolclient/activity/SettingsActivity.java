@@ -7,6 +7,7 @@ import android.widget.Switch;
 import com.yf.remotecontrolclient.CommonConstant;
 import com.yf.remotecontrolclient.R;
 import com.yf.remotecontrolclient.minaclient.tcp.RemoteServerManager;
+import com.yf.remotecontrolclient.util.SpUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,15 +28,17 @@ public class SettingsActivity extends BaseActivity {
         setContentView(R.layout.activity_settings);
         ButterKnife.bind(this);
         initspinner();
-        scIsremot.setChecked(CommonConstant.LINE_TYPE == CommonConstant.LINE_TYPE_REMOTE);
+        scIsremot.setChecked(SpUtil.getInt(getApplication(),CommonConstant.LINK_TYPE_KEY,CommonConstant.LINE_TYPE_REMOTE) == CommonConstant.LINE_TYPE_REMOTE);
         scIsremot.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                int linkTyp;
                 if (isChecked) {
-                    CommonConstant.LINE_TYPE = CommonConstant.LINE_TYPE_REMOTE;
+                    linkTyp= CommonConstant.LINE_TYPE_REMOTE;
                 } else {
-                    CommonConstant.LINE_TYPE = CommonConstant.LINE_TYPE_LOCAL;
+                    linkTyp = CommonConstant.LINE_TYPE_LOCAL;
                 }
+                SpUtil.putInt(getApplication(),CommonConstant.LINK_TYPE_KEY,linkTyp);
                 RemoteServerManager.getInstance().startRemoteServer();
             }
         });

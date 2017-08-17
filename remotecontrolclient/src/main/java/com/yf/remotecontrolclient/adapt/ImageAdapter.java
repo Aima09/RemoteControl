@@ -26,6 +26,31 @@ public class ImageAdapter extends BaseAdapter {
         this.images = images;
     }
 
+    /**
+     * 添加并刷新数据
+     * @param list
+     */
+    public void addAndrefresh(List<Image> list) {
+        this.images.addAll(list);
+        this.notifyDataSetChanged();
+    }
+
+    /**
+     * 清除数据
+     */
+    public void clear() {
+        this.images.clear();
+        this.notifyDataSetChanged();
+    }
+
+    /**
+     * 数据数量
+     * @return
+     */
+    public int getDataCount(){
+        return this.images.size();
+    }
+
     @Override
     public int getCount() {
         return images.size();
