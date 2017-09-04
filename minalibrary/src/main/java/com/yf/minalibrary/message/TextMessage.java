@@ -1,52 +1,9 @@
 package com.yf.minalibrary.message;
 
 public class TextMessage extends BaseMessage {
-
-    private TextBean textBean;
-
-    public TextMessage(String senderId, String receiverId, String messageType, TextBean textBean) {
+    String textContent;
+    public TextMessage(String senderId, String receiverId, int messageType, String textContent) {
         super(senderId, receiverId, messageType);
-        this.textBean = textBean;
+        this.textContent = textContent;
     }
-
-    public TextBean getTextBean() {
-        return textBean;
-    }
-
-    public void setTextBean(TextBean textBean) {
-        this.textBean = textBean;
-    }
-
-    @Override public String toString() {
-        return "TextMessage{" +
-                "senderId='" + senderId + '\'' +
-                ", receiverId='" + receiverId + '\'' +
-                ", messageType='" + messageType + '\'' +
-                ", time='" + time + '\'' +
-                ", textBean=" + textBean +
-                '}';
-    }
-
-    public static class TextBean {
-        private String textContent;
-
-        public TextBean(String textContent) {
-            this.textContent = textContent;
-        }
-
-        public String getTextContent() {
-            return textContent;
-        }
-
-        public void setTextContent(String textContent) {
-            this.textContent = textContent;
-        }
-
-        @Override public String toString() {
-            return "TextBean{" +
-                    "textContent='" + textContent + '\'' +
-                    '}';
-        }
-    }
-
 }

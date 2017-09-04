@@ -26,6 +26,7 @@ import com.yf.remotecontrolclient.dao.tcpip.TCPIPServer;
 import com.yf.remotecontrolclient.domain.Boot;
 import com.yf.remotecontrolclient.domain.Equipment;
 import com.yf.remotecontrolclient.domain.Palpitation;
+import com.yf.remotecontrolclient.httpserver.HttpServer;
 import com.yf.remotecontrolclient.intercom.InterService;
 import com.yf.remotecontrolclient.minaclient.tcp.RemoteServerManager;
 import com.yf.remotecontrolclient.service.imp.MouseBusinessServiceImpl;
@@ -168,6 +169,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         // 自动连接
         RemoteServerManager.getInstance().startRemoteServer();
         startService(new Intent(App.getAppContext(), MouseService.class));
+        startService(new Intent(App.getAppContext(), HttpServer.class));
     }
 
     private void initData() {

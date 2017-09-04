@@ -9,7 +9,6 @@ import com.yf.minalibrary.common.CmdType;
 import com.yf.minalibrary.common.DeviceType;
 import com.yf.minalibrary.common.MessageType;
 import com.yf.minalibrary.message.CmdMessage;
-import com.yf.minalibrary.message.CmdMessage.CmdBean;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -73,11 +72,9 @@ public class ClientMinaServer extends Service implements ClientMinaServerControl
                 if (connectSuccess) {
                     CmdMessage cmdMessage;
                     if (TextUtils.isEmpty(ClientDataDisposeCenter.getLocalSenderId())) {
-                        CmdBean cmdBean = new CmdBean(CmdType.CMD_REGISTER, DeviceType.DEVICE_TYPE_PHONE, "");
-                        cmdMessage = new CmdMessage(MessageType.MESSAGE_CMD, cmdBean);
+                        cmdMessage = new CmdMessage("","",MessageType.MESSAGE_CMD, CmdType.CMD_REGISTER, DeviceType.DEVICE_TYPE_PHONE,"");
                     } else {
-                        CmdBean cmdBean = new CmdBean(CmdType.CMD_LOGIN, DeviceType.DEVICE_TYPE_PHONE, "");
-                        cmdMessage = new CmdMessage(ClientDataDisposeCenter.getLocalSenderId(),"",MessageType.MESSAGE_CMD, cmdBean);
+                        cmdMessage = new CmdMessage(ClientDataDisposeCenter.getLocalSenderId(),"",MessageType.MESSAGE_CMD, CmdType.CMD_LOGIN, DeviceType.DEVICE_TYPE_PHONE, "");
                     }
                     clientMinaSocketConnector.send(cmdMessage);
                 }

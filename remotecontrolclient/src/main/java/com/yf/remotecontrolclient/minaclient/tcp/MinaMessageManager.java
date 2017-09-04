@@ -6,15 +6,16 @@ import android.util.Log;
 
 import com.yf.minalibrary.common.CmdType;
 import com.yf.minalibrary.common.DeviceType;
+import com.yf.minalibrary.common.FileHelper;
 import com.yf.minalibrary.common.MessageType;
 import com.yf.minalibrary.message.BaseMessage;
 import com.yf.minalibrary.message.CmdMessage;
-import com.yf.minalibrary.message.CmdMessage.CmdBean;
 import com.yf.minalibrary.message.FileMessage;
-import com.yf.minalibrary.message.FileMessage.FileBean;
 import com.yf.minalibrary.message.IntercomMessage;
-import com.yf.minalibrary.message.IntercomMessage.IntercomBean;
 import com.yf.remotecontrolclient.dao.TcpAnalyzerImpl;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Created by wuhuai on 2017/6/23 .
@@ -23,6 +24,7 @@ import com.yf.remotecontrolclient.dao.TcpAnalyzerImpl;
 
 public class MinaMessageManager {
 
+    private static final String TAG ="MinaMessageManager" ;
     private static MinaMessageManager instance;
     private MinaServerController minaServerController;
 
@@ -41,25 +43,24 @@ public class MinaMessageManager {
     }
 
     public void disposeCmd(CmdMessage cmdMessage) {
-        CmdBean cmdBean = cmdMessage.getCmdBean();
-        String cmdType = cmdBean.getCmdType();
+        String cmdType= cmdMessage.getCmdType();
         switch (cmdType) {
             case CmdType.CMD_REGISTER:
-                String uuid = cmdBean.getCmdContent();
+                String uuid = cmdMessage.getCmdContent();
                 ServerDataDisposeCenter.setLocalSenderId(uuid);
                 Log.d("MinaMessageManager", uuid);
                 Log.d("IoClientHandler", uuid);
                 break;
             case CmdType.CMD_LOGIN:
-                String loginResult = cmdBean.getCmdContent();
+                String loginResult = cmdMessage.getCmdContent();
                 Log.d("MinaMessageManager", loginResult);
                 break;
             case CmdType.CMD_HEARTBEAT:
                 Log.d("MinaMessageManager", "我的对应的远程服务 session 还在线。。。。。。");
                 break;
             case CmdType.CMD_MUSIC:
-                TcpAnalyzerImpl.getInstans().analy(cmdBean.getCmdContent().getBytes());
-                Log.d("MinaMessageManager", "接收到音乐命令：" + cmdBean.getCmdContent());
+                TcpAnalyzerImpl.getInstans().analy(cmdMessage.getCmdContent().getBytes());
+                Log.d("MinaMessageManager", "接收到音乐命令：" + cmdMessage.getCmdContent());
                 break;
         }
     }
@@ -75,20 +76,35 @@ public class MinaMessageManager {
     }
 
     public void sendControlCmd(String cmdType, String cmdContent) {
-        CmdBean cmdBean = new CmdBean(cmdType, DeviceType.DEVICE_TYPE_PHONE, cmdContent);
         CmdMessage cmdMessage = new CmdMessage(ServerDataDisposeCenter.getLocalSenderId(),
-                ServerDataDisposeCenter.getRemoteReceiverId(), MessageType.MESSAGE_CMD, cmdBean);
+                ServerDataDisposeCenter.getRemoteReceiverId(), MessageType.MESSAGE_CMD, cmdType,DeviceType.DEVICE_TYPE_PHONE,cmdContent);
         send(cmdMessage);
     }
 
-    public void sendFile(String filePath){
-        FileBean bean = new FileBean(filePath);
+    public void sendFile(String filePath,String use){
+        String fileName=null;
+        int fileSize=0;
+        byte[] fileContent=null;
+        File file = new File(filePath);
+        if (file.exists()){
+            FileHelper helper = new FileHelper();
+            fileName = file.getName();
+            fileSize = (int) file.length();
+            try {
+                fileContent = helper.getContent(file);
+                Log.i(TAG,"filecontent"+fileContent.length);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         FileMessage fileMessage = new FileMessage(ServerDataDisposeCenter.getLocalSenderId(),
-                ServerDataDisposeCenter.getRemoteReceiverId(),MessageType.MESSAGE_FILE,bean);
+                ServerDataDisposeCenter.getRemoteReceiverId(),MessageType.MESSAGE_FILE,fileName,fileSize,fileContent,use);
+        Log.i(TAG,fileMessage.toString());
         if (null != minaServerController) {
             minaServerController.getSessionSend(fileMessage);
         }
     }
+
     /**
      * 对讲所用发送的MINA接口
      *
@@ -96,9 +112,8 @@ public class MinaMessageManager {
      */
     public void sendIntercomContent(byte[] content) {
         String cmdContent = Base64.encodeToString(content, Base64.DEFAULT);
-        IntercomBean intercomBean = new IntercomBean(cmdContent);
         IntercomMessage intercomMessage = new IntercomMessage(ServerDataDisposeCenter.getLocalSenderId(),
-                ServerDataDisposeCenter.getRemoteReceiverId(),MessageType.MESSAGE_INTERCOM, intercomBean);
+                ServerDataDisposeCenter.getRemoteReceiverId(),MessageType.MESSAGE_INTERCOM, cmdContent);
         send(intercomMessage);
     }
 

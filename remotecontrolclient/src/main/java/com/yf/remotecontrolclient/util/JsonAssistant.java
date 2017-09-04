@@ -23,6 +23,7 @@ import com.yf.remotecontrolclient.domain.OpenImage;
 import com.yf.remotecontrolclient.domain.OpenSettings;
 import com.yf.remotecontrolclient.domain.OpenZyglq;
 import com.yf.remotecontrolclient.domain.Palpitation;
+import com.yf.remotecontrolclient.domain.Pmmedia;
 import com.yf.remotecontrolclient.domain.Position;
 import com.yf.remotecontrolclient.domain.Setmode;
 import com.yf.remotecontrolclient.domain.Setopenfileid;
@@ -37,6 +38,7 @@ import com.yf.remotecontrolclient.domain.SongList;
 import com.yf.remotecontrolclient.domain.VideoList;
 import com.yf.remotecontrolclient.domain.WebsiteList;
 import com.yf.remotecontrolclient.domain.Writer;
+import com.yf.remotecontrolclient.media.model.Media;
 
 /**
  * Created by sujuntao on 2017/6/22.
@@ -640,6 +642,17 @@ public class JsonAssistant {
         try {
             Gson gson = new Gson();
             json = gson.toJson(getSongStuatus);
+            return json;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return json;
+    }
+    public String createPmMedia(Pmmedia pmmedia){
+        String json = null;
+        try {
+            Gson gson = new Gson();
+            json = gson.toJson(pmmedia);
             return json;
         } catch (Exception e) {
             e.printStackTrace();

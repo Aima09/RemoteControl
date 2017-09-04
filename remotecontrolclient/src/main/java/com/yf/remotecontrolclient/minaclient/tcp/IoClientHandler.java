@@ -7,7 +7,6 @@ import com.yf.minalibrary.common.DeviceType;
 import com.yf.minalibrary.common.MessageType;
 import com.yf.minalibrary.message.BaseMessage;
 import com.yf.minalibrary.message.CmdMessage;
-import com.yf.minalibrary.message.CmdMessage.CmdBean;
 import com.yf.minalibrary.message.FileMessage;
 
 import org.apache.mina.core.service.IoHandlerAdapter;
@@ -23,11 +22,10 @@ import org.apache.mina.core.session.IoSession;
 public class IoClientHandler extends IoHandlerAdapter {
 
     public void messageReceived(IoSession session, Object message) throws Exception {
-        BaseMessage baseMessage = (BaseMessage) message;
-        String dataType = baseMessage.messageType;
+        int dataType = ((BaseMessage) message).messageType;
         switch (dataType) {
             case MessageType.MESSAGE_CMD:
-                CmdMessage cmdMessage = (CmdMessage) baseMessage;
+                CmdMessage cmdMessage = (CmdMessage)  message;
                 MinaMessageManager.getInstance().disposeCmd(cmdMessage);
                 break;
             case MessageType.MESSAGE_FILE:
@@ -40,7 +38,7 @@ public class IoClientHandler extends IoHandlerAdapter {
     public void messageSent(IoSession session, Object message) throws Exception {
         Log.d("IoClientHandler", "messageSent 客户端发送消息：" + message);
         if (message instanceof FileMessage){
-            if (((FileMessage) message).messageType.equals(MessageType.MESSAGE_FILE)){
+            if (((FileMessage) message).messageType==MessageType.MESSAGE_FILE){
                 session.closeNow();
             }
         }
@@ -69,8 +67,7 @@ public class IoClientHandler extends IoHandlerAdapter {
 
     @Override public void sessionIdle(IoSession session, IdleStatus status) throws Exception {
         Log.d("IoClientHandler", "sessionIdle");
-        CmdBean cmdBean = new CmdBean(CmdType.CMD_HEARTBEAT, DeviceType.DEVICE_TYPE_PHONE, "");
-        CmdMessage cmdMessage = new CmdMessage(ServerDataDisposeCenter.getLocalSenderId(), "",MessageType.MESSAGE_CMD, cmdBean);
+        CmdMessage cmdMessage = new CmdMessage(ServerDataDisposeCenter.getLocalSenderId(), "",MessageType.MESSAGE_CMD, CmdType.CMD_HEARTBEAT, DeviceType.DEVICE_TYPE_PHONE, "");
         session.write(cmdMessage);
         super.sessionIdle(session, status);
     }

@@ -2,16 +2,25 @@ package com.yf.remotecontrolclient.service.imp;
 
 
 import com.google.gson.Gson;
+import com.yf.minalibrary.common.BeanUtil;
+import com.yf.remotecontrolclient.App;
 import com.yf.remotecontrolclient.domain.GetSongStuatus;
+import com.yf.remotecontrolclient.domain.Pmmedia;
 import com.yf.remotecontrolclient.domain.Setmode;
 import com.yf.remotecontrolclient.domain.SetplaysongProgress;
 import com.yf.remotecontrolclient.domain.Setplaysongid;
 import com.yf.remotecontrolclient.domain.Setplaystatus;
 import com.yf.remotecontrolclient.domain.Setvolumeadd;
 import com.yf.remotecontrolclient.domain.SongList;
+import com.yf.remotecontrolclient.media.model.Media;
 import com.yf.remotecontrolclient.minaclient.tcp.MinaMessageManager;
 import com.yf.remotecontrolclient.service.MusicBusinessService;
+import com.yf.remotecontrolclient.util.IpUtil;
 import com.yf.remotecontrolclient.util.JsonAssistant;
+
+import java.net.URLEncoder;
+
+import static com.yf.remotecontrolclient.activity.fragment.MediaMusicRemotListFragment.songList;
 
 public class MusicBusinessServiceImpl implements MusicBusinessService{
     public static final String CMD = "cmd";
@@ -61,6 +70,29 @@ public class MusicBusinessServiceImpl implements MusicBusinessService{
 
             MinaMessageManager.getInstance()
                     .sendControlCmd(jsonAssistant.createGetSongStuatus(getSongStuatus));
+     }
 
+    @Override public void sendBsMusicFile(String path,String use) {
+        MinaMessageManager.getInstance()
+                .sendFile(path,use);
+    }
+
+    @Override public void sendBsTsMusicFile(Media media) {
+        try {
+            Pmmedia pmmedia = new Pmmedia();
+            pmmedia.setCmd("Bspmmedia");
+            pmmedia.setAbulmId(media.getAbulmId());
+            pmmedia.setArtist(media.getArtist());
+            pmmedia.setDisplayName(media.getDisplayName());
+            pmmedia.setDuration(media.getDuration());
+            pmmedia.setId(media.getId());
+            pmmedia.setSize(media.getSize());
+            pmmedia.setTitle(media.getTitle());
+            pmmedia.setPath("http://" + IpUtil.getLocalIpAddress(App.getAppContext()) + ":8089?path=" + URLEncoder.encode(media.getPath(), "UTF-8"));
+            MinaMessageManager.getInstance()
+                    .sendControlCmd(jsonAssistant.createPmMedia(pmmedia));
+        }catch (Exception e){
+            e.printStackTrace();
         }
+    }
 }

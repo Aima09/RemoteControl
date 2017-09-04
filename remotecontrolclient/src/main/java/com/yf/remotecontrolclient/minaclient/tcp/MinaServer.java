@@ -10,7 +10,6 @@ import com.yf.minalibrary.common.CmdType;
 import com.yf.minalibrary.common.DeviceType;
 import com.yf.minalibrary.common.MessageType;
 import com.yf.minalibrary.message.CmdMessage;
-import com.yf.minalibrary.message.CmdMessage.CmdBean;
 import com.yf.remotecontrolclient.util.PromptUtil;
 
 import org.apache.mina.core.session.IoSession;
@@ -58,11 +57,9 @@ public class MinaServer extends Service implements MinaServerController {
                 if (connectSuccess) {
                     CmdMessage cmdMessage;
                     if (TextUtils.isEmpty(ServerDataDisposeCenter.getLocalSenderId())) {
-                        CmdBean cmdBean = new CmdBean(CmdType.CMD_REGISTER, DeviceType.DEVICE_TYPE_PHONE, "");
-                        cmdMessage = new CmdMessage(MessageType.MESSAGE_CMD, cmdBean);
+                        cmdMessage = new CmdMessage("","",MessageType.MESSAGE_CMD,CmdType.CMD_REGISTER, DeviceType.DEVICE_TYPE_PHONE, "");
                     } else {
-                        CmdBean cmdBean = new CmdBean(CmdType.CMD_LOGIN, DeviceType.DEVICE_TYPE_PHONE, "");
-                        cmdMessage = new CmdMessage(ServerDataDisposeCenter.getLocalSenderId(),"",MessageType.MESSAGE_CMD, cmdBean);
+                        cmdMessage = new CmdMessage(ServerDataDisposeCenter.getLocalSenderId(),"",MessageType.MESSAGE_CMD, CmdType.CMD_LOGIN, DeviceType.DEVICE_TYPE_PHONE, "");
                     }
                     minaSocketConnector.send(cmdMessage);
                     //成功

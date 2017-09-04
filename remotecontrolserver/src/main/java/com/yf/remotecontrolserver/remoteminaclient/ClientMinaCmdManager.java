@@ -7,7 +7,6 @@ import com.yf.minalibrary.common.CmdType;
 import com.yf.minalibrary.common.DeviceType;
 import com.yf.minalibrary.common.MessageType;
 import com.yf.minalibrary.message.CmdMessage;
-import com.yf.minalibrary.message.CmdMessage.CmdBean;
 import com.yf.remotecontrolserver.dao.TcpAnalyzerImpl;
 
 
@@ -55,33 +54,32 @@ public class ClientMinaCmdManager {
     }
 
     public void disposeCmd(CmdMessage cmdMessage) {
-        CmdBean cmdBean = cmdMessage.getCmdBean();
-        String cmdType = cmdBean.getCmdType();
+        String cmdType= cmdMessage.getCmdType();
         switch (cmdType) {
             case CmdType.CMD_REGISTER:
-                String uuid = cmdBean.getCmdContent();
+                String uuid = cmdMessage.getCmdContent();
                 ClientDataDisposeCenter.setLocalSenderId(uuid);
                 Log.d(TAG, uuid);
                 exeMinaCmdCallBack(uuid);
                 break;
             case CmdType.CMD_LOGIN:
-                String loginResult = cmdBean.getCmdContent();
+                String loginResult = cmdMessage.getCmdContent();
                 Log.d(TAG, loginResult);
                 exeMinaCmdCallBack(ClientDataDisposeCenter.getLocalSenderId());
                 break;
             case CmdType.CMD_OPEN_NEW_SESSION:
                 Log.d(TAG, "CMD_OPEN_NEW_SESSION。。。。。。");
                 cmdMessage.senderId = ClientDataDisposeCenter.getLocalSenderId();
-                cmdBean.setDeviceType(DeviceType.DEVICE_TYPE_IPAD);
+                cmdMessage.setDeviceType(DeviceType.DEVICE_TYPE_IPAD);
                 clientMinaServerController.getSessionSend(cmdMessage);
                 break;
             case CmdType.CMD_HEARTBEAT:
                 Log.d(TAG, "我的对应的远程服务 session 还在线。。。。。。");
                 break;
             case CmdType.CMD_MUSIC:
-                Log.d(TAG, "CMD_MUSIC" + cmdBean.getCmdContent());
+                Log.d(TAG, "CMD_MUSIC" + cmdMessage.getCmdContent());
                 Log.d(TAG, "rid" + cmdMessage.receiverId);
-                TcpAnalyzerImpl.getInstans().analy(cmdBean.getCmdContent().getBytes(), cmdMessage.senderId);
+                TcpAnalyzerImpl.getInstans().analy(cmdMessage.getCmdContent().getBytes(), cmdMessage.senderId);
                 break;
         }
     }
@@ -92,9 +90,8 @@ public class ClientMinaCmdManager {
 
     public void sendControlCmd(String cmdType, String cmdContent, String receiverId) {
         if (null != clientMinaServerController) {
-            CmdBean cmdBean = new CmdBean(cmdType, DeviceType.DEVICE_TYPE_IPAD, cmdContent);
             CmdMessage cmdMessage = new CmdMessage(ClientDataDisposeCenter.getLocalSenderId(),
-                    receiverId, MessageType.MESSAGE_CMD, cmdBean);
+                    receiverId, MessageType.MESSAGE_CMD, cmdType, DeviceType.DEVICE_TYPE_IPAD, cmdContent);
             clientMinaServerController.send(cmdMessage);
         }
     }

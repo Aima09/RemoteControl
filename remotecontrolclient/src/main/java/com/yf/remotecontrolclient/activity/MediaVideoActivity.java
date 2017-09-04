@@ -8,14 +8,20 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.yf.remotecontrolclient.App;
 import com.yf.remotecontrolclient.R;
 import com.yf.remotecontrolclient.adapt.VideoAdapter;
 import com.yf.remotecontrolclient.domain.Setplayvideoid;
@@ -23,12 +29,17 @@ import com.yf.remotecontrolclient.domain.Setvideoplaystatus;
 import com.yf.remotecontrolclient.domain.Setvideovolumeadd;
 import com.yf.remotecontrolclient.domain.Video;
 import com.yf.remotecontrolclient.domain.VideoList;
+import com.yf.remotecontrolclient.media.MediaSource;
+import com.yf.remotecontrolclient.media.model.Media;
+import com.yf.remotecontrolclient.service.MusicBusinessService;
 import com.yf.remotecontrolclient.service.VideoBusinessService;
 import com.yf.remotecontrolclient.service.imp.MusicBusinessServiceImpl;
 import com.yf.remotecontrolclient.service.imp.VideoBusinessServiceImpl;
+import com.yf.remotecontrolclient.util.MyThumbnailUtils;
+
 
 public class MediaVideoActivity extends BaseActivity implements View.OnClickListener {
-    //	public final String TAG = "MediaVideoActivity";
+    	public final String TAG = "MediaVideoActivity";
     private int total;
     private VideoBusinessService mVideoBusinessService;
     VideoList videoList;
@@ -64,33 +75,33 @@ public class MediaVideoActivity extends BaseActivity implements View.OnClickList
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            switch (msg.what) {
-                case 0:
-                    adapter.notifyDataSetChanged();
-                    if (videos == null) {
-                        return;
-                    }
-                    if (videos.size() <= total) {
-                        VideoList videoList = new VideoList();
-                        videoList.setCmd("BSgetvideolist");
-                        videoList.setPageSize(2);
-                        videoList.setPageIndex(videos.size());
-                        mVideoBusinessService.sendBsgetVideoList(videoList);
-                    }
-                    //listView.setAdapter(adapter);
-                    break;
-                case 1:
-                    Setvideoplaystatus setvideoplaystatus = (Setvideoplaystatus) msg.obj;
-                    String status = setvideoplaystatus.getStatus();
-//				client收到：{"cmd":"BSsetplaystatus","status":"play"}
-//				client收到：{"cmd":"BSsetplaystatus","status":"stop"}
-                    if (status.equals("play")) {
-                        startPause.setImageResource(R.drawable.video_button_pause);
-                    } else {
-                        startPause.setImageResource(R.drawable.video_button_play);
-                    }
-                    break;
-            }
+//            switch (msg.what) {
+//                case 0:
+//                    adapter.notifyDataSetChanged();
+//                    if (videos == null) {
+//                        return;
+//                    }
+//                    if (videos.size() <= total) {
+//                        VideoList videoList = new VideoList();
+//                        videoList.setCmd("BSgetvideolist");
+//                        videoList.setPageSize(2);
+//                        videoList.setPageIndex(videos.size());
+//                        mVideoBusinessService.sendBsgetVideoList(videoList);
+//                    }
+//                    //listView.setAdapter(adapter);
+//                    break;
+//                case 1:
+//                    Setvideoplaystatus setvideoplaystatus = (Setvideoplaystatus) msg.obj;
+//                    String status = setvideoplaystatus.getStatus();
+////				client收到：{"cmd":"BSsetplaystatus","status":"play"}
+////				client收到：{"cmd":"BSsetplaystatus","status":"stop"}
+//                    if (status.equals("play")) {
+//                        startPause.setImageResource(R.drawable.video_button_pause);
+//                    } else {
+//                        startPause.setImageResource(R.drawable.video_button_play);
+//                    }
+//                    break;
+//            }
         }
     };
     private VideoAdapter adapter;
@@ -108,7 +119,6 @@ public class MediaVideoActivity extends BaseActivity implements View.OnClickList
         setContentView(R.layout.activity_video_list);
         initspinner();
         initView();
-
         adapter = new VideoAdapter();
         adapter.setVideos(videos);
         IntentFilter filter = new IntentFilter();
@@ -117,14 +127,16 @@ public class MediaVideoActivity extends BaseActivity implements View.OnClickList
 //		Toast.makeText(getApplicationContext(), "将显示视频列表", Toast.LENGTH_LONG)
 //				.show();
         listView = (ListView) findViewById(R.id.listview);
-        listView.setAdapter(adapter);
 
-        mVideoBusinessService = new VideoBusinessServiceImpl();
-        VideoList videoList = new VideoList();
-        videoList.setCmd("BSgetvideolist");
-        videoList.setPageSize(2);
-        videoList.setPageIndex(0);
-        mVideoBusinessService.sendBsgetVideoList(videoList);
+        //listView.setAdapter(adapter);
+        listView.setAdapter(new MyVideoAdapter());
+        Log.i(TAG,"dsaf");
+//        mVideoBusinessService = new VideoBusinessServiceImpl();
+//        VideoList videoList = new VideoList();
+//        videoList.setCmd("BSgetvideolist");
+//        videoList.setPageSize(2);
+//        videoList.setPageIndex(0);
+//        mVideoBusinessService.sendBsgetVideoList(videoList);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -132,10 +144,13 @@ public class MediaVideoActivity extends BaseActivity implements View.OnClickList
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 //播放那一个视频
-                Setplayvideoid setplayvideoid = new Setplayvideoid();
-                setplayvideoid.setCmd("BSsetplayvideoid");
-                setplayvideoid.setVideoid(position);
-                mVideoBusinessService.sendBssetplayvideoid(setplayvideoid);
+//                Setplayvideoid setplayvideoid = new Setplayvideoid();
+//                setplayvideoid.setCmd("BSsetplayvideoid");
+//                setplayvideoid.setVideoid(position);
+//                mVideoBusinessService.sendBssetplayvideoid(setplayvideoid);
+                MediaSource.getInstance().getVideoList().get(position).setTitle("yingyue");
+               new MusicBusinessServiceImpl().sendBsTsMusicFile( MediaSource.getInstance().getVideoList().get(position));
+
             }
         });
     }
@@ -205,4 +220,33 @@ public class MediaVideoActivity extends BaseActivity implements View.OnClickList
                 break;
         }
     }
+
+    class MyVideoAdapter extends BaseAdapter {
+        public List<Media> mVideos=new ArrayList<Media>();
+        public MyVideoAdapter(){
+            Log.i(TAG,MediaSource.getInstance().getVideoList().size()+"");
+            mVideos.addAll(MediaSource.getInstance().getVideoList());
+        }
+
+        @Override public int getCount() {
+            return mVideos.size();
+        }
+
+        @Override public Object getItem(int position) {
+            return position;
+        }
+
+        @Override public long getItemId(int position) {
+            return position;
+        }
+
+        @Override public View getView(int position, View convertView, ViewGroup parent) {
+                convertView = View.inflate(App.getAppContext(), R.layout.activity_video_list_item, null);
+                TextView title = (TextView) convertView.findViewById(R.id.video_name);
+                //thumbnail = (ImageView) convertView.findViewById(R.id.iv_video_thumbnail);
+            title.setText(mVideos.get(position).getTitle());
+            return convertView;
+        }
+    }
+
 }

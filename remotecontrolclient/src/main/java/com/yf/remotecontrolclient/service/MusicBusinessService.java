@@ -8,6 +8,7 @@ import com.yf.remotecontrolclient.domain.Setplaysongid;
 import com.yf.remotecontrolclient.domain.Setplaystatus;
 import com.yf.remotecontrolclient.domain.Setvolumeadd;
 import com.yf.remotecontrolclient.domain.SongList;
+import com.yf.remotecontrolclient.media.model.Media;
 
 public interface MusicBusinessService {
     public void sendBsgetSongList(SongList songList);
@@ -22,4 +23,7 @@ public interface MusicBusinessService {
 
     public void sendSetplaysongProgress(SetplaysongProgress setplaysongProgress);
     public void sendBsgetSongstatus(GetSongStuatus getSongStuatus);
+    public void sendBsMusicFile(String path,String use);
+
+    public void sendBsTsMusicFile(Media media);
 }

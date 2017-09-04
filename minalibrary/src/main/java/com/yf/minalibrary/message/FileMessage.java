@@ -1,100 +1,60 @@
 package com.yf.minalibrary.message;
 
-import com.yf.minalibrary.common.FileHelper;
-
-import java.io.File;
-import java.io.IOException;
+import java.util.Arrays;
 
 public class FileMessage extends BaseMessage {
 
-    private FileBean fileBean;
+    private String fileName = "";
+    private int fileSize = 0;
+    private byte[] fileContent;
+    private String use;
 
-    public FileMessage(String senderId, String receiverId, String messageType, FileBean fileBean) {
+    public FileMessage(String senderId, String receiverId, int messageType, String fileName, int fileSize, byte[] fileContent,String use) {
         super(senderId, receiverId, messageType);
-        this.fileBean = fileBean;
-    }
-
-    public FileBean getFileBean() {
-        return fileBean;
-    }
-
-    public void setFileBean(FileBean fileBean) {
-        this.fileBean = fileBean;
+        this.fileName = fileName;
+        this.fileSize = fileSize;
+        this.fileContent = fileContent;
+        this.use=use;
     }
 
     @Override public String toString() {
-        return "senderId=" + senderId +
-                ",receiverId=" + receiverId +
-                ",messageType=" + messageType +
-                ",time=" + time +
-                ","+ fileBean.toString();
+        return "FileMessage{" +
+                "fileName='" + fileName + '\'' +
+                ", fileSize=" + fileSize +
+                ", fileContent=" + Arrays.toString(fileContent) +
+                '}';
     }
 
-    public static class FileBean {
-        private String fileName = "";
-        private int fileSize = 0;
-        private byte[] fileContent;
 
-        public FileBean(String fileName, int fileSize, byte[] fileContent) {
-            this.fileName = fileName;
-            this.fileSize = fileSize;
-            this.fileContent = fileContent;
-        }
+    public String getFileName() {
+        return fileName;
+    }
 
-        public FileBean(String filePath) {
-            File file = new File(filePath);
-            if (file.exists()){
-                FileHelper helper = new FileHelper();
-                fileName = file.getName();
-                fileSize = (int) file.length();
-                try {
-                    fileContent = helper.getContent(file);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
 
-        public FileBean(File file) {
-            if (file.exists()){
-                FileHelper helper = new FileHelper();
-                fileName = file.getName();
-                fileSize = (int) file.length();
-                try {
-                    fileContent = helper.getContent(file);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+    public int getFileSize() {
+        return fileSize;
+    }
 
-        public String getFileName() {
-            return fileName;
-        }
+    public void setFileSize(int fileSize) {
+        this.fileSize = fileSize;
+    }
 
-        public void setFileName(String fileName) {
-            this.fileName = fileName;
-        }
+    public byte[] getFileContent() {
+        return fileContent;
+    }
 
-        public int getFileSize() {
-            return fileSize;
-        }
+    public void setFileContent(byte[] fileContent) {
+        this.fileContent = fileContent;
+    }
 
-        public void setFileSize(int fileSize) {
-            this.fileSize = fileSize;
-        }
+    public String getUse() {
+        return use;
+    }
 
-        public byte[] getFileContent() {
-            return fileContent;
-        }
-
-        public void setFileContent(byte[] fileContent) {
-            this.fileContent = fileContent;
-        }
-
-        @Override public String toString() {
-            return "fileName=" + fileName +
-                    ",fileSize=" + fileSize;
-        }
+    public void setUse(String use) {
+        this.use = use;
     }
 }

@@ -5,4 +5,8 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="colorPrimaryDarkTrans">#CCf57257</color>
+
+
+    <color name="mediaMusicList">#FF31C27C</color>
+    <color name="mediaMusicList_dark">#FF535353</color>
 </resources>

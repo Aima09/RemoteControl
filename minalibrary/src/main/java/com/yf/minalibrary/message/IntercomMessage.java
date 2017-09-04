@@ -7,19 +7,11 @@ package com.yf.minalibrary.message;
 
 public class IntercomMessage extends BaseMessage {
 
-    private IntercomBean intercomBean;
+    private String intercomContent;
 
-    public IntercomMessage(String senderId, String receiverId, String messageType, IntercomBean intercomBean) {
+    public IntercomMessage(String senderId, String receiverId, int messageType, String intercomContent) {
         super(senderId, receiverId, messageType);
-        this.intercomBean = intercomBean;
-    }
-
-    public IntercomBean getIntercomBean() {
-        return intercomBean;
-    }
-
-    public void setIntercomBean(IntercomBean intercomBean) {
-        this.intercomBean = intercomBean;
+        this.intercomContent=intercomContent;
     }
 
     @Override public String toString() {
@@ -28,31 +20,15 @@ public class IntercomMessage extends BaseMessage {
                 ", receiverId='" + receiverId + '\'' +
                 ", messageType='" + messageType + '\'' +
                 ", time='" + time + '\'' +
-                ", intercomBean=" + intercomBean +
+                ", intercomBean=" +
                 '}';
     }
 
-    public static class IntercomBean {
-
-        private String intercomContent;
-
-        public IntercomBean(String intercomContent) {
-            this.intercomContent = intercomContent;
-        }
-
-        public String getIntercomContent() {
-            return intercomContent;
-        }
-
-        public void setIntercomContent(String intercomContent) {
-            this.intercomContent = intercomContent;
-        }
-
-        @Override public String toString() {
-            return "IntercomBean{" +
-                    "intercomContent='" + intercomContent + '\'' +
-                    '}';
-        }
+    public String getIntercomContent() {
+        return intercomContent;
     }
 
+    public void setIntercomContent(String intercomContent) {
+        this.intercomContent = intercomContent;
+    }
 }

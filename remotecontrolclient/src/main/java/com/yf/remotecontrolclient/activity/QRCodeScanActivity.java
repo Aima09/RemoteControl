@@ -8,16 +8,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.yf.minalibrary.common.MessageType;
-import com.yf.minalibrary.message.FileMessage;
+import com.yf.minalibrary.common.FileMessageConstant;
 import com.yf.remotecontrolclient.R;
 import com.yf.remotecontrolclient.minaclient.tcp.DeviceInfo;
 import com.yf.remotecontrolclient.minaclient.tcp.MinaMessageManager;
 import com.yf.remotecontrolclient.minaclient.tcp.ServerDataDisposeCenter;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,12 +39,12 @@ public class QRCodeScanActivity extends BaseActivity implements QRCodeView.Deleg
                     zxingview.closeFlashlight();
                     isOpenLight = false;
                     openLight.setText("开灯");
-                    MinaMessageManager.getInstance().sendFile(Environment.getExternalStorageDirectory()+"/test1.png");
+                    MinaMessageManager.getInstance().sendFile(Environment.getExternalStorageDirectory()+"/test1.png", FileMessageConstant.ON_LINE_MUSIC);
                 } else {
                     zxingview.openFlashlight();
                     isOpenLight = true;
                     openLight.setText("关灯");
-                    MinaMessageManager.getInstance().sendFile(Environment.getExternalStorageDirectory()+"/test.png");
+                    MinaMessageManager.getInstance().sendFile(Environment.getExternalStorageDirectory()+"/test.png", FileMessageConstant.UPLOAD_MUSIC);
                 }
             }
         });

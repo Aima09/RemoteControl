@@ -1,6 +1,7 @@
 package com.yf.remotecontrolserver.localminaserver;
 
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
@@ -9,12 +10,11 @@ import android.util.Log;
 
 import com.yf.minalibrary.common.CmdType;
 import com.yf.minalibrary.common.DeviceType;
+import com.yf.minalibrary.common.FileMessageConstant;
 import com.yf.minalibrary.common.MessageType;
 import com.yf.minalibrary.message.CmdMessage;
-import com.yf.minalibrary.message.CmdMessage.CmdBean;
 import com.yf.minalibrary.message.FileMessage;
 import com.yf.minalibrary.message.IntercomMessage;
-import com.yf.minalibrary.message.IntercomMessage.IntercomBean;
 import com.yf.remotecontrolserver.common.App;
 import com.yf.remotecontrolserver.dao.TcpAnalyzerImpl;
 import com.yuanfang.intercom.data.AudioData;
@@ -22,9 +22,7 @@ import com.yuanfang.intercom.data.MessageQueue;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by wuhuai on 2017/6/23 .
@@ -51,12 +49,10 @@ public class LocalMinaMassageManager {
     }
 
     public void disposeCmd(CmdMessage cmdMessage) {
-        CmdBean cmdBean = cmdMessage.getCmdBean();
-        String cmdType = cmdBean.getCmdType();
+        String cmdType = cmdMessage.getCmdType();
         switch (cmdType) {
             case CmdType.CMD_MUSIC:
-                Log.d("LocalMinaMassageManager", "接收到音乐命令：" + cmdBean.getCmdContent());
-                TcpAnalyzerImpl.getInstans().analy(cmdBean.getCmdContent().getBytes(), null);
+                TcpAnalyzerImpl.getInstans().analy(cmdMessage.getCmdContent().getBytes(), null);
                 break;
             case CmdType.CMD_SECURITY:
                 break;
@@ -64,46 +60,87 @@ public class LocalMinaMassageManager {
     }
 
     public void disposeFile(FileMessage fileMessage) {
-        try {
-            FileMessage.FileBean bean = fileMessage.getFileBean();
-            Log.d("LocalMinaMassageManager", "Received filename = " + bean.getFileName());
-            File file = new File(Environment.getExternalStorageDirectory() + "/tupian");
-            boolean b = file.exists();
-            if (!b) {
-                b = file.mkdir();
+        if (fileMessage.getUse().equals(FileMessageConstant.UPLOAD_MUSIC)) {
+            try {
+                Log.d("LocalMinaMassageManager", "Received filename = " + fileMessage.getFileName());
+                File file = null;
+                if (fileMessage.getFileName().endsWith(".mp3")) {
+                    file = new File(Environment.getExternalStorageDirectory() + "/yinyue");
+                } else if (fileMessage.getFileName().endsWith(".png") || fileMessage.getFileName().endsWith(".jpg")) {
+                    file = new File(Environment.getExternalStorageDirectory() + "/tupian");
+                }
+                boolean b = file.exists();
+                if (!b) {
+                    b = file.mkdir();
+                }
+                if (b) {
+                    FileOutputStream os = new FileOutputStream(file.getPath() + "/" + fileMessage.getFileName());
+                    os.write(fileMessage.getFileContent());
+                    os.close();
+                    fileScan(file.getPath() + "/" + fileMessage.getFileName());
+                    Intent intent = new Intent(Intent.ACTION_MAIN);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                    ComponentName cn = new ComponentName("player.yf.com.player", "player.yf.com.player.MainActivity");
+                    intent.setComponent(cn);
+                    App.getAppContext().startActivity(intent);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            if (b) {
-                FileOutputStream os = new FileOutputStream(file.getPath() + "/" + bean.getFileName());
-                os.write(bean.getFileContent());
-                os.close();
-                Intent it = new Intent(Intent.ACTION_VIEW);
-                it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                Uri mUri = Uri.parse("file://" + file.getPath() + "/" + bean.getFileName());
-                it.setDataAndType(mUri, "image/*");
-                App.getAppContext().startActivity(it);
+        } else if (fileMessage.getUse().equals(FileMessageConstant.ON_LINE_MUSIC)) {
+            try {
+                Log.d("LocalMinaMassageManager", "Received filename = " + fileMessage.getFileName());
+                File file = null;
+                if (fileMessage.getFileName().endsWith(".mp3")) {
+                    file = new File(Environment.getExternalStorageDirectory() + "/yinyue");
+                } else if (fileMessage.getFileName().endsWith(".png") || fileMessage.getFileName().endsWith(".jpg")) {
+                    file = new File(Environment.getExternalStorageDirectory() + "/tupian");
+                }
+                boolean b = file.exists();
+                if (!b) {
+                    b = file.mkdir();
+                }
+                if (b) {
+                    FileOutputStream os = new FileOutputStream(file.getPath() + "/" + fileMessage.getFileName(),true);
+                    os.write(fileMessage.getFileContent()[fileMessage.getFileContent().length - 1]);
+                    os.close();
+                    if (fileMessage.getFileContent().length == 500) {
+                        fileScan(file.getPath() + "/" + fileMessage.getFileName());
+                        Intent intent = new Intent(Intent.ACTION_MAIN);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                        ComponentName cn = new ComponentName("player.yf.com.player", "player.yf.com.player.MainActivity");
+                        intent.setComponent(cn);
+                        App.getAppContext().startActivity(intent);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
+
+    public void fileScan(String file) {
+        Uri data = Uri.parse("file://" + file);
+        Log.d("TAG", "file:" + file);
+        App.getInstance().sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, data));
+    }
+
     public void disposeIntercom(IntercomMessage intercomMessage) {
-        IntercomBean intercomBean = intercomMessage.getIntercomBean();
-        Log.d("LocalMinaMassageManager", "MessageQueue.getInstance " + Arrays.toString(
-                Base64.decode(intercomBean.getIntercomContent(),Base64.DEFAULT)));
-        AudioData audioData = new AudioData(Base64.decode(intercomBean.getIntercomContent(),Base64.DEFAULT));
+        AudioData audioData = new AudioData(Base64.decode(intercomMessage.getIntercomContent(), Base64.DEFAULT));
         MessageQueue.getInstance(MessageQueue.DECODER_DATA_QUEUE).put(audioData);
     }
 
     public void sendControlCmd(String cmdContent) {
-        sendControlCmd(CmdType.CMD_MUSIC,cmdContent);
+        sendControlCmd(CmdType.CMD_MUSIC, cmdContent);
     }
 
-    public void sendControlCmd(String cmdType,String cmdContent) {
+    public void sendControlCmd(String cmdType, String cmdContent) {
         if (null != localMinaServerController) {
             Log.i("LocalMinaMassageManager", "发送数据");
-            CmdBean cmdBean = new CmdBean(cmdType, DeviceType.DEVICE_TYPE_IPAD, cmdContent);
-            CmdMessage cmdMessage = new CmdMessage(MessageType.MESSAGE_CMD, cmdBean);
+            CmdMessage cmdMessage = new CmdMessage(null, null, MessageType.MESSAGE_CMD, cmdType, DeviceType.DEVICE_TYPE_IPAD, cmdContent);
             localMinaServerController.send(cmdMessage);
         }
     }

@@ -8,15 +8,12 @@ import com.yf.minalibrary.common.DeviceType;
 import com.yf.minalibrary.common.MessageType;
 import com.yf.minalibrary.message.BaseMessage;
 import com.yf.minalibrary.message.CmdMessage;
-import com.yf.minalibrary.message.CmdMessage.CmdBean;
 import com.yf.minalibrary.message.FileMessage;
 
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
 
-import java.io.File;
-import java.io.FileOutputStream;
 
 import com.yf.minalibrary.message.IntercomMessage;
 import com.yf.remotecontrolserver.common.CommonConstant;
@@ -32,7 +29,7 @@ public class IoClientHandler extends IoHandlerAdapter {
     public void messageReceived(IoSession session, Object message) throws Exception {
         CommonConstant.LINE_TYPE = 2;
         BaseMessage baseMessage = (BaseMessage) message;
-        String dataType = baseMessage.messageType;
+        int dataType = baseMessage.messageType;
         switch (dataType) {
             case MessageType.MESSAGE_CMD:
                 CmdMessage cmdMessage = (CmdMessage) baseMessage;
@@ -84,8 +81,7 @@ public class IoClientHandler extends IoHandlerAdapter {
         super.sessionIdle(session, status);
         Log.d("IoClientHandler", "sessionIdle");
         Log.d("IoClientHandler", "getLocalAddress" + session.getLocalAddress().toString());
-        CmdBean cmdBean = new CmdBean(CmdType.CMD_HEARTBEAT, DeviceType.DEVICE_TYPE_IPAD, "");
-        CmdMessage cmdMessage = new CmdMessage(ClientDataDisposeCenter.getLocalSenderId(), "", MessageType.MESSAGE_CMD, cmdBean);
+        CmdMessage cmdMessage = new CmdMessage(ClientDataDisposeCenter.getLocalSenderId(), "", MessageType.MESSAGE_CMD, CmdType.CMD_HEARTBEAT, DeviceType.DEVICE_TYPE_IPAD, "");
         session.write(cmdMessage);
     }
 

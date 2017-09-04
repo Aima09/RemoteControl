@@ -59,7 +59,7 @@ public class JsonAssistant {
     }
 
     /**
-     * @param data
+     * @param //data
      * @return
      */
     public String paseBoot(Boot boot) {

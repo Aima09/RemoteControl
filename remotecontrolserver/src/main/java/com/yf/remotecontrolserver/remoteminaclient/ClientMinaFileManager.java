@@ -35,21 +35,19 @@ public class ClientMinaFileManager {
 
     public void disposeFile(FileMessage fileMessage) {
         try {
-            FileMessage.FileBean bean = fileMessage.getFileBean();
-            Log.d("ClientMinaFileManager", "Received filename = " + bean.getFileName());
             File file = new File(Environment.getExternalStorageDirectory() + "/tupian");
             boolean b = file.exists();
             if (!b) {
                 b = file.mkdir();
             }
             if (b) {
-                FileOutputStream os = new FileOutputStream(file.getPath() + "/" + bean.getFileName());
-                os.write(bean.getFileContent());
+                FileOutputStream os = new FileOutputStream(file.getPath() + "/" + fileMessage.getFileName());
+                os.write(fileMessage.getFileContent());
                 os.close();
                 Intent it = new Intent(Intent.ACTION_VIEW);
                 it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                Uri mUri = Uri.parse("file://" + file.getPath() + "/" + bean.getFileName());
-                it.setDataAndType(mUri, "image/*");
+                Uri mUri = Uri.parse("file://" + file.getPath() + "/" + fileMessage.getFileName());
+                it.setDataAndType(mUri, "image*//*");
                 App.getAppContext().startActivity(it);
             }
         } catch (Exception e) {

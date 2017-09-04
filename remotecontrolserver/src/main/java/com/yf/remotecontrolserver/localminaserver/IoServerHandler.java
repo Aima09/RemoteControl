@@ -39,7 +39,7 @@ public class IoServerHandler extends IoHandlerAdapter {
         BaseMessage baseMessage = (BaseMessage) message;
         baseMessage.time = sdf.format(new Date());
         CommonConstant.LINE_TYPE = 1;
-        String dataType = baseMessage.messageType;
+        int dataType = baseMessage.messageType;
         switch (dataType) {
             case MessageType.MESSAGE_CMD:
                 CmdMessage cmdMessage = (CmdMessage) baseMessage;

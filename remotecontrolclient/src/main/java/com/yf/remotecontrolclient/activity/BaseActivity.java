@@ -22,7 +22,7 @@ import com.yf.remotecontrolclient.CommonConstant;
 import com.yf.remotecontrolclient.R;
 import com.yf.remotecontrolclient.util.SpUtil;
 
-public class BaseActivity extends Activity {
+public class BaseActivity extends AppCompatActivity {
 
     private LinearLayout contentLayout;
     private ImageView chooseRoom;

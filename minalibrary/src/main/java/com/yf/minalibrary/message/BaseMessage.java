@@ -11,10 +11,10 @@ public class BaseMessage implements Serializable {
 
     public String senderId = "";         // 信息发送端
     public String receiverId = "";       // 接收端ID号
-    public String messageType = MessageType.MESSAGE_INVALID;
+    public int messageType;
     public String time;
 
-    public BaseMessage(String senderId, String receiverId, String messageType) {
+    public BaseMessage(String senderId, String receiverId, int messageType) {
         this.senderId = senderId;
         this.receiverId = receiverId;
         this.messageType = messageType;

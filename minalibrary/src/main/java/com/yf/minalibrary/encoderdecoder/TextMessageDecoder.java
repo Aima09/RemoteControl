@@ -16,49 +16,29 @@ import org.apache.mina.filter.codec.demux.MessageDecoderResult;
  * ;
  */
 
-public class TextMessageDecoder implements MessageDecoder {
+public class TextMessageDecoder extends BaseMessageDecoder implements MessageDecoder {
 
     @Override public MessageDecoderResult decodable(IoSession ioSession, IoBuffer in) {
-        System.out.println("TextMessageDecoder" + " 解码器选择");
-        if (in.remaining() < 4) {
-            return MessageDecoderResult.NEED_DATA;
-        }
-        try {
-            int messageLength = in.getInt();
-            System.out.println("TextMessageDecoder TEXT总长度 messageLength = " + messageLength);
-            if (messageLength <= 0){
-                return MessageDecoderResult.NOT_OK;
-            }
-            if (in.remaining() < messageLength) {
-                return MessageDecoderResult.NEED_DATA;
-            } else {
-                String a = in.getString(messageLength, BeanUtil.UTF_8.newDecoder());
-                System.out.println("TextMessageDecoder 得到的TEXT内容  = " + a);
-                System.out.println("TextMessageDecoder 得到的TEXT长度  = " + a.getBytes(BeanUtil.UTF_8).length);
-                Gson gson = new Gson();
-                TextMessage textMessage = gson.fromJson(a, TextMessage.class);
-                if (textMessage.messageType.equals(MessageType.MESSAGE_TEXT)) {
-                    return MessageDecoderResult.OK;
-                }
-            }
-        } catch (Exception e) {
-            System.out.println("TextMessageDecoder decodable 解码出错 = " + e.toString());
-            e.printStackTrace();
-            return MessageDecoderResult.NOT_OK;
-        }
-        return MessageDecoderResult.NOT_OK;
+        return super.deadWork(MessageType.MESSAGE_TEXT,in);
     }
 
     @Override public MessageDecoderResult decode(IoSession ioSession, IoBuffer in, ProtocolDecoderOutput outPut) throws Exception {
         try {
+            in.getInt();//类型这里用不到
+            if(in.remaining()<4){
+                return MessageDecoderResult.NEED_DATA;
+            }
             int messageLength = in.getInt();
-            String a = in.getString(messageLength, BeanUtil.UTF_8.newDecoder());
+            if(in.remaining()<messageLength){
+                return MessageDecoderResult.NEED_DATA;
+            }
+            byte[] mybuffer=new byte[messageLength];
+            in.get(mybuffer);
+            String a = new String(mybuffer,0,mybuffer.length, "UTF-8");
             Gson gson = new Gson();
             TextMessage textMessage = gson.fromJson(a, TextMessage.class);
-            System.out.println("TextMessageDecoder " + textMessage.toString());
             outPut.write(textMessage);
         } catch (Exception e) {
-            System.out.println("TextMessageDecoder decode 解码出错 = " + e.toString());
             e.printStackTrace();
             return MessageDecoderResult.NOT_OK;
         }

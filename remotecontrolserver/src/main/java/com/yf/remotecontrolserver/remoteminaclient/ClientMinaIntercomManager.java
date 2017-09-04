@@ -5,11 +5,9 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.yf.minalibrary.message.IntercomMessage;
-import com.yf.minalibrary.message.IntercomMessage.IntercomBean;
 import com.yuanfang.intercom.data.AudioData;
 import com.yuanfang.intercom.data.MessageQueue;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
 import static com.yf.remotecontrolserver.common.ui.serice.MouseService.TAG;
@@ -34,9 +32,8 @@ public class ClientMinaIntercomManager {
     }
 
     public void disposeIntercom(IntercomMessage intercomMessage) {
-        IntercomBean intercomBean = intercomMessage.getIntercomBean();
-        Log.d(TAG, Arrays.toString(Base64.decode(intercomBean.getIntercomContent(), Base64.DEFAULT)));
-        AudioData audioData = new AudioData(Base64.decode(intercomBean.getIntercomContent(),Base64.DEFAULT));
+        Log.d(TAG, Arrays.toString(Base64.decode(intercomMessage.getIntercomContent(), Base64.DEFAULT)));
+        AudioData audioData = new AudioData(Base64.decode(intercomMessage.getIntercomContent(),Base64.DEFAULT));
         MessageQueue.getInstance(MessageQueue.DECODER_DATA_QUEUE).put(audioData);
     }
 }

@@ -1,5 +1,7 @@
 package com.yf.minalibrary.encoderdecoder;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.yf.minalibrary.common.BeanUtil;
 import com.yf.minalibrary.common.MessageType;
@@ -11,45 +13,84 @@ import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolEncoderOutput;
 import org.apache.mina.filter.codec.demux.MessageEncoder;
 
+import java.nio.Buffer;
+import java.nio.charset.Charset;
+
+import static android.R.id.message;
+
 
 public class BaseMessageEncoder implements MessageEncoder<BaseMessage> {
-
-    private Gson gson;
+    public static String TAG="BaseMessageEncoder";
+    private Gson mGson;
 
     public BaseMessageEncoder() {
-        gson = new Gson();
+        mGson = new Gson();
     }
 
     public void encode(IoSession session, BaseMessage message, ProtocolEncoderOutput outPut) throws Exception {
         IoBuffer buffer = IoBuffer.allocate(1000).setAutoExpand(true);
-        String messageType = message.messageType;
-        System.out.println("BaseMessageEncoder " + messageType);
+        int messageType = message.messageType;
         try {
             switch (messageType) {
                 case MessageType.MESSAGE_CMD:
                 case MessageType.MESSAGE_TEXT:
                 case MessageType.MESSAGE_INTERCOM:
-                    String gsonMsg = gson.toJson(message);
-                    System.out.println("BaseMessageEncoder gsonMsg = " + gsonMsg);
-                    buffer.putInt(gsonMsg.getBytes(BeanUtil.UTF_8).length);
-                    buffer.putString(gsonMsg, BeanUtil.UTF_8.newEncoder());
-                    buffer.flip();
-                    outPut.write(buffer);
+                    encodeThree(messageType, buffer,message);
                     break;
                 case MessageType.MESSAGE_FILE:
-                    FileMessage fileMessage = (FileMessage) message;
-                    String fileHead = fileMessage.toString();
-                    buffer.putInt(fileHead.getBytes(BeanUtil.UTF_8).length);
-                    buffer.putString(fileHead,BeanUtil.UTF_8.newEncoder());
-                    buffer.put(fileMessage.getFileBean().getFileContent());
-                    buffer.flip();
-                    outPut.write(buffer);
+                    encodeFile(messageType, buffer,message);
                     break;
             }
+            buffer.flip();
+            outPut.write(buffer);
         } catch (Exception e) {
-            System.out.println("BaseMessageEncoder 编码 error = " + e.toString());
             e.printStackTrace();
         }
-        System.out.println("BaseMessageEncoder " + "编码完成");
     }
+
+    private void encodeFile(int messageType, IoBuffer buffer, BaseMessage message) {
+        try {
+            FileMessage fileMessage = (FileMessage) message;
+            //去掉内容变json
+            byte[] b = fileMessage.getFileContent();
+            fileMessage.setFileContent(null);
+            String fileHead = mGson.toJson(fileMessage);
+            Log.i(TAG,fileHead);
+            byte[] bh = fileHead.getBytes("UTF-8");
+
+            //第一个四字节放类型
+            buffer.putInt(messageType);
+
+            //第二个四字节放头长度
+            buffer.putInt(bh.length);
+
+            buffer.put(bh);//头的json
+
+            buffer.put(b);//文件byte[]
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 前三个type都调用这个重载的函数
+     * @param type
+     * @param buffer
+     */
+    private  void encodeThree(int type, IoBuffer buffer,BaseMessage message){
+        try {
+            String gsonMsg = mGson.toJson(message);
+            byte[] b=gsonMsg.getBytes("UTF-8");
+            //第一个四字节 放数据类型
+            buffer.putInt(type);
+            //第二个四字节 放数据长度
+            buffer.putInt(b.length);
+            //内容
+            buffer.putString(gsonMsg,Charset.forName("UTF-8").newEncoder());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
 }
