@@ -45,7 +45,4 @@ public class BaseMessageDecoder {
             return  MessageDecoderResult.NOT_OK;
         }
     }
-
-
-
 }

@@ -105,9 +105,7 @@ public class TcpAnalyzerImpl implements AnalyzerInterface {
                 intent.putExtra(MUSIC_KEY, data);
                 intent.putExtra("receiverId", receiverId);
                 App.getAppContext().sendBroadcast(intent);
-            }
-
-            else if(data.contains("cmd") && data.contains("BSsetplaysongProgress")){
+            }else if(data.contains("cmd") && data.contains("BSsetplaysongProgress")){
                 Intent intent = new Intent();
                 intent.setAction(MUSICRECEIVER);
                 intent.putExtra(MUSIC_KEY, data);
@@ -137,6 +135,12 @@ public class TcpAnalyzerImpl implements AnalyzerInterface {
                 intent.putExtra("receiverId", receiverId);
                 App.getAppContext().sendBroadcast(intent);
             } else if (data.contains("cmd") && data.contains("BSgetvideolist")) {
+                Intent intent = new Intent();
+                intent.setAction(VIDEORECEIVER);
+                intent.putExtra(VIDEO_KEY, data);
+                intent.putExtra("receiverId", receiverId);
+                App.getAppContext().sendBroadcast(intent);
+            }else if (data.contains("cmd") && data.contains("BspVideommedia")){
                 Intent intent = new Intent();
                 intent.setAction(VIDEORECEIVER);
                 intent.putExtra(VIDEO_KEY, data);

@@ -8,6 +8,11 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +28,12 @@ import java.util.List;
 
 import com.yf.remotecontrolclient.App;
 import com.yf.remotecontrolclient.R;
+import com.yf.remotecontrolclient.activity.fragment.MediaMusicLocalListFragment;
+import com.yf.remotecontrolclient.activity.fragment.MediaMusicRemotListFragment;
+import com.yf.remotecontrolclient.activity.fragment.MediaVideoLocalListFragment;
+import com.yf.remotecontrolclient.activity.fragment.MediaVideoRemotListFragment;
+import com.yf.remotecontrolclient.activity.view.Indicator;
+import com.yf.remotecontrolclient.activity.view.ScrollRelativeLayout;
 import com.yf.remotecontrolclient.adapt.VideoAdapter;
 import com.yf.remotecontrolclient.domain.Setplayvideoid;
 import com.yf.remotecontrolclient.domain.Setvideoplaystatus;
@@ -38,215 +49,108 @@ import com.yf.remotecontrolclient.service.imp.VideoBusinessServiceImpl;
 import com.yf.remotecontrolclient.util.MyThumbnailUtils;
 
 
-public class MediaVideoActivity extends BaseActivity implements View.OnClickListener {
-    	public final String TAG = "MediaVideoActivity";
-    private int total;
-    private VideoBusinessService mVideoBusinessService;
-    VideoList videoList;
+public class MediaVideoActivity extends BaseActivity  implements ViewPager.OnPageChangeListener, View.OnClickListener  {
+    public final String TAG = "MediaVideoActivity";
+    private ScrollRelativeLayout mMainContainer;
+    private Indicator mIndicator;
     public final static String MBROADCASTRECEIVER = "com.yf.client.activity.MediaVideoActivity.mBroadcastReceiver.video";
-    private List<Video> videos = new ArrayList<Video>();
-    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String cmd = intent.getStringExtra(MusicBusinessServiceImpl.CMD);
-            if (cmd.equals("BSgetvideolist")) {
-                videoList = (VideoList) intent
-                        .getSerializableExtra("BSgetvideolist");
-                //{"VideoList":[{"duration":0,"signer":"1920X1080高清韩国美少女.rmvb","videoid":0,"videoname":"1920X1080高清韩国美少女"},{"duration":0,"signer":"1920X1080高清韩国美少女.rmvb","videoid":1,"videoname":"1920X1080高清韩国美少女"}],"cmd":"BSgetvideolist","pageIndex":0,"pageSize":2,"total":5}
-                if (videoList == null) {
-                    return;
-                }
-//				Log.i(TAG, videoList.toString());
-                total = videoList.getTotal();
-//				Toast.makeText(getApplicationContext(), total+"", Toast.LENGTH_LONG).show();
-                List<Video> list = videoList.getVideoList();
-                videos.addAll(list);
-                Message message = Message.obtain();
-                handler.sendEmptyMessage(0);
-            } else if (cmd.equals("BSsetvideoplaystatus")) {
-                Message message = Message.obtain();
-                message.what = 1;
-                message.obj = intent.getSerializableExtra("setvideoplaystatus");
-                handler.sendMessage(message);
-            }
-        }
-    };
-    Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-//            switch (msg.what) {
-//                case 0:
-//                    adapter.notifyDataSetChanged();
-//                    if (videos == null) {
-//                        return;
-//                    }
-//                    if (videos.size() <= total) {
-//                        VideoList videoList = new VideoList();
-//                        videoList.setCmd("BSgetvideolist");
-//                        videoList.setPageSize(2);
-//                        videoList.setPageIndex(videos.size());
-//                        mVideoBusinessService.sendBsgetVideoList(videoList);
-//                    }
-//                    //listView.setAdapter(adapter);
-//                    break;
-//                case 1:
-//                    Setvideoplaystatus setvideoplaystatus = (Setvideoplaystatus) msg.obj;
-//                    String status = setvideoplaystatus.getStatus();
-////				client收到：{"cmd":"BSsetplaystatus","status":"play"}
-////				client收到：{"cmd":"BSsetplaystatus","status":"stop"}
-//                    if (status.equals("play")) {
-//                        startPause.setImageResource(R.drawable.video_button_pause);
-//                    } else {
-//                        startPause.setImageResource(R.drawable.video_button_play);
-//                    }
-//                    break;
-//            }
-        }
-    };
-    private VideoAdapter adapter;
-    private ListView listView;
-    private ImageView volumeMinus;
-    private ImageView previous;
-    private ImageView startPause;
-    private ImageView next;
-    private ImageView repeatMode;
-    private ImageView volumeAdd;
+    private TextView mLocalTextView;
+    private TextView mSearchTextView;
+    private ViewPager mVpMusicList;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    private ArrayList<Fragment> mFragments = new ArrayList<Fragment>();
+
+    @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_video_list);
+        setContentView(R.layout.activity_music_list);
         initspinner();
         initView();
-        adapter = new VideoAdapter();
-        adapter.setVideos(videos);
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(MBROADCASTRECEIVER);
-        registerReceiver(mBroadcastReceiver, filter);
-//		Toast.makeText(getApplicationContext(), "将显示视频列表", Toast.LENGTH_LONG)
-//				.show();
-        listView = (ListView) findViewById(R.id.listview);
-
-        //listView.setAdapter(adapter);
-        listView.setAdapter(new MyVideoAdapter());
-        Log.i(TAG,"dsaf");
-//        mVideoBusinessService = new VideoBusinessServiceImpl();
-//        VideoList videoList = new VideoList();
-//        videoList.setCmd("BSgetvideolist");
-//        videoList.setPageSize(2);
-//        videoList.setPageIndex(0);
-//        mVideoBusinessService.sendBsgetVideoList(videoList);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                //播放那一个视频
-//                Setplayvideoid setplayvideoid = new Setplayvideoid();
-//                setplayvideoid.setCmd("BSsetplayvideoid");
-//                setplayvideoid.setVideoid(position);
-//                mVideoBusinessService.sendBssetplayvideoid(setplayvideoid);
-                MediaSource.getInstance().getVideoList().get(position).setTitle("yingyue");
-               new MusicBusinessServiceImpl().sendBsTsMusicFile( MediaSource.getInstance().getVideoList().get(position));
-
-            }
-        });
+        initData();
     }
 
-    //volume_minus  previous start_pause next repeat_mode volume_add
+    private void initData() {
+        MediaVideoRemotListFragment mMediaVideoRemotListFragment = new MediaVideoRemotListFragment();
+        MediaVideoLocalListFragment mMediaVideoLocalListFragment = new MediaVideoLocalListFragment();
+
+        mFragments.add(mMediaVideoRemotListFragment);
+        mFragments.add(mMediaVideoLocalListFragment);
+        mVpMusicList.setAdapter(mPagerAdapter);
+        //初始默认选中第0
+        selectTab(0);
+    }
+
     private void initView() {
-        volumeMinus = (ImageView) findViewById(R.id.volume_minus);
-        volumeMinus.setOnClickListener(this);
-        previous = (ImageView) findViewById(R.id.previous);
-        previous.setOnClickListener(this);
-        startPause = (ImageView) findViewById(R.id.start_pause);
-        startPause.setOnClickListener(this);
-        next = (ImageView) findViewById(R.id.next);
-        next.setOnClickListener(this);
-        repeatMode = (ImageView) findViewById(R.id.repeat_mode);
-        repeatMode.setOnClickListener(this);
-        volumeAdd = (ImageView) findViewById(R.id.volume_add);
-        volumeAdd.setOnClickListener(this);
+        mMainContainer = (ScrollRelativeLayout) findViewById(R.id.rl_main_container);
+        mIndicator = (Indicator) findViewById(R.id.main_indicator);
+        mLocalTextView = (TextView) findViewById(R.id.tv_main_local);
+        mSearchTextView = (TextView) findViewById(R.id.tv_main_remote);
+        mVpMusicList = (ViewPager) findViewById(R.id.vp_music_list);
+
+        mVpMusicList.addOnPageChangeListener(this);
+        mLocalTextView.setOnClickListener(this);
+        mSearchTextView.setOnClickListener(this);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver(mBroadcastReceiver);
-        videos = null;
+    private FragmentPagerAdapter mPagerAdapter =
+            new FragmentPagerAdapter(getSupportFragmentManager()) {
+                @Override
+                public int getCount() {
+                    return mFragments.size();
+                }
+                @Override
+                public Fragment getItem(int position) {
+                    return mFragments.get(position);
+                }
+            };
+
+    /**
+     * 切换导航indicator
+     * 设置文字颜色
+     *
+     * @param index
+     */
+    private void selectTab(int index) {
+        switch (index) {
+            case 0:
+                mLocalTextView.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.mediaMusicList));
+                mSearchTextView.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.mediaMusicList_dark));
+                break;
+            case 1:
+                mLocalTextView.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.mediaMusicList_dark));
+                mSearchTextView.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.mediaMusicList));
+                break;
+        }
     }
 
-    //volume_minus  previous start_pause next repeat_mode volume_add
+    /**
+     * OnPageChangeListener
+     */
+    @Override public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        mIndicator.scroll(position, positionOffset);
+    }
+
+    @Override public void onPageSelected(int position) {
+        selectTab(position);
+    }
+
+    @Override public void onPageScrollStateChanged(int state) {
+
+    }
+
+    /**
+     * OnClickListener
+     *
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.volume_minus:
-                //声音
-                Setvideovolumeadd setvideovolumeadd = new Setvideovolumeadd();
-                setvideovolumeadd.setCmd("BSsetvideovolumeadd");
-                setvideovolumeadd.setValume("-");
-                mVideoBusinessService.sendBssetVideovolumeadd(setvideovolumeadd);
+            case R.id.tv_main_local:
+                mVpMusicList.setCurrentItem(0);
                 break;
-            case R.id.previous:
-                //上一首
-                Setvideoplaystatus setvideoplaystatus = new Setvideoplaystatus();
-                setvideoplaystatus.setCmd("BSsetvideoplaystatus");
-                setvideoplaystatus.setStatus("previous");
-                mVideoBusinessService.sendBssetvideoplaystatus(setvideoplaystatus);
-                break;
-            case R.id.start_pause:
-                Setvideoplaystatus setvideoplaystatus1 = new Setvideoplaystatus();
-                setvideoplaystatus1.setCmd("BSsetvideoplaystatus");
-                setvideoplaystatus1.setStatus("start_pause");
-                mVideoBusinessService.sendBssetvideoplaystatus(setvideoplaystatus1);
-                break;
-            case R.id.next:
-                //下一首
-                Setvideoplaystatus setvideoplaystatus2 = new Setvideoplaystatus();
-                setvideoplaystatus2.setCmd("BSsetvideoplaystatus");
-                setvideoplaystatus2.setStatus("next");
-                mVideoBusinessService.sendBssetvideoplaystatus(setvideoplaystatus2);
-                break;
-            case R.id.repeat_mode:
-                break;
-            case R.id.volume_add:
-                //声音
-                Setvideovolumeadd setvideovolumeadd1 = new Setvideovolumeadd();
-                setvideovolumeadd1.setCmd("BSsetvideovolumeadd");
-                setvideovolumeadd1.setValume("+");
-                mVideoBusinessService.sendBssetVideovolumeadd(setvideovolumeadd1);
+            case R.id.tv_main_remote:
+                mVpMusicList.setCurrentItem(1);
                 break;
         }
     }
-
-    class MyVideoAdapter extends BaseAdapter {
-        public List<Media> mVideos=new ArrayList<Media>();
-        public MyVideoAdapter(){
-            Log.i(TAG,MediaSource.getInstance().getVideoList().size()+"");
-            mVideos.addAll(MediaSource.getInstance().getVideoList());
-        }
-
-        @Override public int getCount() {
-            return mVideos.size();
-        }
-
-        @Override public Object getItem(int position) {
-            return position;
-        }
-
-        @Override public long getItemId(int position) {
-            return position;
-        }
-
-        @Override public View getView(int position, View convertView, ViewGroup parent) {
-                convertView = View.inflate(App.getAppContext(), R.layout.activity_video_list_item, null);
-                TextView title = (TextView) convertView.findViewById(R.id.video_name);
-                //thumbnail = (ImageView) convertView.findViewById(R.id.iv_video_thumbnail);
-            title.setText(mVideos.get(position).getTitle());
-            return convertView;
-        }
-    }
-
 }
