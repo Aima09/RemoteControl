@@ -6,7 +6,7 @@ import android.net.wifi.WifiManager;
 
 public class App extends Application {
     //    public static final String TAG = App.class.getSimpleName();
-    private static App instance;
+    private volatile static App instance;
 
     public static App getAppContext() {
         return instance;

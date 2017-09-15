@@ -1,1 +1,1 @@
-include ':remotecontrolserver', ':minalibrary', ':intercom', ':remotecontrolclient'
+include ':remotecontrolserver', ':minalibrary', ':intercom', ':remotecontrolclient', ':dcs_sdk'

@@ -46,12 +46,12 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
     // 定义图标数组
     private int[] imageRes = {R.drawable.timg, R.drawable.text, R.drawable.btn_music,
             R.drawable.vidio, R.drawable.tk, R.drawable.llq,R.drawable.zyglq, R.drawable.timg,
-            R.drawable.timg, R.drawable.setting, R.mipmap.ic_talk};//R.drawable.zyglq
+            R.drawable.timg, R.drawable.setting, R.mipmap.ic_talk, R.mipmap.ic_dueros};//R.drawable.zyglq
 
     // 定义图标下方的名称数组
     private String[] name = {"鼠标控制", "输入文字", "播放音乐",
             "播放视频", "图库", "浏览器", "资源管理", "本地控制",
-            "远程控制", "设置", "对讲"};//"资源管理"
+            "远程控制", "设置", "对讲","人工智能语音"};//"资源管理"
 
     public MouseBusinessServiceImpl mouseBusinessService;
 
@@ -273,6 +273,10 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
                 break;
             case 10:
                 startActivity(new Intent(getApplicationContext(), IntercomActivity.class));
+                break;
+            case 11:
+                startActivity(new Intent(getApplicationContext(),
+                        DcsOAuthActivity.class));
                 break;
         }
     }
