@@ -23,6 +23,7 @@ public class ClientMinaCmdManager {
 
     public interface MinaCmdCallBack {
         void minaCmdCallBack(Object message);
+
     }
 
     public static synchronized ClientMinaCmdManager getInstance() {

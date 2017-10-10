@@ -123,6 +123,11 @@
             android:enabled="true"
             android:exported="false">
         </service>
+        <service
+            android:name="com.yf.remotecontrolclient.httpserver.MyHttpService"
+            android:enabled="true"
+            android:exported="false">
+        </service>
 
         <activity android:name=".activity.baidu.tts.BdTtsActivity">
         </activity>

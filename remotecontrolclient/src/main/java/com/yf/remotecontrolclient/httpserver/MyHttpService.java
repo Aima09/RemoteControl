@@ -1,10 +1,10 @@
 package com.yf.remotecontrolclient.httpserver;
 
-import android.Manifest;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 
 import java.io.IOException;
@@ -19,6 +19,7 @@ public class MyHttpService extends Service{
     }
 
     @Override public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.i("MyHttpService","onStartCommand");
         try {
             HttpServer mHttpServer= new HttpServer(8089);
             try {
