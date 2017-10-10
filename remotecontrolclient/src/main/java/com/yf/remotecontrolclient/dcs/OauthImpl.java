@@ -21,7 +21,7 @@ import android.text.TextUtils;
 import com.baidu.duer.dcs.oauth.api.IOauth;
 import com.baidu.duer.dcs.oauth.api.OauthPreferenceUtil;
 import com.yf.remotecontrolclient.App;
-import com.yf.remotecontrolclient.activity.DcsOAuthActivity;
+import com.yf.remotecontrolclient.activity.baidu.dcs.DcsOAuthActivity;
 
 /**
  * 用户认证接口

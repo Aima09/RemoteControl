@@ -34,12 +34,14 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    compile project(':baidu_asr_sdk')
+    compile project(':baidu_dcs_sdk')
+    compile project(':baidu_tts_sdk')
     compile project(':minalibrary')
     compile project(':intercom')
 
+    compile files('libs/nanohttpd-2.2.0.jar')
     compile 'com.github.bumptech.glide:glide:4.1.1'
-    apt 'com.github.bumptech.glide:compiler:4.1.1'
-
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:design:25.3.1'
@@ -50,7 +52,6 @@ dependencies {
     compile 'com.google.zxing:core:3.3.0'
     compile 'pub.devrel:easypermissions:0.4.3'
     testCompile 'junit:junit:4.12'
+    apt 'com.github.bumptech.glide:compiler:4.1.1'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
-    compile files('libs/nanohttpd-2.2.0.jar')
-    compile project(':dcs_sdk')
 }

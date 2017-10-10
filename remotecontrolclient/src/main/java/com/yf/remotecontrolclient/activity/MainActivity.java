@@ -19,6 +19,8 @@ import android.widget.SimpleAdapter;
 import com.yf.remotecontrolclient.App;
 import com.yf.remotecontrolclient.CommonConstant;
 import com.yf.remotecontrolclient.R;
+import com.yf.remotecontrolclient.activity.baidu.asr.ActivityOnline;
+import com.yf.remotecontrolclient.activity.baidu.dcs.DcsOAuthActivity;
 import com.yf.remotecontrolclient.activity.service.MouseService;
 import com.yf.remotecontrolclient.dao.SocketManager;
 import com.yf.remotecontrolclient.dao.TcpAnalyzerImpl;
@@ -276,7 +278,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
                 break;
             case 11:
                 startActivity(new Intent(getApplicationContext(),
-                        DcsOAuthActivity.class));
+                        ActivityOnline.class));
                 break;
         }
     }

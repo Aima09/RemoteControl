@@ -3,16 +3,20 @@
           xmlns:tools="http://schemas.android.com/tools"
           package="com.yf.remotecontrolclient">
 
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <instrumentation
+        android:name="android.test.InstrumentationTestRunner"
+        android:label="Tests for com.baidu.speech.recognizerdemo"
+        android:targetPackage="com.yf.remotecontrolclient" />
 
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
@@ -36,7 +40,6 @@
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
 
-
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -44,6 +47,22 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
+
+        <!-- 请填写真实的APP_ID API_KEY SECRET_KEY-->
+        <meta-data
+            android:name="com.baidu.speech.APP_ID"
+            android:value="10155431" />
+        <!-- 再次重复！！填写APP_ID 时请检查在官网的该应用内是否设置了包名。否则会导致唤醒词及离线功能无法使用。
+         本demo的包名是com.baidu.speech.recognizerdemo，在build.gradle文件中查看。 -->
+        <!-- 正式发布时，请替换成您自己的appId 本demo的appId会不定时下线 -->
+        <meta-data
+            android:name="com.baidu.speech.API_KEY"
+            android:value="rpHqyGsUm2QBW0GUP2pHaBxi" />
+        <meta-data
+            android:name="com.baidu.speech.SECRET_KEY"
+            android:value="4690b5e7c7af8971c6623cc68976f7b2" />
+        <service android:name="com.baidu.speech.VoiceRecognitionService" android:exported="false" />
+
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/app_name"
@@ -55,7 +74,6 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activity.ChooseRoomActivity"
             android:label="@string/app_name"
@@ -67,7 +85,7 @@
         <activity android:name=".activity.MediaMusicActivity"/>
         <activity android:name=".activity.MediaVideoActivity"/>
         <activity
-        android:name=".activity.MouseActivity"
+            android:name=".activity.MouseActivity"
             android:launchMode="singleTask"/>
         <activity android:name=".activity.MediaImageFolderActivity"/>
         <activity android:name=".activity.MediaImageActivity"/>
@@ -86,11 +104,11 @@
         </activity>
         <activity android:name=".activity.IntercomActivity">
         </activity>
-        <activity android:name=".activity.DcsMainActivity">
+        <activity android:name=".activity.baidu.dcs.DcsMainActivity">
         </activity>
-        <activity android:name=".activity.DcsOAuthActivity">
+        <activity android:name=".activity.baidu.dcs.DcsOAuthActivity">
         </activity>
-        <activity android:name=".activity.DcsScreenHtmlActivity">
+        <activity android:name=".activity.baidu.dcs.DcsScreenHtmlActivity">
         </activity>
 
         <service
@@ -105,6 +123,11 @@
             android:enabled="true"
             android:exported="false">
         </service>
+
+        <activity android:name=".activity.baidu.tts.BdTtsActivity">
+        </activity>
+        <activity android:name=".activity.baidu.asr.ActivityOnline">
+        </activity>
     </application>
 
 </manifest>
