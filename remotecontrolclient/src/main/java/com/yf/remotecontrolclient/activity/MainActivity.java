@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -27,6 +28,7 @@ import com.yf.remotecontrolclient.domain.Boot;
 import com.yf.remotecontrolclient.domain.Equipment;
 import com.yf.remotecontrolclient.domain.Palpitation;
 import com.yf.remotecontrolclient.httpserver.HttpServer;
+import com.yf.remotecontrolclient.httpserver.MyHttpService;
 import com.yf.remotecontrolclient.intercom.InterService;
 import com.yf.remotecontrolclient.minaclient.tcp.RemoteServerManager;
 import com.yf.remotecontrolclient.service.imp.MouseBusinessServiceImpl;
@@ -41,7 +43,7 @@ import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
 public class MainActivity extends BaseActivity implements AdapterView.OnItemClickListener, EasyPermissions.PermissionCallbacks {
-    protected static final String TAG = "QRCodeScanActivity";
+    protected static final String TAG = "MainActivity";
     private static final int REQUEST_CODE_QRCODE_PERMISSIONS = 1;
     // 定义图标数组
     private int[] imageRes = {R.drawable.timg, R.drawable.text, R.drawable.btn_music,
@@ -169,7 +171,8 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         // 自动连接
         RemoteServerManager.getInstance().startRemoteServer();
         startService(new Intent(App.getAppContext(), MouseService.class));
-        startService(new Intent(App.getAppContext(), HttpServer.class));
+        startService(new Intent(App.getAppContext(), MyHttpService.class));
+        Log.i(TAG,"调用");
     }
 
     private void initData() {
@@ -320,6 +323,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 
         stopService(new Intent(App.getAppContext(), MouseService.class));
         stopService(new Intent(this, InterService.class));
+        stopService(new Intent(this, MyHttpService.class));
         super.onDestroy();
     }
 }

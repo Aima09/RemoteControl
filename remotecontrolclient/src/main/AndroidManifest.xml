@@ -105,6 +105,11 @@
             android:enabled="true"
             android:exported="false">
         </service>
+        <service
+            android:name="com.yf.remotecontrolclient.httpserver.MyHttpService"
+            android:enabled="true"
+            android:exported="false">
+        </service>
     </application>
 
 </manifest>
