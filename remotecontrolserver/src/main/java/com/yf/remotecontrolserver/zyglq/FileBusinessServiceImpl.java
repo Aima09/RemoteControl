@@ -14,6 +14,5 @@ public class FileBusinessServiceImpl implements FileBusinessService {
             ClientMinaCmdManager.getInstance()
                     .sendControlCmd(fileJson, receiverId);
         }
-//		TCPIPServer.getInstans(MouseService.gateway, MouseService.equipment, TcpAnalyzerImpl.getInstans()).send(fileJson.getBytes());
     }
 }

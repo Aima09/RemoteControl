@@ -1,6 +1,8 @@
 package com.yf.remotecontrolclient.service.imp;
 
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.yf.minalibrary.common.BeanUtil;
 import com.yf.remotecontrolclient.App;
@@ -15,6 +17,7 @@ import com.yf.remotecontrolclient.domain.SongList;
 import com.yf.remotecontrolclient.media.model.Media;
 import com.yf.remotecontrolclient.minaclient.tcp.MinaMessageManager;
 import com.yf.remotecontrolclient.service.MusicBusinessService;
+import com.yf.remotecontrolclient.util.GsonUtil;
 import com.yf.remotecontrolclient.util.IpUtil;
 import com.yf.remotecontrolclient.util.JsonAssistant;
 
@@ -33,8 +36,12 @@ public class MusicBusinessServiceImpl implements MusicBusinessService{
 
     @Override
     public void sendBsgetSongList(SongList songList) {
+        String oldS=jsonAssistant.createGetSongList(songList);
+        String newS=GsonUtil.GsonString(songList);
+        Log.i("MusicB","oldS"+oldS);
+        Log.i("MusicB","newS"+newS);
         MinaMessageManager.getInstance()
-                .sendControlCmd(jsonAssistant.createGetSongList(songList));
+                .sendControlCmd(oldS);
     }
 
     @Override
