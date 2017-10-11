@@ -111,7 +111,6 @@ public class MediaVideoLocalListFragment extends Fragment implements View.OnClic
     @Override public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_ts:
-                int  position=(Integer) v.getTag();
                 Media m=MediaSource.getInstance().getVideoList().get((Integer) v.getTag());
                 mVideoBusinessService.sendBsTsVideoFile(m);
                 break;
