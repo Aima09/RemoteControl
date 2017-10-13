@@ -6,7 +6,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,6 @@ import com.yf.remotecontrolclient.media.model.Media;
 import com.yf.remotecontrolclient.service.MusicBusinessService;
 import com.yf.remotecontrolclient.service.imp.MusicBusinessServiceImpl;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,6 +88,9 @@ public class MediaMusicLocalListFragment extends Fragment implements View.OnClic
                 viewHolder.btnTs = (Button) convertView.findViewById(R.id.btn_ts);
                 viewHolder.btnSc = (Button) convertView.findViewById(R.id.btn_sc);
             }
+            if(media==null){
+                return null;
+            }
             viewHolder.musicName.setText(media.getTitle());
             viewHolder.musicZz.setText(media.getArtist());
             viewHolder.btnTs.setTag(position);
@@ -114,8 +115,8 @@ public class MediaMusicLocalListFragment extends Fragment implements View.OnClic
                 mMusicBusinessService.sendBsTsMusicFile(m);
                 break;
             case R.id.btn_sc:
-                Log.i(TAG,"上传:"+v.getTag());
-                mMusicBusinessService.sendBsMusicFile(MediaSource.getInstance().getMusicList().get((Integer) v.getTag()).getPath(), FileMessageConstant.UPLOAD_MUSIC);
+                //Log.i(TAG,"上传:"+v.getTag());
+                mMusicBusinessService.sendBsMusicFile((String)v.getTag(), FileMessageConstant.UPLOAD_MUSIC);
                 break;
         }
     }

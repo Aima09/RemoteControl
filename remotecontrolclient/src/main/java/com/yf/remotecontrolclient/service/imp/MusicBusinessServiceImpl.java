@@ -21,6 +21,15 @@ import com.yf.remotecontrolclient.util.JsonAssistant;
 
 import java.net.URLEncoder;
 
+<<<<<<< .mine
+
+
+
+=======
+import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
+import static com.yf.remotecontrolclient.activity.fragment.MediaMusicRemotListFragment.songList;
+
+>>>>>>> .theirs
 public class MusicBusinessServiceImpl implements MusicBusinessService{
     public static final String CMD = "cmd";
     private JsonAssistant jsonAssistant;
@@ -82,6 +91,7 @@ public class MusicBusinessServiceImpl implements MusicBusinessService{
 
     @Override public void sendBsTsMusicFile(Media media) {
         try {
+
             Pmmedia pmmedia = new Pmmedia();
             pmmedia.setCmd("Bspmmedia");
             pmmedia.setAbulmId(media.getAbulmId());
@@ -92,6 +102,7 @@ public class MusicBusinessServiceImpl implements MusicBusinessService{
             pmmedia.setSize(media.getSize());
             pmmedia.setTitle(media.getTitle());
             pmmedia.setPath("http://" + IpUtil.getLocalIpAddress(App.getAppContext()) + ":8089?path=" + URLEncoder.encode(media.getPath(), "UTF-8"));
+            Log.i("MusicBusinessServiceImpl", "sendBsTsMusicFile: "+pmmedia.getPath());
             MinaMessageManager.getInstance()
                     .sendControlCmd(jsonAssistant.createPmMedia(pmmedia));
         }catch (Exception e){
