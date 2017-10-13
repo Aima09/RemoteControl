@@ -3,8 +3,6 @@ package com.yf.remotecontrolclient.service.imp;
 
 import android.util.Log;
 
-import com.google.gson.Gson;
-import com.yf.minalibrary.common.BeanUtil;
 import com.yf.remotecontrolclient.App;
 import com.yf.remotecontrolclient.domain.GetSongStuatus;
 import com.yf.remotecontrolclient.domain.Pmmedia;
@@ -22,8 +20,6 @@ import com.yf.remotecontrolclient.util.IpUtil;
 import com.yf.remotecontrolclient.util.JsonAssistant;
 
 import java.net.URLEncoder;
-
-import static com.yf.remotecontrolclient.activity.fragment.MediaMusicRemotListFragment.songList;
 
 public class MusicBusinessServiceImpl implements MusicBusinessService{
     public static final String CMD = "cmd";

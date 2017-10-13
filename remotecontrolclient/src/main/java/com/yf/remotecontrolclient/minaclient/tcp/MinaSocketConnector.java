@@ -17,8 +17,6 @@ import org.apache.mina.transport.socket.nio.NioSocketConnector;
 
 import java.net.InetSocketAddress;
 
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
-
 public class MinaSocketConnector {
 
     public static final String SERVER_DEFAULT_IP = "139.196.98.226";

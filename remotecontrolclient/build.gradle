@@ -8,15 +8,11 @@ android {
         applicationId "com.yf.remotecontrolclient"
         minSdkVersion 21
         targetSdkVersion 25
-        versionCode 3
-        versionName "1.0.3"
+        versionCode 4
+        versionName "1.0.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
-        debug {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -35,7 +31,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile project(':baidu_asr_sdk')
-    compile project(':baidu_dcs_sdk')
+//    compile project(':baidu_dcs_sdk')
     compile project(':baidu_tts_sdk')
     compile project(':minalibrary')
     compile project(':intercom')

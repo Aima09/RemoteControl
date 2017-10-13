@@ -41,7 +41,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
 
     <application
-        android:name=".App"
+        android:name="com.yf.remotecontrolclient.App"
         android:allowBackup="true"
         android:icon="@drawable/ic_l"
         android:label="@string/app_name"
@@ -104,12 +104,12 @@
         </activity>
         <activity android:name=".activity.IntercomActivity">
         </activity>
-        <activity android:name=".activity.baidu.dcs.DcsMainActivity">
-        </activity>
-        <activity android:name=".activity.baidu.dcs.DcsOAuthActivity">
-        </activity>
-        <activity android:name=".activity.baidu.dcs.DcsScreenHtmlActivity">
-        </activity>
+        <!--<activity android:name=".activity.baidu.dcs.DcsMainActivity">-->
+        <!--</activity>-->
+        <!--<activity android:name=".activity.baidu.dcs.DcsOAuthActivity">-->
+        <!--</activity>-->
+        <!--<activity android:name=".activity.baidu.dcs.DcsScreenHtmlActivity">-->
+        <!--</activity>-->
 
         <service
             android:name=".minaclient.tcp.MinaServer"

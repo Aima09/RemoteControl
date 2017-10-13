@@ -3,7 +3,6 @@ package com.yf.remotecontrolclient.minaclient.tcp;
 import android.content.Intent;
 
 import com.yf.remotecontrolclient.App;
-import com.yf.remotecontrolclient.httpserver.MyHttpService;
 
 /**
  * Created by wuhuai on 2017/6/26 .

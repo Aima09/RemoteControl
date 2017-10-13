@@ -1,8 +1,5 @@
 package com.yf.remotecontrolclient.minaclient.tcp;
 
-import android.media.MediaDataSource;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 

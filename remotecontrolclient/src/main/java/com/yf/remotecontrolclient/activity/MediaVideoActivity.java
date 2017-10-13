@@ -1,52 +1,22 @@
 package com.yf.remotecontrolclient.activity;
 
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.util.Base64;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import com.yf.remotecontrolclient.App;
 import com.yf.remotecontrolclient.R;
-import com.yf.remotecontrolclient.activity.fragment.MediaMusicLocalListFragment;
-import com.yf.remotecontrolclient.activity.fragment.MediaMusicRemotListFragment;
 import com.yf.remotecontrolclient.activity.fragment.MediaVideoLocalListFragment;
 import com.yf.remotecontrolclient.activity.fragment.MediaVideoRemotListFragment;
 import com.yf.remotecontrolclient.activity.view.Indicator;
 import com.yf.remotecontrolclient.activity.view.ScrollRelativeLayout;
-import com.yf.remotecontrolclient.adapt.VideoAdapter;
-import com.yf.remotecontrolclient.domain.Setplayvideoid;
-import com.yf.remotecontrolclient.domain.Setvideoplaystatus;
-import com.yf.remotecontrolclient.domain.Setvideovolumeadd;
-import com.yf.remotecontrolclient.domain.Video;
-import com.yf.remotecontrolclient.domain.VideoList;
-import com.yf.remotecontrolclient.media.MediaSource;
-import com.yf.remotecontrolclient.media.model.Media;
-import com.yf.remotecontrolclient.service.MusicBusinessService;
-import com.yf.remotecontrolclient.service.VideoBusinessService;
-import com.yf.remotecontrolclient.service.imp.MusicBusinessServiceImpl;
-import com.yf.remotecontrolclient.service.imp.VideoBusinessServiceImpl;
-import com.yf.remotecontrolclient.util.MyThumbnailUtils;
 
 
 public class MediaVideoActivity extends BaseActivity  implements ViewPager.OnPageChangeListener, View.OnClickListener  {
