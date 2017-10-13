@@ -57,32 +57,40 @@ public class MessageStatusRecogListener extends StatusRecogListener {
     public void onAsrFinalResult(String[] results, RecogResult recogResult) {
         super.onAsrFinalResult(results, recogResult);
         String message = "识别结束，结果是”" + results[0]+"”";
-        if (results[0].contains("上一首")){
+        String mr=results[0];
+        if (mr.contains("上一首")||mr.contains("上一曲")){
             Setplaystatus setplaystatus = new Setplaystatus();
             setplaystatus.setCmd("BSsetplaystatus");
             setplaystatus.setStatus("previous");
             musicBusinessService.sendBssetplaystatus(setplaystatus);
-        } else if (results[0].contains("下一首")){
+        } else if (mr.contains("下一首")||mr.contains("下一曲")){
             Setplaystatus setplaystatus = new Setplaystatus();
             setplaystatus.setCmd("BSsetplaystatus");
             setplaystatus.setStatus("next");
             musicBusinessService.sendBssetplaystatus(setplaystatus);
-        } else if (results[0].contains("减小音量") || results[0].contains("调小音量")){
+        } else if (mr.contains("播放")){
+            Setplaystatus setplaystatus1 = new Setplaystatus();
+            setplaystatus1.setCmd("BSsetplaystatus");
+            setplaystatus1.setStatus("start");
+            musicBusinessService.sendBssetplaystatus(setplaystatus1);
+        }else if(mr.contains("暂停")){
+            Setplaystatus setplaystatus1 = new Setplaystatus();
+            setplaystatus1.setCmd("BSsetplaystatus");
+            setplaystatus1.setStatus("pause");
+            musicBusinessService.sendBssetplaystatus(setplaystatus1);
+        } else if (mr.contains("减小音量") || mr.contains("调小音量")){
             Setvolumeadd setvolumeadd = new Setvolumeadd();
             setvolumeadd.setCmd("BSsetvolumeadd");
             setvolumeadd.setValume("-");
             musicBusinessService.sendBssetvolumeadd(setvolumeadd);
-        } else if (results[0].contains("增加音量") || results[0].contains("调大音量")){
+        } else if (mr.contains("" +
+                "") || mr.contains("调大音量")){
             Setvolumeadd setvolumeadd1 = new Setvolumeadd();
             setvolumeadd1.setCmd("BSsetvolumeadd");
             setvolumeadd1.setValume("+");
             musicBusinessService.sendBssetvolumeadd(setvolumeadd1);
-        } else if (results[0].contains("播放") || results[0].contains("暂停")){
-            Setplaystatus setplaystatus1 = new Setplaystatus();
-            setplaystatus1.setCmd("BSsetplaystatus");
-            setplaystatus1.setStatus("start_pause");
-            musicBusinessService.sendBssetplaystatus(setplaystatus1);
         }
+
         sendStatusMessage(message + "“；原始json：" + recogResult.getOrigalJson());
         if (speechEndTime > 0) {
             long diffTime = System.currentTimeMillis() - speechEndTime;

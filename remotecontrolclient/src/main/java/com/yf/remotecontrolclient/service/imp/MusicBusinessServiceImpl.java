@@ -20,16 +20,9 @@ import com.yf.remotecontrolclient.util.IpUtil;
 import com.yf.remotecontrolclient.util.JsonAssistant;
 
 import java.net.URLEncoder;
-
-<<<<<<< .mine
-
-
-
-=======
 import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
 import static com.yf.remotecontrolclient.activity.fragment.MediaMusicRemotListFragment.songList;
 
->>>>>>> .theirs
 public class MusicBusinessServiceImpl implements MusicBusinessService{
     public static final String CMD = "cmd";
     private JsonAssistant jsonAssistant;
