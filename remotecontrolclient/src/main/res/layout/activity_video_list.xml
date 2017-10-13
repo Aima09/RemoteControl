@@ -68,18 +68,6 @@
                 android:visibility="gone"
                 android:src="@drawable/player_mode_repeat_all_n" />
 
-            <!--
-             <ImageView
-            android:id="@+id/repeat_shuffle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/content_description"
-            
-            android:focusable="true"
-        	android:background="@drawable/seletc_framelayout_bk"
-            android:src="@drawable/player_mode_shuffle_n" />
-            -->
-
             <ImageView
                 android:id="@+id/volume_add"
                 android:layout_width="wrap_content"
@@ -88,18 +76,6 @@
                 android:background="@drawable/seletc_framelayout_bk"
                 android:focusable="true"
                 android:src="@drawable/video_volumeplus" />
-
-            <!--
-             <SeekBar
-            android:id="@+id/volume_seek_bar"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
-            android:layout_weight="0.09"
-            android:background="@drawable/seletc_framelayout_bk"
-            android:focusable="true" />
-            -->
-
         </LinearLayout>
     </RelativeLayout>
 

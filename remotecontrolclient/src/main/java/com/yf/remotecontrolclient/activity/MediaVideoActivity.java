@@ -26,13 +26,13 @@ public class MediaVideoActivity extends BaseActivity  implements ViewPager.OnPag
     public final static String MBROADCASTRECEIVER = "com.yf.client.activity.MediaVideoActivity.mBroadcastReceiver.video";
     private TextView mLocalTextView;
     private TextView mSearchTextView;
-    private ViewPager mVpMusicList;
+    private ViewPager mVpVideoList;
 
     private ArrayList<Fragment> mFragments = new ArrayList<Fragment>();
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_music_list);
+        setContentView(R.layout.activity_video_viewpager);
         initspinner();
         initView();
         initData();
@@ -44,7 +44,7 @@ public class MediaVideoActivity extends BaseActivity  implements ViewPager.OnPag
 
         mFragments.add(mMediaVideoRemotListFragment);
         mFragments.add(mMediaVideoLocalListFragment);
-        mVpMusicList.setAdapter(mPagerAdapter);
+        mVpVideoList.setAdapter(mPagerAdapter);
         //初始默认选中第0
         selectTab(0);
     }
@@ -54,9 +54,9 @@ public class MediaVideoActivity extends BaseActivity  implements ViewPager.OnPag
         mIndicator = (Indicator) findViewById(R.id.main_indicator);
         mLocalTextView = (TextView) findViewById(R.id.tv_main_local);
         mSearchTextView = (TextView) findViewById(R.id.tv_main_remote);
-        mVpMusicList = (ViewPager) findViewById(R.id.vp_music_list);
+        mVpVideoList = (ViewPager) findViewById(R.id.vp_music_list);
 
-        mVpMusicList.addOnPageChangeListener(this);
+        mVpVideoList.addOnPageChangeListener(this);
         mLocalTextView.setOnClickListener(this);
         mSearchTextView.setOnClickListener(this);
     }
@@ -116,10 +116,10 @@ public class MediaVideoActivity extends BaseActivity  implements ViewPager.OnPag
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_main_local:
-                mVpMusicList.setCurrentItem(0);
+                mVpVideoList.setCurrentItem(0);
                 break;
             case R.id.tv_main_remote:
-                mVpMusicList.setCurrentItem(1);
+                mVpVideoList.setCurrentItem(1);
                 break;
         }
     }

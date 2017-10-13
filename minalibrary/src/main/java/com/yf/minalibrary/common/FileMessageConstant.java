@@ -5,7 +5,6 @@ package com.yf.minalibrary.common;
  */
 
 public class FileMessageConstant {
-    public static String ON_LINE_MUSIC="on_line_music";
     public static String UPLOAD_MUSIC="upload_music";
-
+    public static String UPLOAD_VIDEO="upload_video";
 }

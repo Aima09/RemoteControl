@@ -120,6 +120,4 @@ public class MediaMusicLocalListFragment extends Fragment implements View.OnClic
                 break;
         }
     }
-
-
 }

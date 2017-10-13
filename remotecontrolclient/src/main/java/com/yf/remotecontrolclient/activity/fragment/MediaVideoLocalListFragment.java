@@ -116,7 +116,7 @@ public class MediaVideoLocalListFragment extends Fragment implements View.OnClic
                 break;
             case R.id.btn_sc:
                 //Log.i(TAG,"上传:"+v.getTag());
-                mVideoBusinessService.sendBsVideoFile((String) v.getTag(), FileMessageConstant.UPLOAD_MUSIC);
+                mVideoBusinessService.sendBsVideoFile((String) v.getTag(), FileMessageConstant.UPLOAD_VIDEO);
                 break;
         }
     }
