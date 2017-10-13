@@ -25,12 +25,17 @@ public class IntercomMessageDecoder extends BaseMessageDecoder implements Messag
 
     @Override public MessageDecoderResult decode(IoSession ioSession, IoBuffer in, ProtocolDecoderOutput outPut) throws Exception {
         try {
-            int messageLength = in.getInt();
-            String a = in.getString(messageLength, BeanUtil.UTF_8.newDecoder());
-            Gson gson = new Gson();
-            IntercomMessage intercomMessage = gson.fromJson(a, IntercomMessage.class);
-            System.out.println("IntercomMessageDecoder " + intercomMessage.toString());
-            outPut.write(intercomMessage);
+            if (in.remaining() >= 8){
+                in.getInt();
+                int messageLength = in.getInt();
+                String a = in.getString(messageLength, BeanUtil.UTF_8.newDecoder());
+                Gson gson = new Gson();
+                IntercomMessage intercomMessage = gson.fromJson(a, IntercomMessage.class);
+                System.out.println("IntercomMessageDecoder " + intercomMessage.toString());
+                outPut.write(intercomMessage);
+            } else {
+                return MessageDecoderResult.NEED_DATA;
+            }
         } catch (Exception e) {
             System.out.println("IntercomMessageDecoder decode 解码出错 = " + e.toString());
             e.printStackTrace();
