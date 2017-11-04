@@ -20,6 +20,8 @@ import com.yf.remotecontrolserver.intercom.IntercomPlayService;
 import com.yf.remotecontrolserver.remoteminaclient.ClientDataDisposeCenter;
 import com.yf.remotecontrolserver.remoteminaclient.ClientMinaCmdManager;
 import com.yf.remotecontrolserver.remoteminaclient.ClientMinaServer;
+import com.yf.remotecontrolserver.serial.rs485.RS485Service;
+import com.yf.remotecontrolserver.util.NotificationUtil;
 import com.yf.remotecontrolserver.util.ToastUtil;
 
 import butterknife.BindView;
@@ -76,11 +78,14 @@ public class MainActivity extends Activity {
             }
         }
     };
-
+    NotificationUtil mNotificationUtil;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        //绑定和播放器的服务
+        startService(new Intent(this, RS485Service.class));
+        PlayerControllerManager.getInstance();
         Intent intent = new Intent(MainActivity.this, MouseService.class);
         startService(intent);
         startService(new Intent(this, IntercomPlayService.class));
@@ -141,5 +146,7 @@ public class MainActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         stopService(new Intent(this, IntercomPlayService.class));
+        PlayerControllerManager.getInstance().onDestroy();
+        stopService(new Intent(this, RS485Service.class));
     }
 }

@@ -3,7 +3,6 @@ package com.yf.minalibrary.encoderdecoder;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.yf.minalibrary.common.BeanUtil;
 import com.yf.minalibrary.common.MessageType;
 import com.yf.minalibrary.message.BaseMessage;
 import com.yf.minalibrary.message.FileMessage;
@@ -13,10 +12,7 @@ import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolEncoderOutput;
 import org.apache.mina.filter.codec.demux.MessageEncoder;
 
-import java.nio.Buffer;
 import java.nio.charset.Charset;
-
-import static android.R.id.message;
 
 
 public class BaseMessageEncoder implements MessageEncoder<BaseMessage> {

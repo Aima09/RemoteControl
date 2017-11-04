@@ -36,7 +36,9 @@
         android:text="设置"
         android:id="@+id/setting"
         android:onClick="onClick"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"
+        />
 
     <Button
         android:layout_width="match_parent"

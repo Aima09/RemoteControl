@@ -1,14 +1,13 @@
 package com.yf.minalibrary.message;
 
-import java.util.Arrays;
-
 public class FileMessage extends BaseMessage {
 
     private String fileName = "";
     private int fileSize = 0;
     private byte[] fileContent;
     private String use;
-
+    //显示用的
+    private Integer currenSize;
     public FileMessage(String senderId, String receiverId, int messageType, String fileName, int fileSize, byte[] fileContent,String use) {
         super(senderId, receiverId, messageType);
         this.fileName = fileName;
@@ -16,15 +15,6 @@ public class FileMessage extends BaseMessage {
         this.fileContent = fileContent;
         this.use=use;
     }
-
-    @Override public String toString() {
-        return "FileMessage{" +
-                "fileName='" + fileName + '\'' +
-                ", fileSize=" + fileSize +
-                ", fileContent=" + Arrays.toString(fileContent) +
-                '}';
-    }
-
 
     public String getFileName() {
         return fileName;
@@ -56,5 +46,13 @@ public class FileMessage extends BaseMessage {
 
     public void setUse(String use) {
         this.use = use;
+    }
+
+    public Integer getCurrenSize() {
+        return currenSize;
+    }
+
+    public void setCurrenSize(Integer currenSize) {
+        this.currenSize = currenSize;
     }
 }

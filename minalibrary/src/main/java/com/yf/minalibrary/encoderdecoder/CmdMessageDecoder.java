@@ -3,7 +3,6 @@ package com.yf.minalibrary.encoderdecoder;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.yf.minalibrary.common.BeanUtil;
 import com.yf.minalibrary.common.MessageType;
 import com.yf.minalibrary.message.CmdMessage;
 
@@ -14,9 +13,6 @@ import org.apache.mina.filter.codec.demux.MessageDecoder;
 import org.apache.mina.filter.codec.demux.MessageDecoderResult;
 
 import java.nio.charset.Charset;
-import java.nio.charset.CharsetEncoder;
-
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 /**
  * Created by wuhuai on 2016/11/12 .

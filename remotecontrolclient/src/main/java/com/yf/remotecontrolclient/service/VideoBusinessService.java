@@ -16,7 +16,7 @@ public interface VideoBusinessService {
 
     public void sendBssetvideoplaystatus(Setvideoplaystatus setvideoplaystatus);
 
-    public void sendBsVideoFile(String path,String use);
+    public void sendBsVideoFile(Media media);
 
     public void sendBsTsVideoFile(Media media);
 }

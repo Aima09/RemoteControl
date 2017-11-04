@@ -1,24 +1,7 @@
 package com.yf.minalibrary.encoderdecoder;
 
-import android.util.Log;
-
-import com.google.gson.Gson;
-import com.yf.minalibrary.common.BeanUtil;
-import com.yf.minalibrary.common.MessageType;
-import com.yf.minalibrary.message.CmdMessage;
-
 import org.apache.mina.core.buffer.IoBuffer;
-import org.apache.mina.core.session.IoSession;
-import org.apache.mina.filter.codec.ProtocolDecoderOutput;
-import org.apache.mina.filter.codec.demux.MessageDecoder;
 import org.apache.mina.filter.codec.demux.MessageDecoderResult;
-
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static android.R.id.message;
 
 /**
  * Created by wuhuai on 2016/11/12 .

@@ -64,7 +64,7 @@
         <service android:name="com.baidu.speech.VoiceRecognitionService" android:exported="false" />
 
         <activity
-            android:name=".activity.MainActivity"
+            android:name="com.yf.remotecontrolclient.activity.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
@@ -75,34 +75,34 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.ChooseRoomActivity"
+            android:name="com.yf.remotecontrolclient.activity.ChooseRoomActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"/>
         <activity
-            android:name=".activity.WriteActivity"
+            android:name="com.yf.remotecontrolclient.activity.WriteActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"/>
-        <activity android:name=".activity.MediaMusicActivity"/>
-        <activity android:name=".activity.MediaVideoActivity"/>
+        <activity android:name="com.yf.remotecontrolclient.activity.MediaMusicActivity"/>
+        <activity android:name="com.yf.remotecontrolclient.activity.MediaVideoActivity"/>
         <activity
-            android:name=".activity.MouseActivity"
+            android:name="com.yf.remotecontrolclient.activity.MouseActivity"
             android:launchMode="singleTask"/>
-        <activity android:name=".activity.MediaImageFolderActivity"/>
-        <activity android:name=".activity.MediaImageActivity"/>
-        <activity android:name=".activity.BrowserActivity"/>
-        <activity android:name=".activity.FileActivity"/>
+        <activity android:name="com.yf.remotecontrolclient.activity.MediaImageFolderActivity"/>
+        <activity android:name="com.yf.remotecontrolclient.activity.MediaImageActivity"/>
+        <activity android:name="com.yf.remotecontrolclient.activity.BrowserActivity"/>
+        <activity android:name="com.yf.remotecontrolclient.activity.FileActivity"/>
         <activity
-            android:name=".activity.FileShowListActivity"
+            android:name="com.yf.remotecontrolclient.activity.FileShowListActivity"
             android:launchMode="singleTask"/>
         <activity
-            android:name=".activity.QRCodeScanActivity"
+            android:name="com.yf.remotecontrolclient.activity.QRCodeScanActivity"
             android:launchMode="singleTask"/>
-        <activity android:name=".activity.WebsiteAddActivity"/>
-        <activity android:name=".activity.RemoteDevicesListActivity">
+        <activity android:name="com.yf.remotecontrolclient.activity.WebsiteAddActivity"/>
+        <activity android:name="com.yf.remotecontrolclient.activity.RemoteDevicesListActivity">
         </activity>
-        <activity android:name=".activity.SettingsActivity">
+        <activity android:name="com.yf.remotecontrolclient.activity.SettingsActivity">
         </activity>
-        <activity android:name=".activity.IntercomActivity">
+        <activity android:name="com.yf.remotecontrolclient.activity.IntercomActivity">
         </activity>
         <!--<activity android:name=".activity.baidu.dcs.DcsMainActivity">-->
         <!--</activity>-->
@@ -112,14 +112,14 @@
         <!--</activity>-->
 
         <service
-            android:name=".minaclient.tcp.MinaServer"
+            android:name="com.yf.remotecontrolclient.minaclient.tcp.MinaServer"
             android:enabled="true"
             android:exported="true">
         </service>
-        <service android:name=".activity.service.MouseService">
+        <service android:name="com.yf.remotecontrolclient.activity.service.MouseService">
         </service>
         <service
-            android:name=".intercom.InterService"
+            android:name="com.yf.remotecontrolclient.intercom.InterService"
             android:enabled="true"
             android:exported="false">
         </service>
@@ -129,9 +129,9 @@
             android:exported="false">
         </service>
 
-        <activity android:name=".activity.baidu.tts.BdTtsActivity">
+        <activity android:name="com.yf.remotecontrolclient.activity.baidu.tts.BdTtsActivity">
         </activity>
-        <activity android:name=".activity.baidu.asr.ActivityOnline">
+        <activity android:name="com.yf.remotecontrolclient.activity.baidu.asr.ActivityOnline">
         </activity>
     </application>
 

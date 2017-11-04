@@ -3,7 +3,6 @@ package com.yf.minalibrary.encoderdecoder;
 import com.google.gson.Gson;
 import com.yf.minalibrary.common.BeanUtil;
 import com.yf.minalibrary.common.MessageType;
-import com.yf.minalibrary.message.CmdMessage;
 import com.yf.minalibrary.message.IntercomMessage;
 
 import org.apache.mina.core.buffer.IoBuffer;

@@ -38,7 +38,6 @@ import com.yf.remotecontrolclient.domain.SongList;
 import com.yf.remotecontrolclient.domain.VideoList;
 import com.yf.remotecontrolclient.domain.WebsiteList;
 import com.yf.remotecontrolclient.domain.Writer;
-import com.yf.remotecontrolclient.media.model.Media;
 
 /**
  * Created by sujuntao on 2017/6/22.

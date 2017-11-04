@@ -1,6 +1,5 @@
 package com.yf.remotecontrolserver.remoteminaclient;
 
-import android.os.Environment;
 import android.util.Log;
 
 import com.yf.minalibrary.common.CmdType;

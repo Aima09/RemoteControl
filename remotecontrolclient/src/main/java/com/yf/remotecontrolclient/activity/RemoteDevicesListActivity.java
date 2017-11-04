@@ -24,7 +24,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import com.yf.remotecontrolclient.CommonConstant;
 import com.yf.remotecontrolclient.R;
 import com.yf.remotecontrolclient.minaclient.tcp.DeviceInfo;
 import com.yf.remotecontrolclient.minaclient.tcp.DevicesManager;

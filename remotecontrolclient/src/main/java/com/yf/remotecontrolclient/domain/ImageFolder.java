@@ -47,4 +47,13 @@ public class ImageFolder implements Serializable {
     public void setB(String b) {
         this.b = b;
     }
+    //没有b
+    @Override public String toString() {
+        return "ImageFolder{" +
+                "cmd='" + cmd + '\'' +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                ", folderNumber='" + folderNumber + '\'' +
+                '}';
+    }
 }

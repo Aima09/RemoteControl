@@ -4,6 +4,10 @@ package com.yf.remotecontrolserver.dao;
 import android.content.Intent;
 import android.util.Log;
 
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.FormatStrategy;
+import com.orhanobut.logger.Logger;
+import com.orhanobut.logger.PrettyFormatStrategy;
 import com.yf.remotecontrolserver.common.App;
 import com.yf.remotecontrolserver.domain.Action;
 import com.yf.remotecontrolserver.domain.Writer;
@@ -11,8 +15,6 @@ import com.yf.remotecontrolserver.mouse.MouseBusinessServiceImpl;
 import com.yf.remotecontrolserver.util.JsonAssistant;
 
 public class TcpAnalyzerImpl implements AnalyzerInterface {
-    private static String TAG = "TcpAnalyzerImpl";
-
     private static TcpAnalyzerImpl analyzerImpl;
 
     public static TcpAnalyzerImpl getInstans() {
@@ -62,7 +64,7 @@ public class TcpAnalyzerImpl implements AnalyzerInterface {
     @Override
     public void analy(byte[] buffer, String receiverId) {
         String data = new String(buffer).trim();
-        Log.i(TAG, data);
+        Logger.i("服务端接收的数据：data = "+data);
         try {
             // 优先处理所以放到最前面（优化）
             if (data.contains("cmd") && data.contains("write")
@@ -141,6 +143,12 @@ public class TcpAnalyzerImpl implements AnalyzerInterface {
                 intent.putExtra("receiverId", receiverId);
                 App.getAppContext().sendBroadcast(intent);
             }else if (data.contains("cmd") && data.contains("BspVideommedia")){
+                Intent intent = new Intent();
+                intent.setAction(VIDEORECEIVER);
+                intent.putExtra(VIDEO_KEY, data);
+                intent.putExtra("receiverId", receiverId);
+                App.getAppContext().sendBroadcast(intent);
+            }else if (data.contains("cmd") && data.contains("BsuVideommedia")){
                 Intent intent = new Intent();
                 intent.setAction(VIDEORECEIVER);
                 intent.putExtra(VIDEO_KEY, data);
@@ -255,7 +263,6 @@ public class TcpAnalyzerImpl implements AnalyzerInterface {
                 intent.putExtra("receiverId", receiverId);
                 App.getAppContext().sendBroadcast(intent);
             }
-            // Log.i(TAG, data);
         } catch (Exception e) {
             e.printStackTrace();
         }

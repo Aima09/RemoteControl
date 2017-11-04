@@ -20,5 +20,4 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/tv_ycidbs"
         android:textSize="25sp" />
-
 </LinearLayout>

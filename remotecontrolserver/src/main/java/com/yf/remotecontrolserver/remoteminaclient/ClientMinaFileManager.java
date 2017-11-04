@@ -4,15 +4,12 @@ package com.yf.remotecontrolserver.remoteminaclient;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
-import android.util.Log;
 
 import com.yf.minalibrary.message.FileMessage;
 import com.yf.remotecontrolserver.common.App;
 
 import java.io.File;
 import java.io.FileOutputStream;
-
-import static com.yf.remotecontrolserver.common.config_server.TAG;
 
 
 /**

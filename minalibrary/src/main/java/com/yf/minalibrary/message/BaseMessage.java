@@ -1,7 +1,5 @@
 package com.yf.minalibrary.message;
 
-import com.yf.minalibrary.common.MessageType;
-
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;

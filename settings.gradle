@@ -1,1 +1,1 @@
-include ':remotecontrolserver', ':minalibrary', ':intercom', ':remotecontrolclient',  ':baidu_tts_sdk', ':baidu_asr_sdk'
+include ':remotecontrolserver', ':minalibrary', ':intercom', ':remotecontrolclient', ':baidu_tts_sdk', ':baidu_asr_sdk'

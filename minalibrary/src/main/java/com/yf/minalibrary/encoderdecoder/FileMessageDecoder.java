@@ -1,11 +1,8 @@
 package com.yf.minalibrary.encoderdecoder;
 
-import android.content.Context;
-import android.os.Environment;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.yf.minalibrary.common.BeanUtil;
 import com.yf.minalibrary.common.FileMessageConstant;
 import com.yf.minalibrary.common.MessageType;
 import com.yf.minalibrary.message.FileMessage;
@@ -16,11 +13,6 @@ import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolDecoderOutput;
 import org.apache.mina.filter.codec.demux.MessageDecoder;
 import org.apache.mina.filter.codec.demux.MessageDecoderResult;
-
-import java.io.File;
-import java.io.FileOutputStream;
-
-import static android.R.id.message;
 
 public class FileMessageDecoder extends BaseMessageDecoder implements MessageDecoder {
     private static final String  TAG="FileMessageDecoder";
@@ -74,19 +66,15 @@ public class FileMessageDecoder extends BaseMessageDecoder implements MessageDec
             while (in.hasRemaining()) {
                 byte b = in.get();
                 context.byteFile[count] = b;
-
                 if (count == context.fileSize - 1) {
                     break;
                 }
-
-                count++;
-
-                if(context.use.equals(FileMessageConstant.ON_LINE_MUSIC)){
-                    FileMessage message = new FileMessage(context.senderId, context.receiverId, context.messageType,context.fileName, context.fileSize, context.byteFile,context.use);
+                if(context.use.equals(FileMessageConstant.UPLOAD_MUSIC)&&count%(context.fileSize/10)==0||count==context.fileSize-1||count==0){
+                    FileMessage message = new FileMessage(context.senderId, context.receiverId, context.messageType,context.fileName, context.fileSize, context.byteFile,FileMessageConstant.ON_LINE_MUSIC);
+                    message.setCurrenSize(count);
                     outPut.write(message);
-                    return MessageDecoderResult.OK;
                 }
-
+                count++;
             }
             context.count = count;//记录取到哪里了
             session.setAttribute(CONTEXT, context);//写回整个context对象

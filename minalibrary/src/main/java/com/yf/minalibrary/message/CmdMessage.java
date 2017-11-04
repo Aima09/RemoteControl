@@ -1,8 +1,5 @@
 package com.yf.minalibrary.message;
 
-import com.yf.minalibrary.common.CmdType;
-import com.yf.minalibrary.common.DeviceType;
-
 public class CmdMessage extends BaseMessage {
     private String cmdType;
     private String deviceType;

@@ -8,13 +8,11 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import com.yf.remotecontrolclient.R;
 import com.yf.remotecontrolclient.adapt.ImageFolderAdapter;
@@ -22,8 +20,6 @@ import com.yf.remotecontrolclient.domain.ImageFolder;
 import com.yf.remotecontrolclient.domain.ImageFolderList;
 import com.yf.remotecontrolclient.service.ImageBusinessService;
 import com.yf.remotecontrolclient.service.imp.ImageBusinessServiceImpl;
-
-import static org.slf4j.MDC.clear;
 
 public class MediaImageFolderActivity extends BaseActivity implements
         AdapterView.OnItemClickListener {

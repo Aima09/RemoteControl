@@ -1,7 +1,6 @@
 package com.yf.remotecontrolserver.localminaserver;
 
 
-import android.content.ComponentName;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
@@ -22,7 +21,6 @@ import com.yuanfang.intercom.data.MessageQueue;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.Arrays;
 
 /**
  * Created by wuhuai on 2017/6/23 .
@@ -60,35 +58,20 @@ public class LocalMinaMassageManager {
     }
 
     public void disposeFile(FileMessage fileMessage) {
-        if (fileMessage.getUse().equals(FileMessageConstant.UPLOAD_MUSIC)) {
-            try {
-                Log.d("LocalMinaMassageManager", "Received filename = " + fileMessage.getFileName());
-                File file = null;
-                if (fileMessage.getFileName().endsWith(".mp3")) {
-                    file = new File(Environment.getExternalStorageDirectory() + "/yinyue");
-                } else if (fileMessage.getFileName().endsWith(".png") || fileMessage.getFileName().endsWith(".jpg")) {
-                    file = new File(Environment.getExternalStorageDirectory() + "/tupian");
-                }
-                boolean b = file.exists();
-                if (!b) {
-                    b = file.mkdir();
-                }
-                if (b) {
-                    FileOutputStream os = new FileOutputStream(file.getPath() + "/" + fileMessage.getFileName());
-                    os.write(fileMessage.getFileContent());
-                    os.close();
-                    fileScan(file.getPath() + "/" + fileMessage.getFileName());
-                    Intent intent = new Intent(Intent.ACTION_MAIN);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.addCategory(Intent.CATEGORY_LAUNCHER);
-                    ComponentName cn = new ComponentName("player.yf.com.player", "player.yf.com.player.MainActivity");
-                    intent.setComponent(cn);
-                    App.getAppContext().startActivity(intent);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+        if(fileMessage.getUse().equals(FileMessageConstant.ON_LINE_MUSIC)){
+            Integer currentSize=fileMessage.getCurrenSize();
+            Integer fileSize=fileMessage.getFileSize();
+            Log.d("LocalMinaMassageManager", "currentSize = " + currentSize);
+            Log.d("LocalMinaMassageManager", "fileSize = " + fileSize);
+            Intent in=new Intent();
+            in.putExtra("currentSize",currentSize);
+            in.putExtra("fileSize",fileSize);
+            in.setAction("com.yuanfang.yinyue.MainActivity.broadcastreceiver");
+            App.getAppContext().sendBroadcast(in);
+            if(currentSize==fileSize-1){
+                Log.d("LocalMinaMassageManager", "完成");
             }
-        } else if (fileMessage.getUse().equals(FileMessageConstant.ON_LINE_MUSIC)) {
+        }else if (fileMessage.getUse().equals(FileMessageConstant.UPLOAD_MUSIC)) {
             try {
                 Log.d("LocalMinaMassageManager", "Received filename = " + fileMessage.getFileName());
                 File file = null;
@@ -101,31 +84,38 @@ public class LocalMinaMassageManager {
                 if (!b) {
                     b = file.mkdir();
                 }
-                if (b) {
-                    FileOutputStream os = new FileOutputStream(file.getPath() + "/" + fileMessage.getFileName(),true);
-                    os.write(fileMessage.getFileContent()[fileMessage.getFileContent().length - 1]);
-                    os.close();
-                    if (fileMessage.getFileContent().length == 500) {
-                        fileScan(file.getPath() + "/" + fileMessage.getFileName());
-                        Intent intent = new Intent(Intent.ACTION_MAIN);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent.addCategory(Intent.CATEGORY_LAUNCHER);
-                        ComponentName cn = new ComponentName("player.yf.com.player", "player.yf.com.player.MainActivity");
-                        intent.setComponent(cn);
-                        App.getAppContext().startActivity(intent);
-                    }
-                }
+                File file1=new File(file.getPath() + "/" + fileMessage.getFileName());
+                FileOutputStream os = new FileOutputStream(file1);
+                os.write(fileMessage.getFileContent());
+                os.close();
+                fileScan(file.getPath() + "/" + fileMessage.getFileName());
+                Intent in=new Intent();
+                in.putExtra("currentSize",fileMessage.getFileSize());
+                in.putExtra("fileSize",fileMessage.getFileSize());
+                in.setAction("com.yuanfang.yinyue.MainActivity.broadcastreceiver");
+                App.getAppContext().sendBroadcast(in);
+                //因为内容数组较大，手动调gc
+                fileMessage.setFileContent(null);
+                fileMessage=null;
+                System.gc();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
-
+    //通知系统有扫描本文件
     public void fileScan(String file) {
+        Log.i("LocalMinaMassageManager","fileScanfileScan");
         Uri data = Uri.parse("file://" + file);
-        Log.d("TAG", "file:" + file);
         App.getInstance().sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, data));
+        try {
+            Thread.sleep(2000);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        Uri data1 = Uri.parse("file://" + file);
+        App.getInstance().sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, data1));
     }
 
     public void disposeIntercom(IntercomMessage intercomMessage) {

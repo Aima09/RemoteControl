@@ -4,7 +4,6 @@ package com.yf.remotecontrolserver.localminaserver;
 import com.yf.minalibrary.encoderdecoder.MessageProtocolCodecFactory;
 import com.yf.remotecontrolserver.common.ui.serice.MouseService;
 
-import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;

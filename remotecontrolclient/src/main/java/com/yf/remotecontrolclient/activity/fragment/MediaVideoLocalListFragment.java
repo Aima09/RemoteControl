@@ -6,7 +6,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +18,7 @@ import com.yf.minalibrary.common.FileMessageConstant;
 import com.yf.remotecontrolclient.R;
 import com.yf.remotecontrolclient.media.MediaSource;
 import com.yf.remotecontrolclient.media.model.Media;
-import com.yf.remotecontrolclient.service.MusicBusinessService;
 import com.yf.remotecontrolclient.service.VideoBusinessService;
-import com.yf.remotecontrolclient.service.imp.MusicBusinessServiceImpl;
 import com.yf.remotecontrolclient.service.imp.VideoBusinessServiceImpl;
 
 import java.util.ArrayList;
@@ -95,7 +92,7 @@ public class MediaVideoLocalListFragment extends Fragment implements View.OnClic
             viewHolder.videoZz.setText(media.getArtist());
             viewHolder.btnTs.setTag(position);
             viewHolder.btnTs.setOnClickListener(MediaVideoLocalListFragment.this);
-            viewHolder.btnSc.setTag(mMediaList.get(position).getPath());
+            viewHolder.btnSc.setTag(position);
             viewHolder.btnSc.setOnClickListener(MediaVideoLocalListFragment.this);
             return convertView;
         }
@@ -116,7 +113,8 @@ public class MediaVideoLocalListFragment extends Fragment implements View.OnClic
                 break;
             case R.id.btn_sc:
                 //Log.i(TAG,"上传:"+v.getTag());
-                mVideoBusinessService.sendBsVideoFile((String) v.getTag(), FileMessageConstant.UPLOAD_VIDEO);
+                Media m1=MediaSource.getInstance().getVideoList().get((Integer) v.getTag());
+                mVideoBusinessService.sendBsVideoFile(m1);
                 break;
         }
     }
