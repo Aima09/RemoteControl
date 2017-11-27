@@ -77,7 +77,7 @@ public class TcpAnalyzerImpl implements AnalyzerInterface {
                 intent.putExtra("writer", writer);
                 App.getAppContext().sendBroadcast(intent);
                 return;
-            } else if (data.contains("cmd") && data.contains("data")) {
+            } else if (data.contains("\"cmd\":\"") && data.contains("\",\"data\":\"")) {
                 // 接收到了动作
                 Action action = jsonAssistant.paseAction(data);
                 Intent intent = new Intent();

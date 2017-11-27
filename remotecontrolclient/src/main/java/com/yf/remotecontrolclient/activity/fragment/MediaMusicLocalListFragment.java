@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,7 +81,7 @@ public class MediaMusicLocalListFragment extends Fragment implements View.OnClic
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder viewHolder=null;
             Media media = mMediaList.get(position);
-            if (convertView == null) {
+            if (viewHolder == null) {
                 viewHolder = new ViewHolder();
                 convertView = mInflater.inflate(R.layout.fragment_music_local_list_item, null);
                 viewHolder.musicName = (TextView) convertView.findViewById(R.id.music_name);

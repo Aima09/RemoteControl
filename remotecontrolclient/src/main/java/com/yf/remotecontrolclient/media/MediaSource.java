@@ -102,9 +102,10 @@ public class MediaSource {
                 media.setId(cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media._ID)));
                 media.setAbulmId(cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID)));
                 media.setPath(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA)));
-                mMusicList.add(media);
+                if(media.getPath().endsWith(".mp3")){
+                    mMusicList.add(media);
+                }
             }
-
             Log.d(TAG, "loadMusic: " + mMusicList.toString());
         } catch (Exception e) {
             e.printStackTrace();

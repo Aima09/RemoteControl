@@ -73,11 +73,6 @@
         </service>
         <service android:name=".serial.rs485.RS485Service">
         </service>
-        <service
-            android:name="com.yf.alink.AlinkService"
-            android:enabled="true"
-            android:exported="true">
-        </service>
     </application>
 
 </manifest>

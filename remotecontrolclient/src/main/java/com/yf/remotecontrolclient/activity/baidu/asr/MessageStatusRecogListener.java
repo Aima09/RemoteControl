@@ -78,13 +78,14 @@ public class MessageStatusRecogListener extends StatusRecogListener {
             setplaystatus1.setCmd("BSsetplaystatus");
             setplaystatus1.setStatus("pause");
             musicBusinessService.sendBssetplaystatus(setplaystatus1);
-        } else if (mr.contains("减小音量") || mr.contains("调小音量")){
+        } else if (mr.contains("调小音量")||mr.contains("调少音量")||mr.contains("减小音量")||
+                mr.contains("减少音量")||mr.contains("减音量")){
             Setvolumeadd setvolumeadd = new Setvolumeadd();
             setvolumeadd.setCmd("BSsetvolumeadd");
             setvolumeadd.setValume("-");
             musicBusinessService.sendBssetvolumeadd(setvolumeadd);
-        } else if (mr.contains("" +
-                "") || mr.contains("调大音量")){
+        } else if (mr.contains("调大音量")||mr.contains("增加音量")||mr.contains("加大音量")||
+                mr.contains("加音量")){
             Setvolumeadd setvolumeadd1 = new Setvolumeadd();
             setvolumeadd1.setCmd("BSsetvolumeadd");
             setvolumeadd1.setValume("+");

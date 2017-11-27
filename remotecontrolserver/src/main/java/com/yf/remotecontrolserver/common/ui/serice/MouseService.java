@@ -22,6 +22,8 @@ import com.yf.remotecontrolserver.remoteminaclient.ClientMinaServer;
 import com.yf.remotecontrolserver.util.EquipmentFactory;
 import com.yf.remotecontrolserver.util.GatewayFactory;
 
+import static android.R.attr.filter;
+
 public class MouseService extends Service {
     public static final String TAG = "MouseService";
     //	// 业务
@@ -95,10 +97,10 @@ public class MouseService extends Service {
             }
         }
     };
-
+    IntentFilter filter;
     @Override
     public void onCreate() {
-        IntentFilter filter = new IntentFilter();
+        filter = new IntentFilter();
         filter.addAction(MouseBusinessServiceImpl.DAO_UDP_UDPSERVER);
         filter.addAction(MouseBusinessServiceImpl.DAO_TCPIP_TCPIPSERVER);
         // 3.注册广播接收者
@@ -121,6 +123,7 @@ public class MouseService extends Service {
         SocketManager.getSocketManager().startUdp();
         startService(minaloginServiceintent);
         startService(tcpServiceIntent);
+//        registerReceiver(mybroadcastReceiver, filter);
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -128,6 +131,7 @@ public class MouseService extends Service {
     public void onDestroy() {
         stopService(tcpServiceIntent);
         stopService(minaloginServiceintent);
+        unregisterReceiver(mybroadcastReceiver);
         super.onDestroy();
     }
 

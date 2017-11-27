@@ -80,7 +80,7 @@ public class MediaVideoLocalListFragment extends Fragment implements View.OnClic
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder viewHolder=null;
             Media media = mMediaList.get(position);
-            if (convertView == null) {
+            if (viewHolder == null) {
                 viewHolder = new ViewHolder();
                 convertView = mInflater.inflate(R.layout.fragment_video_local_list_item, null);
                 viewHolder.videoName = (TextView) convertView.findViewById(R.id.video_name);

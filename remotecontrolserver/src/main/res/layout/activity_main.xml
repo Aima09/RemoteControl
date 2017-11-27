@@ -20,4 +20,17 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/tv_ycidbs"
         android:textSize="25sp" />
+    <TextView
+        android:id="@+id/tv_ycidbs1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:layout_margin="20dp"/>
+
+    <ImageView
+        android:id="@+id/qrcode_id2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/tv_ycidbs"
+        android:textSize="25sp" />
 </LinearLayout>

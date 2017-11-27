@@ -13,6 +13,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.yf.remotecontrolserver.R;
 import com.yf.remotecontrolserver.common.ui.serice.MouseService;
 import com.yf.remotecontrolserver.download.DownloadBusinessService;
@@ -23,6 +28,9 @@ import com.yf.remotecontrolserver.remoteminaclient.ClientMinaServer;
 import com.yf.remotecontrolserver.serial.rs485.RS485Service;
 import com.yf.remotecontrolserver.util.NotificationUtil;
 import com.yf.remotecontrolserver.util.ToastUtil;
+import com.yf.remotecontrolserver.util.WifiUtils;
+
+import java.util.Hashtable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,6 +57,13 @@ public class MainActivity extends Activity {
     public static final int IO_ERROR = 103;
     public static final int JSON_ERROR = 104;
     private DownloadBusinessService downloadBusinessService;
+
+    /**
+     * 服务意图Intent
+     */
+    Intent intentMouse;
+    Intent intent485;
+    Intent intercomPlayService;
 
     private Handler mHandler = new Handler() {
         @Override
@@ -83,12 +98,9 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        //绑定和播放器的服务
-        startService(new Intent(this, RS485Service.class));
+        initAndStartService();
         PlayerControllerManager.getInstance();
-        Intent intent = new Intent(MainActivity.this, MouseService.class);
-        startService(intent);
-        startService(new Intent(this, IntercomPlayService.class));
+        //绑定和播放器的服务
         qrcodeId.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -107,6 +119,17 @@ public class MainActivity extends Activity {
             }
         });
     }
+
+    private void initAndStartService() {
+        intentMouse=new Intent(MainActivity.this, MouseService.class);
+        intent485=new Intent(this, RS485Service.class);
+        intercomPlayService=new Intent(this, IntercomPlayService.class);
+
+        startService(intentMouse);
+        startService(intent485);
+        startService(intercomPlayService);
+    }
+
 
     @Override
     protected void onStart() {
@@ -145,8 +168,9 @@ public class MainActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        stopService(new Intent(this, IntercomPlayService.class));
-        PlayerControllerManager.getInstance().onDestroy();
-        stopService(new Intent(this, RS485Service.class));
+        stopService(intentMouse);
+        stopService(intent485);
+        stopService(intercomPlayService);
+       // PlayerControllerManager.getInstance().onDestroy();
     }
 }
